@@ -1684,6 +1684,75 @@ ru: {
   // v2.4 — Skills execution order
   skills_order_title: 'ПОРЯДОК ВЫПОЛНЕНИЯ СКИЛЛОВ:',
   skills_order: '1. Passport + Constitution → лимиты\n2. Snapshot + Context → G0 (свежесть < 7 дней)\n3. Company + Price Power → качество бизнеса\n4. EUREKA + Life-Cycle → качество прибыли + стадия → калибровка P/E\n5. ROP → три сценария с калиброванным P/E\n6. Scenario Map → триггеры\n7. Quality Gates → G0–G4\n8. Report → карточка',
+  // System + skills blocks localization (v2.5.2)
+  start_order_preamble: 'ПОРЯДОК РАБОТЫ (внутренний): Сначала СОБЕРИ данные → ПОСЧИТАЙ ROP → только потом СФОРМИРУЙ ACTION CARD. В ответе ACTION CARD первым, но он должен быть СЛЕДСТВИЕМ расчётов.',
+  sys_hdr_gem: '━━━ МОЯ ИНВЕСТ-СИСТЕМА (Gemini Gem · База знаний) ━━━',
+  sys_hdr_project: '━━━ МОЯ ИНВЕСТ-СИСТЕМА ({modelLabel}) ━━━',
+  sys_intro_gem: 'Работай строго по моим файлам из Базы знаний.',
+  sys_intro_project: 'Работай строго по моим файлам из Project.',
+  sys_connected_hdr: 'ПОДКЛЮЧЁННЫЕ файлы (используй их):',
+  sys_required_hdr: 'ОБЯЗАТЕЛЬНЫЕ файлы (используй их):',
+  sys_optional_hdr: 'ОПЦИОНАЛЬНЫЕ:',
+  sys_missing_hdr: '⛔ ОТСУТСТВУЮЩИЕ (скажи об этом в начале ответа):',
+  sys_not_connected: 'НЕ подключён',
+  sys_search_gpt: '• Данные о рынке ищи через Browsing',
+  sys_search_claude: '• Данные о рынке ищи через веб-поиск (tool_use)',
+  sys_gem_file01: '01_pravila.docx (правила/протокол/конституция)',
+  sys_gem_file02: '02_portfel.docx (снимок портфеля)',
+  sys_gem_file03: '03_analitika.docx (шаблоны аналитики/карточка компании)',
+  sys_prj_req_f02: '02_investor_passport.md (паспорт инвестора)',
+  sys_prj_req_f03: '03_investment_constitution.md (конституция)',
+  sys_prj_req_f04: '04_portfolio_snapshot.md (снимок портфеля)',
+  sys_prj_opt_f07: '07_context_card.md (рыночный контекст — используй SUMMARY LINE)',
+  sys_prj_opt_f07_missing: '07_context_card.md — НЕ подключён; промпт выполнит auto-fetch режима самостоятельно',
+  sys_prj_opt_f06: '06_company_card.md (карточка компании)',
+  sys_prj_opt_f06_missing: '06_company_card.md — НЕ подключён, работай без него',
+  sys_prj_opt_f08: '08_scenario_map.md (карта сценариев)',
+  sys_prj_opt_f08_missing: '08_scenario_map.md — НЕ подключён, работай без него',
+  sys_rules_gem: `ПРАВИЛА ИЗ ПРОТОКОЛА (применяй всегда):
+• Соблюдай правила из 01_pravila.docx перед любым ответом
+• Проверяй актуальность снимка портфеля (02_portfel.docx) — не старше 7 дней
+• Для анализа компании используй структуру из 03_analitika.docx
+• Данные о рынке ищи через Google Search
+• Запрещено выдумывать числа. "Нет данных" лучше, чем угадывать`,
+  sys_rules_project: `ПРАВИЛА ИЗ КОНСТИТУЦИИ (применяй всегда):
+• Перед любым действием — 0-Gate: Snapshot (04) < 7 дней, Context (07) < 7 дней
+• Любая сделка — только через QPTA (03_constitution) + Quality Gates G0–G4
+• Размер позиции — по формулам из Раздела F конституции
+• Запрещено: naked options, усреднение без правила, решения без журнала (10)
+• Лимиты портфеля: проверь NBE, Directional Heat, концентрации (03 + 04)
+{searchNote}`,
+  skills_hdr: '━━━ ИНСТРУКЦИИ ПО СКИЛЛАМ ━━━',
+  skills_intro: 'Применяй каждый скилл в указанном блоке анализа:',
+  skills_file: 'Файл',
+  skills_instruction: 'Инструкция',
+  skills_important: 'ВАЖНО: каждый скилл даёт конкретный численный вывод — включи его в соответствующий блок ответа. Не упоминай скиллы в ответе — просто применяй их логику.',
+  sk_block_profile_limits: 'ПРОФИЛЬ И ЛИМИТЫ',
+  sk_block_rules_limits: 'ПРАВИЛА И ЛИМИТЫ',
+  sk_block_portfolio: 'ПОРТФЕЛЬ',
+  sk_block_market_context: 'РЫНОЧНЫЙ КОНТЕКСТ (Блок 1)',
+  sk_block_business_quality: 'БИЗНЕС-КАЧЕСТВО (Блоки 1–3)',
+  sk_block_trade_admission: 'ДОПУСК К СДЕЛКЕ (перед ИТОГОМ)',
+  sk_block_rop: 'БЛОК 3 — ROP-РАСЧЁТ',
+  sk_block_analysts_view: 'БЛОК 2 — ВЗГЛЯД АНАЛИТИКОВ',
+  sk_block_scenario: 'БЛОК 3 + ИТОГ',
+  sk_block_earnings_quality: 'БЛОК 2 — КАЧЕСТВО ПРИБЫЛИ',
+  sk_block_multiples: 'БЛОК 3 — МУЛЬТИПЛИКАТОРЫ',
+  sk_block_final_card: 'ИТОГ — ФИНАЛЬНАЯ КАРТОЧКА',
+  sk_block_pipeline: 'ПАЙПЛАЙН (только если идея новая)',
+  sk_passport_instr: 'Прочитай риск-профиль, психологические ограничения и правило "я не торгую когда...". Учитывай их при формировании ВЕРДИКТА и уровней входа/выхода.',
+  sk_constitution_instr: 'Перед выводом проверь: (1) QPTA — качество, вероятность, тайминг, альтернатива; (2) лимиты позиции (Heat, NBE); (3) Anti-Ruin: не предлагай действий запрещённых конституцией.',
+  sk_snapshot_instr: 'Проверь: текущий вес тикера в портфеле, свободный Heat, NBE-лимит. Если тикер уже в портфеле — учитывай среднюю цену входа при расчёте действий в таблице сценариев.',
+  sk_context_instr: 'Используй текущий макро-режим и риск-аппетит рынка при оценке мультипликаторов в Блоке 1 (Взгляд рынка). Укажи: рынок сейчас risk-on или risk-off, как это влияет на P/E и P/S данного сектора.',
+  sk_company_instr: 'Заполни или обнови карточку компании: бизнес-модель, конкурентный ров, история FCF. Используй данные карточки как основу для предположений по марже и мультипликаторам в ROP-расчёте.',
+  sk_gates_instr: 'Прогони чеклист Quality Gates G0–G4 перед финальным выводом. Если хотя бы один gate FAIL — укажи это в ВЕРДИКТЕ явно и объясни что нужно исправить.',
+  sk_rop_instr: 'Применяй точно по скиллу: Price = P/E × EPS = P/S × RPS = P/S × (EPS / Net Margin). Три сценария (Bear/Base/Bull) с явными предположениями по каждой переменной. Проверь консистентность: P/E ≈ P/S / Net Margin. Дай alpha-gate vs SPY за тот же горизонт.',
+  sk_price_instr: 'Оцени PricePowerFactor (0–5): может ли компания поднимать цены выше инфляции без потери доли рынка. Используй результат как модификатор Net Margin в ROP-сценариях: высокий Price Power → маржа устойчива или растёт; низкий → маржа под давлением в Bear-сценарии.',
+  sk_scenario_instr: 'Заполни или обнови карту сценариев. Триггеры из карты — используй как основу для раздела ТРИГГЕРЫ в итоговой таблице. Ветки действий из карты → ДЕЙСТВИЕ в таблице сценариев.',
+  sk_eureka_instr: 'Рассчитай EurekaScore (0–100): QoE = CFO/NI, FCF vs Earnings, Sloan Accrual Ratio, Beneish M-Score, DSO, Inventory Days, SBC/CFO, Capex & Intangibles. Статус Gold/Silver/Bronze/Red Flag выведи в Блоке 2 (Взгляд аналитиков) рядом с EPS-ожиданиями. Red Flag → обязательно отметить в КРАСНЫХ ФЛАГАХ итога.',
+  sk_lifecycle_instr: 'Определи стадию компании (EarlyGrowth / Expansion / Shakeout / Maturity / Decline). Используй стадию для калибровки P/E и P/S в ROP-сценариях: EarlyGrowth/Expansion → более высокие мультипликаторы оправданы; Maturity/Decline → сжатие мультипликаторов в Bear.',
+  sk_report_instr: 'После всех блоков заполни финальную карточку по шаблону: Q-score (качество бизнеса), V-score (оценка), M-score (моментум), вердикт по роли (Investor/Speculator/Saver), уровни входа/выхода, триггеры инвалидации тезиса.',
+  sk_triage_instr: 'Если это первый анализ тикера — определи статус идеи по воронке: Inbox → Research → Ready → Capital. Укажи что нужно проверить прежде чем переводить в Ready.',
   // profileBlock
   prof_title:  'МОЙ ПРОФИЛЬ:',
   prof_claude: 'Используй мой профиль из персонализации/Custom Instructions (риск, портфель, горизонт, предпочтения, ограничения).',
@@ -1956,6 +2025,75 @@ en: {
   eureka_strict: 'Calculate EurekaScore from 8 metrics. If data missing for ≥3 metrics → status "Review", do NOT guess. Show: which metrics calculated, which missing.',
   skills_order_title: 'SKILLS EXECUTION ORDER:',
   skills_order: '1. Passport + Constitution → limits\n2. Snapshot + Context → G0 (freshness < 7 days)\n3. Company + Price Power → business quality\n4. EUREKA + Life-Cycle → earnings quality + stage → P/E calibration\n5. ROP → three scenarios with calibrated P/E\n6. Scenario Map → triggers\n7. Quality Gates → G0–G4\n8. Report → decision card',
+  // System + skills blocks localization (v2.5.2)
+  start_order_preamble: 'WORK ORDER (internal): First COLLECT data → CALCULATE ROP → only then produce ACTION CARD. In the final answer ACTION CARD goes first, but it must be a consequence of the calculations.',
+  sys_hdr_gem: '━━━ MY INVESTMENT SYSTEM (Gemini Gem · Knowledge Base) ━━━',
+  sys_hdr_project: '━━━ MY INVESTMENT SYSTEM ({modelLabel}) ━━━',
+  sys_intro_gem: 'Work strictly from my files in the Knowledge Base.',
+  sys_intro_project: 'Work strictly from my Project files.',
+  sys_connected_hdr: 'CONNECTED files (use them):',
+  sys_required_hdr: 'REQUIRED files (use them):',
+  sys_optional_hdr: 'OPTIONAL:',
+  sys_missing_hdr: '⛔ MISSING (state this at the start of the answer):',
+  sys_not_connected: 'NOT connected',
+  sys_search_gpt: '• Find market data via Browsing',
+  sys_search_claude: '• Find market data via web search (tool_use)',
+  sys_gem_file01: '01_pravila.docx (rules/protocol/constitution)',
+  sys_gem_file02: '02_portfel.docx (portfolio snapshot)',
+  sys_gem_file03: '03_analitika.docx (analysis templates/company card)',
+  sys_prj_req_f02: '02_investor_passport.md (investor passport)',
+  sys_prj_req_f03: '03_investment_constitution.md (constitution)',
+  sys_prj_req_f04: '04_portfolio_snapshot.md (portfolio snapshot)',
+  sys_prj_opt_f07: '07_context_card.md (market context — use SUMMARY LINE)',
+  sys_prj_opt_f07_missing: '07_context_card.md — not connected; run auto-fetch for the regime',
+  sys_prj_opt_f06: '06_company_card.md (company card)',
+  sys_prj_opt_f06_missing: '06_company_card.md — not connected; work without it',
+  sys_prj_opt_f08: '08_scenario_map.md (scenario map)',
+  sys_prj_opt_f08_missing: '08_scenario_map.md — not connected; work without it',
+  sys_rules_gem: `RULES FROM THE PROTOCOL (always apply):
+• Follow the rules in 01_pravila.docx before any answer
+• Verify portfolio snapshot freshness (02_portfel.docx) — not older than 7 days
+• For company analysis, use the structure from 03_analitika.docx
+• Find market data via Google Search
+• Do not invent numbers. "No data" is better than guessing`,
+  sys_rules_project: `RULES FROM THE CONSTITUTION (always apply):
+• Before any action — 0-Gate: Snapshot (04) < 7 days, Context (07) < 7 days
+• Any trade — only via QPTA (03_constitution) + Quality Gates G0–G4
+• Position sizing — per formulas in Section F of the constitution
+• Forbidden: naked options, averaging without a rule, decisions without a journal (10)
+• Portfolio limits: check NBE, Directional Heat, concentration limits (03 + 04)
+{searchNote}`,
+  skills_hdr: '━━━ SKILLS INSTRUCTIONS ━━━',
+  skills_intro: 'Apply each skill in the specified analysis block:',
+  skills_file: 'File',
+  skills_instruction: 'Instruction',
+  skills_important: 'IMPORTANT: each skill produces a concrete numeric output — include it in the corresponding answer block. Do not mention skills in the answer — just apply their logic.',
+  sk_block_profile_limits: 'PROFILE & LIMITS',
+  sk_block_rules_limits: 'RULES & LIMITS',
+  sk_block_portfolio: 'PORTFOLIO',
+  sk_block_market_context: 'MARKET CONTEXT (Block 1)',
+  sk_block_business_quality: 'BUSINESS QUALITY (Blocks 1–3)',
+  sk_block_trade_admission: 'TRADE ELIGIBILITY (before CONCLUSION)',
+  sk_block_rop: 'BLOCK 3 — ROP VALUATION',
+  sk_block_analysts_view: 'BLOCK 2 — ANALYSTS VIEW',
+  sk_block_scenario: 'BLOCK 3 + CONCLUSION',
+  sk_block_earnings_quality: 'BLOCK 2 — EARNINGS QUALITY',
+  sk_block_multiples: 'BLOCK 3 — MULTIPLES',
+  sk_block_final_card: 'CONCLUSION — FINAL DECISION CARD',
+  sk_block_pipeline: 'PIPELINE (only if the idea is new)',
+  sk_passport_instr: 'Read my risk profile, psychological constraints, and the rule "I do not trade when...". Apply them when producing the VERDICT and entry/exit levels.',
+  sk_constitution_instr: 'Before concluding, verify: (1) QPTA — quality, probability, timing, alternative; (2) position limits (Heat, NBE); (3) Anti-Ruin: do not suggest actions forbidden by the constitution.',
+  sk_snapshot_instr: 'Check: current ticker weight in the portfolio, available Heat, NBE limit. If the ticker is already in the portfolio — account for my average entry price when filling scenario actions.',
+  sk_context_instr: 'Use the current macro regime and market risk appetite when assessing multiples in Block 1 (Market view). State: is it risk-on or risk-off, and how it affects P/E and P/S for this sector.',
+  sk_company_instr: 'Fill or update the company card: business model, competitive moat, FCF history. Use it as the base for margin and multiple assumptions in the ROP valuation.',
+  sk_gates_instr: 'Run the Quality Gates G0–G4 checklist before the final conclusion. If any gate FAILs — state it explicitly in the VERDICT and explain what needs to be fixed.',
+  sk_rop_instr: 'Follow the skill strictly: Price = P/E × EPS = P/S × RPS = P/S × (EPS / Net Margin). Build three scenarios (Bear/Base/Bull) with explicit assumptions for every variable. Check consistency: P/E ≈ P/S / Net Margin. Provide alpha-gate vs SPY for the same horizon.',
+  sk_price_instr: 'Assess PricePowerFactor (0–5): can the company raise prices above inflation without losing share. Use it as a Net Margin modifier in ROP: high price power → margins stable/improving; low → margin pressure in Bear.',
+  sk_scenario_instr: 'Fill or update the scenario map. Use its triggers as the basis for the TRIGGERS section in the final table. Map action branches → ACTION column in the scenario table.',
+  sk_eureka_instr: 'Calculate EurekaScore (0–100): QoE = CFO/NI, FCF vs Earnings, Sloan Accrual Ratio, Beneish M-Score, DSO, Inventory Days, SBC/CFO, Capex & Intangibles. Show Gold/Silver/Bronze/Red Flag status in Block 2 (Analysts view) next to EPS expectations. Red Flag → must be called out in RED FLAGS.',
+  sk_lifecycle_instr: 'Determine company stage (EarlyGrowth / Expansion / Shakeout / Maturity / Decline). Use it to calibrate P/E and P/S in ROP: EarlyGrowth/Expansion → higher multiples may be justified; Maturity/Decline → multiple compression in Bear.',
+  sk_report_instr: 'After all blocks, fill the final decision card by the template: Q-score (business quality), V-score (valuation), M-score (momentum), verdict by role (Investor/Speculator/Saver), entry/exit levels, thesis invalidation triggers.',
+  sk_triage_instr: 'If this is the first analysis of the ticker — set its status in the pipeline: Inbox → Research → Ready → Capital. State what must be checked before moving it to Ready.',
   prof_title:  'MY PROFILE:',
   prof_claude: 'Use my profile from Personalization/Custom Instructions (risk, portfolio, horizon, preferences, constraints).',
   prof_q:      'If profile is missing or incomplete — ask at most',
@@ -2218,6 +2356,75 @@ uk: {
   eureka_strict: 'Розрахуй EurekaScore за 8 метриками. Якщо даних для ≥3 метрик немає — статус "Review", НЕ вгадуй. Покажи: які метрики розраховані, які відсутні.',
   skills_order_title: 'ПОРЯДОК ВИКОНАННЯ СКІЛІВ:',
   skills_order: '1. Passport + Constitution → ліміти\n2. Snapshot + Context → G0 (свіжість < 7 днів)\n3. Company + Price Power → якість бізнесу\n4. EUREKA + Life-Cycle → якість прибутку + стадія → калібрування P/E\n5. ROP → три сценарії з каліброваним P/E\n6. Scenario Map → тригери\n7. Quality Gates → G0–G4\n8. Report → картка',
+  // System + skills blocks localization (v2.5.2)
+  start_order_preamble: 'ПОРЯДОК РОБОТИ (внутрішній): Спочатку ЗБЕРИ дані → ПОРАХУЙ ROP → лише потім СФОРМУЙ ACTION CARD. У відповіді ACTION CARD першим, але він має бути НАСЛІДКОМ розрахунків.',
+  sys_hdr_gem: '━━━ МОЯ ІНВЕСТ-СИСТЕМА (Gemini Gem · База знань) ━━━',
+  sys_hdr_project: '━━━ МОЯ ІНВЕСТ-СИСТЕМА ({modelLabel}) ━━━',
+  sys_intro_gem: 'Працюй строго за моїми файлами з Бази знань.',
+  sys_intro_project: 'Працюй строго за моїми файлами з Project.',
+  sys_connected_hdr: 'ПІДКЛЮЧЕНІ файли (використовуй їх):',
+  sys_required_hdr: 'ОБОВ\'ЯЗКОВІ файли (використовуй їх):',
+  sys_optional_hdr: 'ОПЦІОНАЛЬНІ:',
+  sys_missing_hdr: '⛔ ВІДСУТНІ (скажи про це на початку відповіді):',
+  sys_not_connected: 'НЕ підключений',
+  sys_search_gpt: '• Дані про ринок шукай через Browsing',
+  sys_search_claude: '• Дані про ринок шукай через веб-пошук (tool_use)',
+  sys_gem_file01: '01_pravila.docx (правила/протокол/конституція)',
+  sys_gem_file02: '02_portfel.docx (знімок портфеля)',
+  sys_gem_file03: '03_analitika.docx (шаблони аналітики/картка компанії)',
+  sys_prj_req_f02: '02_investor_passport.md (паспорт інвестора)',
+  sys_prj_req_f03: '03_investment_constitution.md (конституція)',
+  sys_prj_req_f04: '04_portfolio_snapshot.md (знімок портфеля)',
+  sys_prj_opt_f07: '07_context_card.md (ринковий контекст — використовуй SUMMARY LINE)',
+  sys_prj_opt_f07_missing: '07_context_card.md — НЕ підключений; промпт виконає auto-fetch режиму самостійно',
+  sys_prj_opt_f06: '06_company_card.md (карточка компанії)',
+  sys_prj_opt_f06_missing: '06_company_card.md — НЕ підключений, працюй без нього',
+  sys_prj_opt_f08: '08_scenario_map.md (карта сценаріїв)',
+  sys_prj_opt_f08_missing: '08_scenario_map.md — НЕ підключений, працюй без нього',
+  sys_rules_gem: `ПРАВИЛА З ПРОТОКОЛУ (завжди застосовуй):
+• Дотримуйся правил з 01_pravila.docx перед будь-якою відповіддю
+• Перевіряй актуальність знімка портфеля (02_portfel.docx) — не старіший за 7 днів
+• Для аналізу компанії використовуй структуру з 03_analitika.docx
+• Дані про ринок шукай через Google Search
+• Заборонено вигадувати числа. "Немає даних" краще, ніж вгадувати`,
+  sys_rules_project: `ПРАВИЛА З КОНСТИТУЦІЇ (завжди застосовуй):
+• Перед будь-якою дією — 0-Gate: Snapshot (04) < 7 днів, Context (07) < 7 днів
+• Будь-яка угода — лише через QPTA (03_constitution) + Quality Gates G0–G4
+• Розмір позиції — за формулами з Розділу F конституції
+• Заборонено: naked options, усереднення без правила, рішення без журналу (10)
+• Ліміти портфеля: перевір NBE, Directional Heat, концентрації (03 + 04)
+{searchNote}`,
+  skills_hdr: '━━━ ІНСТРУКЦІЇ ПО СКІЛАМ ━━━',
+  skills_intro: 'Застосовуй кожен скіл у вказаному блоці аналізу:',
+  skills_file: 'Файл',
+  skills_instruction: 'Інструкція',
+  skills_important: 'ВАЖЛИВО: кожен скіл дає конкретний числовий результат — включи його у відповідний блок відповіді. Не згадуй скіли у відповіді — просто застосовуй їхню логіку.',
+  sk_block_profile_limits: 'ПРОФІЛЬ І ЛІМІТИ',
+  sk_block_rules_limits: 'ПРАВИЛА І ЛІМІТИ',
+  sk_block_portfolio: 'ПОРТФЕЛЬ',
+  sk_block_market_context: 'РИНКОВИЙ КОНТЕКСТ (Блок 1)',
+  sk_block_business_quality: 'ЯКІСТЬ БІЗНЕСУ (Блоки 1–3)',
+  sk_block_trade_admission: 'ДОПУСК ДО УГОДИ (перед ПІДСУМКОМ)',
+  sk_block_rop: 'БЛОК 3 — ROP-РОЗРАХУНОК',
+  sk_block_analysts_view: 'БЛОК 2 — ПОГЛЯД АНАЛІТИКІВ',
+  sk_block_scenario: 'БЛОК 3 + ПІДСУМОК',
+  sk_block_earnings_quality: 'БЛОК 2 — ЯКІСТЬ ПРИБУТКУ',
+  sk_block_multiples: 'БЛОК 3 — МУЛЬТИПЛІКАТОРИ',
+  sk_block_final_card: 'ПІДСУМОК — ФІНАЛЬНА КАРТКА',
+  sk_block_pipeline: 'ПАЙПЛАЙН (лише якщо ідея нова)',
+  sk_passport_instr: 'Прочитай ризик-профіль, психологічні обмеження та правило "я не торгую коли...". Ураховуй їх при формуванні ВЕРДИКТУ та рівнів входу/виходу.',
+  sk_constitution_instr: 'Перед висновком перевір: (1) QPTA — якість, ймовірність, таймінг, альтернатива; (2) ліміти позиції (Heat, NBE); (3) Anti-Ruin: не пропонуй дій, заборонених конституцією.',
+  sk_snapshot_instr: 'Перевір: поточну частку тикера у портфелі, доступний Heat, NBE-ліміт. Якщо тикер уже в портфелі — врахуй середню ціну входу при розрахунку дій у таблиці сценаріїв.',
+  sk_context_instr: 'Використовуй поточний макро-режим і ризик-апетит ринку при оцінці мультиплікаторів у Блоці 1 (Погляд ринку). Вкажи: ринок зараз risk-on чи risk-off і як це впливає на P/E та P/S цього сектору.',
+  sk_company_instr: 'Заповни або онови карточку компанії: бізнес-модель, конкурентний рів, історія FCF. Використовуй дані карточки як основу для припущень щодо маржі та мультиплікаторів у ROP-розрахунку.',
+  sk_gates_instr: 'Прогони чеклист Quality Gates G0–G4 перед фінальним висновком. Якщо хоча б один gate FAIL — зазнач це у ВЕРДИКТІ явно і поясни, що потрібно виправити.',
+  sk_rop_instr: 'Застосовуй скіл точно: Price = P/E × EPS = P/S × RPS = P/S × (EPS / Net Margin). Три сценарії (Bear/Base/Bull) з явними припущеннями по кожній змінній. Перевір консистентність: P/E ≈ P/S / Net Margin. Дай alpha-gate vs SPY за той самий горизонт.',
+  sk_price_instr: 'Оціни PricePowerFactor (0–5): чи може компанія піднімати ціни вище інфляції без втрати частки. Використай результат як модифікатор Net Margin у ROP: високий Price Power → маржа стійка/зростає; низький → тиск на маржу у Bear.',
+  sk_scenario_instr: 'Заповни або онови карту сценаріїв. Тригери з карти — використай як основу для розділу ТРИГЕРИ у підсумковій таблиці. Гілки дій з карти → ДІЯ у таблиці сценаріїв.',
+  sk_eureka_instr: 'Розрахуй EurekaScore (0–100): QoE = CFO/NI, FCF vs Earnings, Sloan Accrual Ratio, Beneish M-Score, DSO, Inventory Days, SBC/CFO, Capex & Intangibles. Статус Gold/Silver/Bronze/Red Flag виведи у Блоці 2 (Погляд аналітиків) поруч з EPS-очікуваннями. Red Flag → обов\'язково зазнач у ЧЕРВОНИХ ПРАПОРАХ.',
+  sk_lifecycle_instr: 'Визнач стадію компанії (EarlyGrowth / Expansion / Shakeout / Maturity / Decline). Використай стадію для калібрування P/E та P/S у ROP: EarlyGrowth/Expansion → вищі мультиплікатори можуть бути виправдані; Maturity/Decline → стиснення мультиплікаторів у Bear.',
+  sk_report_instr: 'Після всіх блоків заповни фінальну картку за шаблоном: Q-score (якість бізнесу), V-score (оцінка), M-score (моментум), вердикт по ролі (Investor/Speculator/Saver), рівні входу/виходу, тригери інвалідації тези.',
+  sk_triage_instr: 'Якщо це перший аналіз тикера — визнач статус ідеї у пайплайні: Inbox → Research → Ready → Capital. Вкажи, що потрібно перевірити перед переведенням у Ready.',
   prof_title:  'МІЙ ПРОФІЛЬ:',
   prof_claude: 'Використовуй мій профіль з персоналізації/Custom Instructions (ризик, портфель, горизонт, уподобання, обмеження).',
   prof_q:      'Якщо профілю немає або він неповний — постав максимум',
@@ -2576,88 +2783,69 @@ function buildSkillsBlock() {
   // Маппинг скилл → блок промпта + конкретная инструкция
   const SKILL_INSTRUCTIONS = {
     passport: {
-      block: 'ПРОФИЛЬ И ЛИМИТЫ',
+      block: p('sk_block_profile_limits'),
       file: isG ? '01_pravila.docx' : '02_investor_passport.md',
-      instruction: 'Прочитай риск-профиль, психологические ограничения и правило "я не торгую когда...". ' +
-        'Учитывай их при формировании ВЕРДИКТА и уровней входа/выхода.',
+      instruction: p('sk_passport_instr'),
     },
     constitution: {
-      block: 'ПРАВИЛА И ЛИМИТЫ',
+      block: p('sk_block_rules_limits'),
       file: isG ? '01_pravila.docx' : '03_investment_constitution.md',
-      instruction: 'Перед выводом проверь: (1) QPTA — качество, вероятность, тайминг, альтернатива; ' +
-        '(2) лимиты позиции (Heat, NBE); (3) Anti-Ruin: не предлагай действий запрещённых конституцией.',
+      instruction: p('sk_constitution_instr'),
     },
     snapshot: {
-      block: 'ПОРТФЕЛЬ',
+      block: p('sk_block_portfolio'),
       file: isG ? '02_portfel.docx' : '04_portfolio_snapshot.md',
-      instruction: 'Проверь: текущий вес тикера в портфеле, свободный Heat, NBE-лимит. ' +
-        'Если тикер уже в портфеле — учитывай среднюю цену входа при расчёте действий в таблице сценариев.',
+      instruction: p('sk_snapshot_instr'),
     },
     context: {
-      block: 'РЫНОЧНЫЙ КОНТЕКСТ (Блок 1)',
+      block: p('sk_block_market_context'),
       file: isG ? '02_portfel.docx' : '07_context_card.md',
-      instruction: 'Используй текущий макро-режим и риск-аппетит рынка при оценке мультипликаторов ' +
-        'в Блоке 1 (Взгляд рынка). Укажи: рынок сейчас risk-on или risk-off, как это влияет на P/E и P/S данного сектора.',
+      instruction: p('sk_context_instr'),
     },
     company: {
-      block: 'БИЗНЕС-КАЧЕСТВО (Блоки 1–3)',
+      block: p('sk_block_business_quality'),
       file: isG ? '03_analitika.docx' : '06_company_card.md',
-      instruction: 'Заполни или обнови карточку компании: бизнес-модель, конкурентный ров, история FCF. ' +
-        'Используй данные карточки как основу для предположений по марже и мультипликаторам в ROP-расчёте.',
+      instruction: p('sk_company_instr'),
     },
     gates: {
-      block: 'ДОПУСК К СДЕЛКЕ (перед ИТОГОМ)',
+      block: p('sk_block_trade_admission'),
       file: isG ? '03_analitika.docx' : '12_quality_gates.md',
-      instruction: 'Прогони чеклист Quality Gates G0–G4 перед финальным выводом. ' +
-        'Если хотя бы один gate FAIL — укажи это в ВЕРДИКТЕ явно и объясни что нужно исправить.',
+      instruction: p('sk_gates_instr'),
     },
     rop: {
-      block: 'БЛОК 3 — ROP-РАСЧЁТ',
+      block: p('sk_block_rop'),
       file: isG ? '03_analitika.docx' : 'ROP_valuation.md',
-      instruction: 'Применяй точно по скиллу: Price = P/E × EPS = P/S × RPS = P/S × (EPS / Net Margin). ' +
-        'Три сценария (Bear/Base/Bull) с явными предположениями по каждой переменной. ' +
-        'Проверь консистентность: P/E ≈ P/S / Net Margin. Дай alpha-gate vs SPY за тот же горизонт.',
+      instruction: p('sk_rop_instr'),
     },
     price: {
-      block: 'БЛОК 2 — ВЗГЛЯД АНАЛИТИКОВ',
+      block: p('sk_block_analysts_view'),
       file: isG ? '03_analitika.docx' : 'Price_power.md',
-      instruction: 'Оцени PricePowerFactor (0–5): может ли компания поднимать цены выше инфляции ' +
-        'без потери доли рынка. Используй результат как модификатор Net Margin в ROP-сценариях: ' +
-        'высокий Price Power → маржа устойчива или растёт; низкий → маржа под давлением в Bear-сценарии.',
+      instruction: p('sk_price_instr'),
     },
     scenario: {
-      block: 'БЛОК 3 + ИТОГ',
+      block: p('sk_block_scenario'),
       file: isG ? '03_analitika.docx' : '08_scenario_map.md',
-      instruction: 'Заполни или обнови карту сценариев. Триггеры из карты — используй как основу ' +
-        'для раздела ТРИГГЕРЫ в итоговой таблице. Ветки действий из карты → ДЕЙСТВИЕ в таблице сценариев.',
+      instruction: p('sk_scenario_instr'),
     },
     eureka: {
-      block: 'БЛОК 2 — КАЧЕСТВО ПРИБЫЛИ',
+      block: p('sk_block_earnings_quality'),
       file: isG ? '03_analitika.docx' : 'EUREKA_test.md',
-      instruction: 'Рассчитай EurekaScore (0–100): QoE = CFO/NI, FCF vs Earnings, Sloan Accrual Ratio, ' +
-        'Beneish M-Score, DSO, Inventory Days, SBC/CFO, Capex & Intangibles. ' +
-        'Статус Gold/Silver/Bronze/Red Flag выведи в Блоке 2 (Взгляд аналитиков) рядом с EPS-ожиданиями. ' +
-        'Red Flag → обязательно отметить в КРАСНЫХ ФЛАГАХ итога.',
+      instruction: p('sk_eureka_instr'),
     },
     lifecycle: {
-      block: 'БЛОК 3 — МУЛЬТИПЛИКАТОРЫ',
+      block: p('sk_block_multiples'),
       file: isG ? '03_analitika.docx' : 'Life _cycle.md',
-      instruction: 'Определи стадию компании (EarlyGrowth / Expansion / Shakeout / Maturity / Decline). ' +
-        'Используй стадию для калибровки P/E и P/S в ROP-сценариях: ' +
-        'EarlyGrowth/Expansion → более высокие мультипликаторы оправданы; Maturity/Decline → сжатие мультипликаторов в Bear.',
+      instruction: p('sk_lifecycle_instr'),
     },
     report: {
-      block: 'ИТОГ — ФИНАЛЬНАЯ КАРТОЧКА',
+      block: p('sk_block_final_card'),
       file: isG ? '03_analitika.docx' : '09_final_report.md',
-      instruction: 'После всех блоков заполни финальную карточку по шаблону: ' +
-        'Q-score (качество бизнеса), V-score (оценка), M-score (моментум), вердикт по роли (Investor/Speculator/Saver), ' +
-        'уровни входа/выхода, триггеры инвалидации тезиса.',
+      instruction: p('sk_report_instr'),
     },
     triage: {
-      block: 'ПАЙПЛАЙН (только если идея новая)',
+      block: p('sk_block_pipeline'),
       file: isG ? '03_analitika.docx' : '11_idea_triage.md',
-      instruction: 'Если это первый анализ тикера — определи статус идеи по воронке: ' +
-        'Inbox → Research → Ready → Capital. Укажи что нужно проверить прежде чем переводить в Ready.',
+      instruction: p('sk_triage_instr'),
     },
   };
 
@@ -2679,18 +2867,18 @@ function buildSkillsBlock() {
   const blocks = Object.keys(byBlock);
   if (!blocks.length) return '';
 
-  let out = '\n\n━━━ ИНСТРУКЦИИ ПО СКИЛЛАМ ━━━\n';
-  out += 'Применяй каждый скилл в указанном блоке анализа:\n';
+  let out = '\n\n' + p('skills_hdr') + '\n';
+  out += p('skills_intro') + '\n';
 
   blocks.forEach(block => {
     out += `\n▸ ${block}\n`;
     byBlock[block].forEach(({ file, instruction }) => {
-      out += `  Файл: ${file}\n`;
-      out += `  Инструкция: ${instruction}\n`;
+      out += `  ${p('skills_file')}: ${file}\n`;
+      out += `  ${p('skills_instruction')}: ${instruction}\n`;
     });
   });
 
-  out += '\nВАЖНО: каждый скилл даёт конкретный численный вывод — включи его в соответствующий блок ответа. Не упоминай скиллы в ответе — просто применяй их логику.';
+  out += '\n' + p('skills_important');
 
   // v2.4: Skills execution order
   if (active.length >= 4) {
@@ -2775,64 +2963,53 @@ function systemPromptBlock(files) {
   // ── GEMINI ──────────────────────────────────────────
   if (aiModel === 'gemini') {
     const req = [], missing = [];
-    if (files.m01) req.push('01_pravila.docx (правила/протокол/конституция)');
-    else missing.push('01_pravila.docx — НЕ подключён');
-    if (files.m02) req.push('02_portfel.docx (снимок портфеля)');
-    else missing.push('02_portfel.docx — НЕ подключён');
-    if (files.m03) req.push('03_analitika.docx (шаблоны аналитики/карточка компании)');
-    else missing.push('03_analitika.docx — НЕ подключён');
+    if (files.m01) req.push(p('sys_gem_file01'));
+    else missing.push('01_pravila.docx — ' + p('sys_not_connected'));
+    if (files.m02) req.push(p('sys_gem_file02'));
+    else missing.push('02_portfel.docx — ' + p('sys_not_connected'));
+    if (files.m03) req.push(p('sys_gem_file03'));
+    else missing.push('03_analitika.docx — ' + p('sys_not_connected'));
 
-    let block = '\n━━━ МОЯ ИНВЕСТ-СИСТЕМА (Gemini Gem · База знаний) ━━━\n';
-    block += 'Работай строго по моим файлам из Базы знаний.\n\n';
-    if (req.length)     block += 'ПОДКЛЮЧЁННЫЕ файлы (используй их):\n' + req.map(f => '• ' + f).join('\n') + '\n\n';
-    if (missing.length) block += '⛔ ОТСУТСТВУЮЩИЕ (скажи об этом в начале ответа):\n' + missing.map(f => '• ' + f).join('\n') + '\n\n';
-    block += `ПРАВИЛА ИЗ ПРОТОКОЛА (применяй всегда):
-• Соблюдай правила из 01_pravila.docx перед любым ответом
-• Проверяй актуальность снимка портфеля (02_portfel.docx) — не старше 7 дней
-• Для анализа компании используй структуру из 03_analitika.docx
-• Данные о рынке ищи через Google Search
-• Запрещено выдумывать числа. "Нет данных" лучше, чем угадывать`;
+    let block = '\n' + p('sys_hdr_gem') + '\n';
+    block += p('sys_intro_gem') + '\n\n';
+    if (req.length)     block += p('sys_connected_hdr') + '\n' + req.map(f => '• ' + f).join('\n') + '\n\n';
+    if (missing.length) block += p('sys_missing_hdr') + '\n' + missing.map(f => '• ' + f).join('\n') + '\n\n';
+    block += p('sys_rules_gem');
     return block;
   }
 
   // ── CLAUDE + GPT (одинаковая структура файлов) ──────
   const modelLabel = aiModel === 'gpt' ? 'ChatGPT Project' : 'Claude Project';
   const searchNote = aiModel === 'gpt'
-    ? '• Данные о рынке ищи через Browsing'
-    : '• Данные о рынке ищи через веб-поиск (tool_use)';
+    ? p('sys_search_gpt')
+    : p('sys_search_claude');
 
   const req = [], opt = [], missing = [];
 
-  if (files.f02) req.push('02_investor_passport.md (паспорт инвестора)');
-  else missing.push('02_investor_passport.md — НЕ подключён');
+  if (files.f02) req.push(p('sys_prj_req_f02'));
+  else missing.push('02_investor_passport.md — ' + p('sys_not_connected'));
 
-  if (files.f03) req.push('03_investment_constitution.md (конституция)');
-  else missing.push('03_investment_constitution.md — НЕ подключена');
+  if (files.f03) req.push(p('sys_prj_req_f03'));
+  else missing.push('03_investment_constitution.md — ' + p('sys_not_connected'));
 
-  if (files.f04) req.push('04_portfolio_snapshot.md (снимок портфеля)');
-  else missing.push('04_portfolio_snapshot.md — НЕ подключён');
+  if (files.f04) req.push(p('sys_prj_req_f04'));
+  else missing.push('04_portfolio_snapshot.md — ' + p('sys_not_connected'));
 
-  if (files.f07) opt.push('07_context_card.md (рыночный контекст — используй SUMMARY LINE)');
-  else opt.push('07_context_card.md — НЕ подключён; промпт выполнит auto-fetch режима самостоятельно');
+  if (files.f07) opt.push(p('sys_prj_opt_f07'));
+  else opt.push(p('sys_prj_opt_f07_missing'));
 
-  if (files.f06) opt.push('06_company_card.md (карточка компании)');
-  else opt.push('06_company_card.md — НЕ подключён, работай без него');
+  if (files.f06) opt.push(p('sys_prj_opt_f06'));
+  else opt.push(p('sys_prj_opt_f06_missing'));
 
-  if (files.f08) opt.push('08_scenario_map.md (карта сценариев)');
-  else opt.push('08_scenario_map.md — НЕ подключён, работай без него');
+  if (files.f08) opt.push(p('sys_prj_opt_f08'));
+  else opt.push(p('sys_prj_opt_f08_missing'));
 
-  let block = `\n━━━ МОЯ ИНВЕСТ-СИСТЕМА (${modelLabel}) ━━━\n`;
-  block += 'Работай строго по моим файлам из Project.\n\n';
-  if (req.length)     block += 'ОБЯЗАТЕЛЬНЫЕ файлы (используй их):\n' + req.map(f => '• ' + f).join('\n') + '\n\n';
-  if (missing.length) block += '⛔ ОТСУТСТВУЮЩИЕ (скажи об этом в начале ответа):\n' + missing.map(f => '• ' + f).join('\n') + '\n\n';
-  block += 'ОПЦИОНАЛЬНЫЕ:\n' + opt.map(f => '• ' + f).join('\n') + '\n\n';
-  block += `ПРАВИЛА ИЗ КОНСТИТУЦИИ (применяй всегда):
-• Перед любым действием — 0-Gate: Snapshot (04) < 7 дней, Context (07) < 7 дней
-• Любая сделка — только через QPTA (03_constitution) + Quality Gates G0–G4
-• Размер позиции — по формулам из Раздела F конституции
-• Запрещено: naked options, усреднение без правила, решения без журнала (10)
-• Лимиты портфеля: проверь NBE, Directional Heat, концентрации (03 + 04)
-${searchNote}`;
+  let block = '\n' + p('sys_hdr_project').replace('{modelLabel}', modelLabel) + '\n';
+  block += p('sys_intro_project') + '\n\n';
+  if (req.length)     block += p('sys_required_hdr') + '\n' + req.map(f => '• ' + f).join('\n') + '\n\n';
+  if (missing.length) block += p('sys_missing_hdr') + '\n' + missing.map(f => '• ' + f).join('\n') + '\n\n';
+  block += p('sys_optional_hdr') + '\n' + opt.map(f => '• ' + f).join('\n') + '\n\n';
+  block += p('sys_rules_project').replace('{searchNote}', searchNote);
   return block;
 }
 
@@ -2887,7 +3064,7 @@ ${p('tone_rule')}`;
 }
 
 function startBlocksRule(benchmark, maxDDText) {
-  return `ПОРЯДОК РАБОТЫ (внутренний): Сначала СОБЕРИ данные → ПОСЧИТАЙ ROP → только потом СФОРМИРУЙ ACTION CARD. В ответе ACTION CARD первым, но он должен быть СЛЕДСТВИЕМ расчётов.
+  return `${p('start_order_preamble')}
 
 ${p('sbr_intro')}
 

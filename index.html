@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stock Prompt Builder v2.5.2</title>
+<title>Stock Prompt Builder v2.6.0</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Literata:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -817,7 +817,7 @@ body::before {
 
   <!-- HEADER -->
   <div class="header">
-    <div class="header-eyebrow" id="hdr-eyebrow">Prompt Builder · v2.5.2</div>
+    <div class="header-eyebrow" id="hdr-eyebrow">Prompt Builder · v2.6.0</div>
     <h1>Stock Analysis</h1>
     <div class="header-sub" id="hdr-tagline">Введи тикер — получи промпт для своего ИИ</div>
   </div>
@@ -1277,7 +1277,7 @@ body::before {
 
   <div class="footer">
     <span id="footer-main">Скопируй промпт → вставь в Claude, ChatGPT или любой другой ИИ</span><br>
-    <span id="footer-sub">ИИ сам найдёт актуальные данные · v2.5.2</span>
+    <span id="footer-sub">ИИ сам найдёт актуальные данные · v2.6.0</span>
   </div>
 
 </div>
@@ -1289,7 +1289,7 @@ let uiLang = 'ru';
 
 const STRINGS = {
 ru: {
-  eyebrow: 'Prompt Builder · v2.5.2',
+  eyebrow: 'Prompt Builder · v2.6.0',
   tagline: 'Введи тикер — получи промпт для своего ИИ',
   lbl_model: 'ИИ-ассистент',
   cap_claude: 'Project · файлы',
@@ -1334,7 +1334,7 @@ ru: {
   btn_copy: 'Скопировать', copied: 'Скопировано ✓',
   out_empty: 'Заполните форму и нажмите «Собрать промпт»',
   footer_main: 'Скопируй промпт → вставь в Claude, ChatGPT или любой другой ИИ',
-  footer_sub: 'ИИ сам найдёт актуальные данные · v2.5.2',
+  footer_sub: 'ИИ сам найдёт актуальные данные · v2.6.0',
   // Промпт-строки
   p_ticker: 'ТИКЕР', p_goal: 'ЦЕЛЬ', p_role: 'МОЯ РОЛЬ', p_horizon: 'ГОРИЗОНТ',
   p_bmk: 'БЕНЧМАРК (ALPHA-GATE)', p_dd: 'ДОПУСТИМАЯ ПРОСАДКА ПО ПОЗИЦИИ',
@@ -1356,7 +1356,7 @@ ru: {
   judge_badge:     'Судья',
 },
 en: {
-  eyebrow: 'Prompt Builder · v2.5.2',
+  eyebrow: 'Prompt Builder · v2.6.0',
   tagline: 'Enter ticker — get a prompt for your AI',
   lbl_model: 'AI assistant',
   cap_claude: 'Project · files',
@@ -1401,7 +1401,7 @@ en: {
   btn_copy: 'Copy', copied: 'Copied ✓',
   out_empty: 'Fill in the form and click "Build prompt"',
   footer_main: 'Copy prompt → paste into Claude, ChatGPT or any other AI',
-  footer_sub: 'AI will find current data · v2.5.2',
+  footer_sub: 'AI will find current data · v2.6.0',
   p_ticker: 'TICKER', p_goal: 'GOAL', p_role: 'MY ROLE', p_horizon: 'HORIZON',
   p_bmk: 'BENCHMARK (ALPHA-GATE)', p_dd: 'MAX DRAWDOWN PER POSITION',
   p_weight: 'CURRENT PORTFOLIO WEIGHT',
@@ -1422,7 +1422,7 @@ en: {
   judge_badge:     'Judge',
 },
 uk: {
-  eyebrow: 'Prompt Builder · v2.5.2',
+  eyebrow: 'Prompt Builder · v2.6.0',
   tagline: 'Введи тикер — отримай промпт для свого ШІ',
   lbl_model: 'ШІ-асистент',
   cap_claude: 'Project · файли',
@@ -1467,7 +1467,7 @@ uk: {
   btn_copy: 'Скопіювати', copied: 'Скопійовано ✓',
   out_empty: "Заповни форму та натисни «Зібрати промпт»",
   footer_main: 'Скопіюй промпт → встав у Claude, ChatGPT або будь-який інший ШІ',
-  footer_sub: 'ШІ сам знайде актуальні дані · v2.5.2',
+  footer_sub: 'ШІ сам знайде актуальні дані · v2.6.0',
   p_ticker: 'ТИКЕР', p_goal: 'ЦІЛЬ', p_role: 'МОЯ РОЛЬ', p_horizon: 'ГОРИЗОНТ',
   p_bmk: 'БЕНЧМАРК (ALPHA-GATE)', p_dd: 'ДОПУСТИМА ПРОСАДКА ПО ПОЗИЦІЇ',
   p_weight: 'ПОТОЧНА ЧАСТКА В ПОРТФЕЛІ',
@@ -1684,7 +1684,7 @@ ru: {
   // v2.4 — Skills execution order
   skills_order_title: 'ПОРЯДОК ВЫПОЛНЕНИЯ СКИЛЛОВ:',
   skills_order: '1. Passport + Constitution → лимиты\n2. Snapshot + Context → G0 (свежесть < 7 дней)\n3. Company + Price Power → качество бизнеса\n4. EUREKA + Life-Cycle → качество прибыли + стадия → калибровка P/E\n5. ROP → три сценария с калиброванным P/E\n6. Scenario Map → триггеры\n7. Quality Gates → G0–G4\n8. Report → карточка',
-  // System + skills blocks localization (v2.5.2)
+  // System + skills blocks localization (v2.6.0)
   start_order_preamble: 'ПОРЯДОК РАБОТЫ (внутренний): Сначала СОБЕРИ данные → ПОСЧИТАЙ ROP → только потом СФОРМИРУЙ ACTION CARD. В ответе ACTION CARD первым, но он должен быть СЛЕДСТВИЕМ расчётов.',
   sys_hdr_gem: '━━━ МОЯ ИНВЕСТ-СИСТЕМА (Gemini Gem · База знаний) ━━━',
   sys_hdr_project: '━━━ МОЯ ИНВЕСТ-СИСТЕМА ({modelLabel}) ━━━',
@@ -2025,7 +2025,7 @@ en: {
   eureka_strict: 'Calculate EurekaScore from 8 metrics. If data missing for ≥3 metrics → status "Review", do NOT guess. Show: which metrics calculated, which missing.',
   skills_order_title: 'SKILLS EXECUTION ORDER:',
   skills_order: '1. Passport + Constitution → limits\n2. Snapshot + Context → G0 (freshness < 7 days)\n3. Company + Price Power → business quality\n4. EUREKA + Life-Cycle → earnings quality + stage → P/E calibration\n5. ROP → three scenarios with calibrated P/E\n6. Scenario Map → triggers\n7. Quality Gates → G0–G4\n8. Report → decision card',
-  // System + skills blocks localization (v2.5.2)
+  // System + skills blocks localization (v2.6.0)
   start_order_preamble: 'WORK ORDER (internal): First COLLECT data → CALCULATE ROP → only then produce ACTION CARD. In the final answer ACTION CARD goes first, but it must be a consequence of the calculations.',
   sys_hdr_gem: '━━━ MY INVESTMENT SYSTEM (Gemini Gem · Knowledge Base) ━━━',
   sys_hdr_project: '━━━ MY INVESTMENT SYSTEM ({modelLabel}) ━━━',
@@ -2356,7 +2356,7 @@ uk: {
   eureka_strict: 'Розрахуй EurekaScore за 8 метриками. Якщо даних для ≥3 метрик немає — статус "Review", НЕ вгадуй. Покажи: які метрики розраховані, які відсутні.',
   skills_order_title: 'ПОРЯДОК ВИКОНАННЯ СКІЛІВ:',
   skills_order: '1. Passport + Constitution → ліміти\n2. Snapshot + Context → G0 (свіжість < 7 днів)\n3. Company + Price Power → якість бізнесу\n4. EUREKA + Life-Cycle → якість прибутку + стадія → калібрування P/E\n5. ROP → три сценарії з каліброваним P/E\n6. Scenario Map → тригери\n7. Quality Gates → G0–G4\n8. Report → картка',
-  // System + skills blocks localization (v2.5.2)
+  // System + skills blocks localization (v2.6.0)
   start_order_preamble: 'ПОРЯДОК РОБОТИ (внутрішній): Спочатку ЗБЕРИ дані → ПОРАХУЙ ROP → лише потім СФОРМУЙ ACTION CARD. У відповіді ACTION CARD першим, але він має бути НАСЛІДКОМ розрахунків.',
   sys_hdr_gem: '━━━ МОЯ ІНВЕСТ-СИСТЕМА (Gemini Gem · База знань) ━━━',
   sys_hdr_project: '━━━ МОЯ ІНВЕСТ-СИСТЕМА ({modelLabel}) ━━━',

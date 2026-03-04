@@ -1,6 +1,17 @@
-Stock Prompt Builder
+# Stock Prompt Builder
 
-A local web tool for generating structured prompts for AI investment analysis agents.
+[![Live Demo](https://img.shields.io/badge/demo-live-green)](https://serhiy-pope.github.io/Stock_Prompt_Builder/)
+![License](https://img.shields.io/github/license/serhiy-pope/Stock_Prompt_Builder)
+![Repo Size](https://img.shields.io/github/repo-size/serhiy-pope/Stock_Prompt_Builder)
+![Last Commit](https://img.shields.io/github/last-commit/serhiy-pope/Stock_Prompt_Builder)
+![Stars](https://img.shields.io/github/stars/serhiy-pope/Stock_Prompt_Builder?style=social)
+
+![HTML](https://img.shields.io/badge/HTML-5-orange)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow)
+![CSS](https://img.shields.io/badge/CSS-3-blue)
+![AI Prompt Engineering](https://img.shields.io/badge/AI-Prompt%20Engineering-purple)
+
+A **local web tool for generating structured prompts for AI investment analysis agents.**
 
 Stock Prompt Builder helps investors and analysts generate consistent, structured prompts for AI assistants such as:
 

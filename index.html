@@ -1,0 +1,3618 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock Prompt Builder v2.5.2</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Literata:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f5f2eb;
+  --surface: #faf8f3;
+  --ink: #1a1814;
+  --ink2: #3d3a34;
+  --muted: #8a8379;
+  --border: #ddd9d0;
+  --border2: #c8c3b8;
+  --lite: #2d6a4f;
+  --std: #1d4e89;
+  --pro: #7b2d8b;
+  --lite-bg: #d8f3dc;
+  --std-bg: #dbeafe;
+  --pro-bg: #f3e8ff;
+  --warn: #92400e;
+  --warn-bg: #fef3c7;
+  --tmpl: #b45309;
+  --tmpl-bg: #fef3c7;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Literata', Georgia, serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px 80px;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 700px;
+  position: relative;
+  z-index: 1;
+}
+
+/* HEADER */
+.header { margin-bottom: 40px; }
+.header-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.header h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--ink);
+}
+.header-sub {
+  font-size: 14px;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 6px;
+}
+
+/* MODE TOGGLE */
+
+
+
+.mode-btn:last-child { border-right: none; }
+.mode-btn:hover { color: var(--ink); background: var(--bg); }
+.mode-btn.
+.mode-btn.
+.mode-btn 
+
+/* CARD */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 28px 32px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+}
+
+.section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+/* LEVEL TABS */
+.level-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.level-tab {
+  padding: 13px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  font-family: inherit;
+}
+.level-tab:hover { border-color: var(--border2); }
+.level-tab.active-lite { border-color: var(--lite); background: var(--lite-bg); }
+.level-tab.active-std  { border-color: var(--std);  background: var(--std-bg); }
+.level-tab.active-pro  { border-color: var(--pro);  background: var(--pro-bg); }
+
+.tab-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 3px;
+}
+.tab-desc {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'IBM Plex Mono', monospace;
+  line-height: 1.4;
+}
+.dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.dot-lite { background: var(--lite); }
+.dot-std  { background: var(--std); }
+.dot-pro  { background: var(--pro); }
+
+/* DIVIDER */
+.divider { height: 1px; background: var(--border); margin: 24px 0; }
+
+/* FIELDS */
+.field { margin-bottom: 20px; }
+.field:last-child { margin-bottom: 0; }
+
+.field-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge-opt {
+  background: var(--border);
+  color: var(--muted);
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+.ticker-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--border);
+  color: var(--ink);
+  font-family: 'Syne', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  padding: 4px 0 8px;
+  outline: none;
+  text-transform: uppercase;
+  transition: border-color 0.2s;
+}
+.ticker-input::placeholder { color: var(--border2); }
+.ticker-input:focus { border-color: var(--ink); }
+
+.chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.chip {
+  padding: 7px 15px;
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  background: transparent;
+  color: var(--ink2);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.chip:hover { border-color: var(--border2); color: var(--ink); }
+.chip.selected { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.chip.selected-amber { background: #92400e; border-color: #92400e; color: #fff; }
+
+.text-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  color: var(--ink);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.text-input:focus { border-color: var(--ink2); }
+.text-input::placeholder { color: var(--border2); }
+
+/* TEMPLATE MODE INFO */
+.tmpl-info {
+  background: var(--tmpl-bg);
+  border: 1px solid #fcd34d;
+  border-radius: 4px;
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--tmpl);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.tmpl-info strong { font-weight: 600; }
+
+/* PERSONA NOTICE */
+.persona-notice {
+  background: var(--warn-bg);
+  border: 1px solid #fcd34d;
+  border-radius: 4px;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--warn);
+  line-height: 1.5;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+.persona-notice .icon { flex-shrink: 0; }
+
+/* BUILD BTN */
+.build-btn {
+  width: 100%;
+  padding: 17px 24px;
+  background: var(--ink);
+  border: none;
+  border-radius: 4px;
+  color: var(--bg);
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.build-btn:hover { background: var(--ink2); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+.build-btn:active { transform: translateY(0); }
+.build-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; box-shadow: none; }
+.build-btn
+.build-btn.tmpl-mode:hover { background: #7c2d12; }
+
+/* OUTPUT */
+.output-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+  display: none;
+  animation: slideUp 0.3s ease;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.output-meta { display: flex; align-items: center; gap: 10px; }
+.output-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.badge-lite { background: var(--lite-bg); color: var(--lite); }
+.badge-std  { background: var(--std-bg);  color: var(--std); }
+.badge-pro  { background: var(--pro-bg);  color: var(--pro); }
+.badge-tmpl  { background: var(--tmpl-bg); color: var(--tmpl); }
+.badge-judge { background: #fee2e2; color: #991b1b; }
+
+/* JUDGE SECTION */
+.judge-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+  cursor: pointer;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #991b1b;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+  user-select: none;
+}
+.judge-toggle:hover { opacity: 1; }
+.judge-toggle-icon { font-size: 14px; transition: transform 0.2s; }
+.judge-toggle-icon.open { transform: rotate(180deg); }
+
+.judge-section {
+  display: none;
+  background: var(--surface);
+  border: 1px solid #fca5a5;
+  border-radius: 4px;
+  padding: 20px 24px;
+  margin-top: 10px;
+  animation: slideUp 0.25s ease;
+}
+.judge-section.visible { display: block; }
+
+.judge-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #991b1b;
+  margin-bottom: 8px;
+  opacity: 0.8;
+}
+.judge-hint {
+  font-family: 'Literata', Georgia, serif;
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+.judge-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--ink2);
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.judge-textarea:focus { border-color: #f87171; }
+.judge-textarea::placeholder { color: var(--muted); opacity: 0.7; }
+
+.judge-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px 28px;
+  background: #991b1b;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.judge-btn:hover { background: #7f1d1d; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(153,27,27,0.25); }
+.judge-btn:active { transform: translateY(0); }
+.judge-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.output-ticker-label {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.copy-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 18px;
+  background: var(--ink);
+  border: none;
+  border-radius: 100px;
+  color: var(--bg);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.copy-btn:hover { background: var(--ink2); }
+.copy-btn.done { background: var(--lite); }
+
+.output-body {
+  padding: 24px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  line-height: 1.85;
+  white-space: pre-wrap;
+  color: var(--ink2);
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.footer {
+  margin-top: 40px;
+  text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+@media (max-width: 600px) {
+  body { padding: 28px 16px 60px; }
+  .header h1 { font-size: 26px; }
+  .ticker-input { font-size: 30px; }
+  .level-tabs { grid-template-columns: 1fr; }
+  .mode-toggle { grid-template-columns: 1fr; }
+  .card { padding: 20px; }
+}
+
+/* SYSTEM TOGGLE */
+.system-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0 0;
+}
+.system-toggle-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.system-toggle-label .sys-badge {
+  background: var(--pro-bg);
+  color: var(--pro);
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 2px;
+  letter-spacing: 0.05em;
+}
+.toggle-switch {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-track {
+  position: absolute;
+  inset: 0;
+  background: var(--border);
+  border-radius: 11px;
+  transition: background 0.2s;
+}
+.toggle-switch input:checked + .toggle-track { background: var(--pro); }
+.toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.toggle-switch input:checked ~ .toggle-thumb { transform: translateX(18px); }
+
+/* SYSTEM FILES PANEL */
+.system-panel {
+  margin-top: 16px;
+  padding: 16px 18px;
+  background: var(--pro-bg);
+  border: 1px solid #d8b4fe;
+  border-radius: 4px;
+  display: none;
+}
+.system-panel.visible { display: block; }
+.system-panel-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pro);
+  margin-bottom: 12px;
+}
+.file-checks { display: flex; flex-direction: column; gap: 8px; }
+.file-check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+.file-check-row input[type=checkbox] { display: none; }
+.file-check-box {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #d8b4fe;
+  border-radius: 3px;
+  background: white;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  font-size: 10px;
+}
+.file-check-row input:checked + .file-check-box {
+  background: var(--pro);
+  border-color: var(--pro);
+  color: white;
+}
+.file-check-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--ink2);
+  flex: 1;
+}
+.file-req-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 2px;
+  background: #fecaca;
+  color: #991b1b;
+}
+.file-opt-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 2px;
+  background: var(--border);
+  color: var(--muted);
+}
+
+/* WARNINGS */
+.warn-block {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  display: none;
+}
+.warn-block.error {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+  display: block;
+}
+.warn-block.warn {
+  background: var(--warn-bg);
+  border: 1px solid #fcd34d;
+  color: var(--warn);
+  display: block;
+}
+
+/* MODEL SELECTOR */
+.model-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.model-btn {
+  padding: 10px 8px;
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  cursor: pointer;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  transition: all 0.15s;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.model-btn:hover { border-color: var(--border2); color: var(--ink); }
+.model-btn.active { border-color: var(--ink); background: var(--ink); color: var(--bg); }
+.model-btn .model-icon { font-size: 16px; line-height: 1; }
+.model-btn .model-cap {
+  font-size: 9px;
+  opacity: 0.7;
+  line-height: 1.3;
+}
+
+/* WEIGHT FIELD */
+.weight-field {
+  display: none;
+  margin-top: 14px;
+}
+.weight-field.visible { display: block; }
+.weight-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.weight-input {
+  width: 80px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  color: var(--ink);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 20px;
+  font-weight: 500;
+  padding: 6px 10px;
+  outline: none;
+  transition: border-color 0.2s;
+  text-align: right;
+}
+.weight-input:focus { border-color: var(--ink2); }
+.weight-unit {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  color: var(--muted);
+}
+.weight-hint {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+/* SKILLS PANEL */
+.skills-section {
+  margin-top: 20px;
+  display: none;
+}
+.skills-section.visible { display: block; }
+
+.skills-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.skills-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.skills-auto-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  background: var(--lite-bg);
+  color: var(--lite);
+  cursor: default;
+}
+
+.skills-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.skill-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 3px;
+  background: var(--bg);
+  border: 1px solid transparent;
+  transition: all 0.15s;
+}
+.skill-row.active {
+  border-color: var(--pro);
+  background: var(--pro-bg);
+}
+.skill-row input[type=checkbox] { display: none; }
+.skill-cb {
+  width: 15px; height: 15px;
+  border: 1.5px solid var(--border2);
+  border-radius: 2px;
+  background: white;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+.skill-row.active .skill-cb {
+  background: var(--pro);
+  border-color: var(--pro);
+  color: white;
+}
+.skill-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--ink2);
+  flex: 1;
+}
+.skill-desc {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  text-align: right;
+}
+.skill-level-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-l { background: var(--lite); }
+.dot-s { background: var(--std); }
+.dot-p { background: var(--pro); }
+
+.skills-legend {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+}
+
+/* ── LANG SWITCHER ── */
+.lang-switcher {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+.lang-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 4px 11px;
+  transition: all 0.15s;
+}
+.lang-btn:hover { border-color: var(--ink2); color: var(--ink2); }
+.lang-btn.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-eyebrow" id="hdr-eyebrow">Prompt Builder · v2.5.2</div>
+    <h1>Stock Analysis</h1>
+    <div class="header-sub" id="hdr-tagline">Введи тикер — получи промпт для своего ИИ</div>
+  </div>
+
+  <!-- MODE TOGGLE -->
+  
+
+  <div class="lang-switcher">
+    <button id="lang-ru" class="lang-btn active" onclick="setLang('ru')">RU</button>
+    <button id="lang-en" class="lang-btn" onclick="setLang('en')">EN</button>
+    <button id="lang-uk" class="lang-btn" onclick="setLang('uk')">UK</button>
+  </div>
+
+  <!-- MODEL SELECTOR -->
+  <div id="model-selector-wrap">
+    <div class="section-label" style="margin-bottom:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);" id="lbl-model">ИИ-ассистент</div>
+    <div class="model-selector">
+      <button class="model-btn active" id="model-claude" onclick="setModel('claude')">
+        <span class="model-icon">◆</span>
+        <span>Claude</span>
+        <span class="model-cap" id="cap-claude">Project · файлы</span>
+      </button>
+      <button class="model-btn" id="model-gpt" onclick="setModel('gpt')">
+        <span class="model-icon">◎</span>
+        <span>ChatGPT</span>
+        <span class="model-cap">Project · Browsing</span>
+      </button>
+      <button class="model-btn" id="model-gemini" onclick="setModel('gemini')">
+        <span class="model-icon">✦</span>
+        <span>Gemini</span>
+        <span class="model-cap">Gem · Google Search</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- FORM CARD -->
+  <div class="card" id="main-card">
+
+    <!-- TEMPLATE INFO (скрыт по умолчанию) -->
+    <div class="tmpl-info" id="tmpl-info" style="display:none">
+      <strong>Одноразовая настройка.</strong> Этот промпт создаст персональный мастер‑шаблон и при необходимости уточнит профиль (до 3 вопросов). Сохрани результат в Custom Instructions / System Prompt — и дальше для анализа любой бумаги достаточно будет просто написать тикер.
+    </div>
+
+    <!-- УРОВЕНЬ (только для режима анализа) -->
+    <div id="level-section">
+      <div class="section-label" id="lbl-level">Уровень анализа</div>
+      <div class="level-tabs">
+        <button class="level-tab" id="tab-lite" onclick="setLevel('lite')">
+          <div class="tab-name"><span class="dot dot-lite"></span>Lite</div>
+          <div class="tab-desc"><span id="td-lite1">2 мин · быстрая</span><br><span id="td-lite2">проверка идеи</span></div>
+        </button>
+        <button class="level-tab active-std" id="tab-std" onclick="setLevel('std')">
+          <div class="tab-name"><span class="dot dot-std"></span>Standard</div>
+          <div class="tab-desc"><span id="td-std1">5 мин · решение</span><br><span id="td-std2">о входе/удержании</span></div>
+        </button>
+        <button class="level-tab" id="tab-pro" onclick="setLevel('pro')">
+          <div class="tab-name"><span class="dot dot-pro"></span>Pro</div>
+          <div class="tab-desc"><span id="td-pro1">15 мин · глубокий</span><br><span id="td-pro2">разбор позиции</span></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- ТИКЕР (только для режима анализа) -->
+    <div id="ticker-section">
+      <div class="field">
+        <div class="field-label" id="lbl-ticker">Тикер</div>
+        <input class="ticker-input" id="ticker" type="text" placeholder="NVDA"
+               maxlength="10" oninput="this.value=this.value.toUpperCase(); onFieldChange()">
+      </div>
+      <div class="divider"></div>
+    </div>
+
+    <!-- ТИП ИНСТРУМЕНТА -->
+    <div class="field" id="instrument-section">
+      <div class="field-label"><span id="lbl-instr">Тип инструмента</span> <span class="badge-opt">auto</span></div>
+      <div class="chip-group" id="instrument-group">
+        <button class="chip selected" onclick="selectChip('instrument-group', this, 'auto')"><span id='chip-auto'>Auto</span></button>
+        <button class="chip" onclick="selectChip('instrument-group', this, 'stock')"><span id='chip-stock'>Акция</span></button>
+        <button class="chip" onclick="selectChip('instrument-group', this, 'etf')">ETF</button>
+      </div>
+    </div>
+
+    <!-- ЗАЧЕМ СМОТРИШЬ (только анализ) -->
+    <div class="field" id="goal-section">
+      <div class="field-label" id="lbl-goal">Зачем смотришь</div>
+      <div class="chip-group" id="goal-group">
+        <button class="chip" onclick="selectChip('goal-group', this, 'first_buy')"><span id='chip-buy'>Хочу купить</span></button>
+        <button class="chip" onclick="selectChip('goal-group', this, 'add_to_position')"><span id='chip-add'>Думаю докупить</span></button>
+        <button class="chip" onclick="selectChip('goal-group', this, 'hold_review')"><span id='chip-hold'>Уже держу</span></button>
+        <button class="chip" onclick="selectChip('goal-group', this, 'research')"><span id='chip-res'>Просто изучаю</span></button>
+        <button class="chip" onclick="selectChip('goal-group', this, 'consider_sell')"><span id='chip-sell'>Думаю продать</span></button>
+      </div>
+      <!-- ДОЛЯ В ПОРТФЕЛЕ (показывается для держу / докупить / продать) -->
+      <div class="weight-field" id="weight-field">
+        <div class="field-label" id="lbl-weight" style="margin-top:14px;">Текущая доля в портфеле</div>
+        <div class="weight-row">
+          <input class="weight-input" id="weight-input" type="number"
+                 min="0" max="100" step="1" placeholder="0"
+                 oninput="onFieldChange()">
+          <span class="weight-unit">%</span>
+        </div>
+        <div class="weight-hint" id="hint-weight">0% — если позиции ещё нет</div>
+      </div>
+      <!-- СРЕДНЯЯ ЦЕНА ВХОДА (показывается для держу / докупить / продать) -->
+      <div class="weight-field" id="entry-price-field">
+        <div class="field-label" id="lbl-entry-price" style="margin-top:10px;">Средняя цена входа</div>
+        <div class="weight-row">
+          <span class="weight-unit">$</span>
+          <input class="weight-input" id="entry-price-input" type="number"
+                 min="0" step="0.01" placeholder="0"
+                 style="width:110px;"
+                 oninput="onFieldChange()">
+        </div>
+        <div class="weight-hint" id="hint-entry">необязательно · без неё ИИ сделает допущение</div>
+      </div>
+    </div>
+
+    <!-- МОЯ РОЛЬ -->
+    <div class="field">
+      <div class="field-label"><span id="lbl-role">Моя роль</span> <span class="badge-opt" id="opt-role">необязательно</span></div>
+      <div class="chip-group" id="role-group">
+        <button class="chip" onclick="selectChip('role-group', this, 'INVESTOR')"><span id='chip-inv'>Инвестор</span></button>
+        <button class="chip" onclick="selectChip('role-group', this, 'SPECULATOR')"><span id='chip-spec'>Спекулянт</span></button>
+        <button class="chip" onclick="selectChip('role-group', this, 'SAVER')"><span id='chip-sav'>Сберегатель</span></button>
+      </div>
+    </div>
+
+    <!-- ГОРИЗОНТ (только анализ) -->
+    <div class="field" id="horizon-section">
+      <div class="field-label"><span id="lbl-horizon">Горизонт</span> <span class="badge-opt" id="opt-horizon">необязательно</span></div>
+      <input class="text-input" id="horizon" type="text"
+             id="horizon" placeholder="например: 1–2 года, до следующего отчёта, 3 месяца..."
+             oninput="onFieldChange()">
+    </div>
+
+    <!-- ДОПУСТИМАЯ ПРОСАДКА -->
+    <div class="field" id="drawdown-section">
+      <div class="field-label"><span id="lbl-dd">Допустимая просадка по позиции</span> <span class="badge-opt" id="opt-dd">необязательно</span></div>
+      <div class="chip-group" id="dd-group">
+        <button class="chip selected" onclick="selectChip('dd-group', this, 'auto')">Auto</button>
+        <button class="chip" onclick="selectChip('dd-group', this, '5%')">5%</button>
+        <button class="chip" onclick="selectChip('dd-group', this, '15%')">15%</button>
+        <button class="chip" onclick="selectChip('dd-group', this, '30%+')">30%+</button>
+      </div>
+      <div class="weight-hint" id="hint-dd">Нужно для стоп‑логики и размера позиции (risk budget)</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- PERSONA NOTICE -->
+    <div class="persona-notice">
+      <span class="icon">ℹ</span>
+      <span id="persona-text">Промпт автоматически просит ИИ использовать твой профиль из персонализации. Если профиль не настроен — ИИ задаст минимум вопросов и сделает допущения явно.</span>
+    </div>
+
+    <!-- SYSTEM TOGGLE -->
+    <div class="divider" id="system-divider" style="display:none"></div>
+    <div class="system-toggle-row" id="system-toggle-row" style="display:none">
+      <span class="system-toggle-label">
+        Моя инвест-система
+        
+      </span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="system-toggle" onchange="onSystemToggle()">
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+
+    <div class="system-panel" id="system-panel">
+
+      <!-- ── CLAUDE panel ── -->
+      <div id="files-claude">
+        <div class="system-panel-title" id="title-claude">Какие файлы подключены в Claude Project?</div>
+        <div class="file-checks">
+          <label class="file-check-row">
+            <input type="checkbox" id="f02" onchange="onFilesChange()">
+            <div class="file-check-box">✓</div>
+            <span class="file-check-name">02_investor_passport.md</span>
+            <span class="file-req-badge">обязателен</span>
+          </label>
+          <label class="file-check-row">
+            <input type="checkbox" id="f03" onchange="onFilesChange()">
+            <div class="file-check-box">✓</div>
+            <span class="file-check-name">03_investment_constitution.md</span>
+            <span class="file-req-badge">обязателен</span>
+          </label>
+          <label class="file-check-row">
+            <input type="checkbox" id="f04" onchange="onFilesChange()">
+            <div class="file-check-box">✓</div>
+            <span class="file-check-name">04_portfolio_snapshot.md</span>
+            <span class="file-req-badge">обязателен</span>
+          </label>
+          <label class="file-check-row">
+            <input type="checkbox" id="f07" onchange="onFilesChange()">
+            <div class="file-check-box">✓</div>
+            <span class="file-check-name">07_context_card.md</span>
+            <span class="file-opt-badge">опционально</span>
+          </label>
+          <label class="file-check-row">
+            <input type="checkbox" id="f06" onchange="onFilesChange()">
+            <div class="file-check-box">✓</div>
+            <span class="file-check-name">06_company_card.md</span>
+            <span class="file-opt-badge">опционально</span>
+          </label>
+          <label class="file-check-row">
+            <input type="checkbox" id="f08" onchange="onFilesChange()">
+            <div class="file-check-box">✓</div>
+            <span class="file-check-name">08_scenario_map.md</span>
+            <span class="file-opt-badge">опционально</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- ── GPT panel ── -->
+      <div id="files-gpt" style="display:none">
+        <div class="system-panel-title" id="title-gpt">Какие файлы подключены в ChatGPT Project?</div>
+        <div class="file-checks">
+          <label class="file-check-row">
+            <input type="checkbox" id="g02" onchange="onFilesChange()">
+            <div class="file-check-box">✓</div>
+            <span class="file-check-name">02_investor_passport.md</span>
+            <span class="file-req-badge">обязателен</span>
+          </label>
+          <label class="file-check-row">
+            <input type="checkbox" id="g03" onchange="onFilesChange()">
+            <div class="file-check-box">✓</div>
+            <span class="file-check-name">03_investment_constitution.md</span>
+            <span class="file-req-badge">обязателен</span>
+          </label>
+          <label class="file-check-row">
+            <input type="checkbox" id="g04" onchange="onFilesChange()">
+            <div class="file-check-box">✓</div>
+            <span class="file-check-name">04_portfolio_snapshot.md</span>
+            <span class="file-req-badge">обязателен</span>
+          </label>
+          <label class="file-check-row">
+            <input type="checkbox" id="g07" onchange="onFilesChange()">
+            <div class="file-check-box">✓</div>
+            <span class="file-check-name">07_context_card.md</span>
+            <span class="file-opt-badge">опционально</span>
+          </label>
+          <label class="file-check-row">
+            <input type="checkbox" id="g06" onchange="onFilesChange()">
+            <div class="file-check-box">✓</div>
+            <span class="file-check-name">06_company_card.md</span>
+            <span class="file-opt-badge">опционально</span>
+          </label>
+          <label class="file-check-row">
+            <input type="checkbox" id="g08" onchange="onFilesChange()">
+            <div class="file-check-box">✓</div>
+            <span class="file-check-name">08_scenario_map.md</span>
+            <span class="file-opt-badge">опционально</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- ── GEMINI panel ── -->
+      <div id="files-gemini" style="display:none">
+        <div class="system-panel-title" id="title-gem">Какие файлы подключены в Gem (База знаний)?</div>
+        <div class="file-checks">
+          <label class="file-check-row">
+            <input type="checkbox" id="m01" onchange="onFilesChange()">
+            <div class="file-check-box">✓</div>
+            <span class="file-check-name">01_pravila.docx</span>
+            <span class="file-req-badge">обязателен</span>
+          </label>
+          <label class="file-check-row">
+            <input type="checkbox" id="m02" onchange="onFilesChange()">
+            <div class="file-check-box">✓</div>
+            <span class="file-check-name">02_portfel.docx</span>
+            <span class="file-req-badge">обязателен</span>
+          </label>
+          <label class="file-check-row">
+            <input type="checkbox" id="m03" onchange="onFilesChange()">
+            <div class="file-check-box">✓</div>
+            <span class="file-check-name">03_analitika.docx</span>
+            <span class="file-req-badge">обязателен</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="warn-block" id="warn-required">
+        ⛔ Не хватает обязательных файлов. Подключи их — без них промпт не использует твою систему.
+      </div>
+      <div class="warn-block" id="warn-optional">
+        ⚠ Часть файлов не подключена — промпт сообщит ИИ какие данные недоступны.
+      </div>
+    </div>
+
+    <!-- SKILLS PANEL -->
+    <div class="skills-section" id="skills-section">
+      <div class="skills-header">
+        <span class="skills-title" id="lbl-skills">Скиллы · набор по уровню</span>
+        <span class="skills-auto-badge" id="skills-auto-label">● авто</span>
+      </div>
+
+      <div class="skills-grid">
+
+        <!-- LITE+ -->
+        <div class="skill-row" id="sk-row-passport" onclick="toggleSkill('passport')">
+          <input type="checkbox" id="sk-passport">
+          <div class="skill-cb">✓</div>
+          <span class="skill-level-dot dot-l"></span>
+          <span class="skill-name" id="sn-passport">Паспорт инвестора</span>
+          <span class="skill-desc" id="sd-passport">02 · профиль / риск</span>
+        </div>
+        <div class="skill-row" id="sk-row-constitution" onclick="toggleSkill('constitution')">
+          <input type="checkbox" id="sk-constitution">
+          <div class="skill-cb">✓</div>
+          <span class="skill-level-dot dot-l"></span>
+          <span class="skill-name" id="sn-const">Конституция / QPTA</span>
+          <span class="skill-desc" id="sd-const">03 · правила / лимиты</span>
+        </div>
+        <div class="skill-row" id="sk-row-snapshot" onclick="toggleSkill('snapshot')">
+          <input type="checkbox" id="sk-snapshot">
+          <div class="skill-cb">✓</div>
+          <span class="skill-level-dot dot-l"></span>
+          <span class="skill-name">Portfolio Snapshot</span>
+          <span class="skill-desc" id="sd-snap">04 · портфель / Heat</span>
+        </div>
+        <div class="skill-row" id="sk-row-context" onclick="toggleSkill('context')">
+          <input type="checkbox" id="sk-context">
+          <div class="skill-cb">✓</div>
+          <span class="skill-level-dot dot-l"></span>
+          <span class="skill-name">Context Card</span>
+          <span class="skill-desc" id="sd-ctx">07 · макро / режимы</span>
+        </div>
+
+        <!-- STANDARD+ -->
+        <div class="skill-row" id="sk-row-company" onclick="toggleSkill('company')">
+          <input type="checkbox" id="sk-company">
+          <div class="skill-cb">✓</div>
+          <span class="skill-level-dot dot-s"></span>
+          <span class="skill-name">Company Card</span>
+          <span class="skill-desc" id="sd-company">06 · бизнес / финансы</span>
+        </div>
+        <div class="skill-row" id="sk-row-gates" onclick="toggleSkill('gates')">
+          <input type="checkbox" id="sk-gates">
+          <div class="skill-cb">✓</div>
+          <span class="skill-level-dot dot-s"></span>
+          <span class="skill-name">Quality Gates G0–G4</span>
+          <span class="skill-desc" id="sd-gates">12 · чеклист входа</span>
+        </div>
+        <div class="skill-row" id="sk-row-rop" onclick="toggleSkill('rop')">
+          <input type="checkbox" id="sk-rop">
+          <div class="skill-cb">✓</div>
+          <span class="skill-level-dot dot-s"></span>
+          <span class="skill-name">ROP Valuation</span>
+          <span class="skill-desc">Bear/Base/Bull · EPS×P/E</span>
+        </div>
+        <div class="skill-row" id="sk-row-price" onclick="toggleSkill('price')">
+          <input type="checkbox" id="sk-price">
+          <div class="skill-cb">✓</div>
+          <span class="skill-level-dot dot-s"></span>
+          <span class="skill-name">Price Power</span>
+          <span class="skill-desc" id="sd-price">ценовая сила · моат</span>
+        </div>
+
+        <!-- PRO only -->
+        <div class="skill-row" id="sk-row-scenario" onclick="toggleSkill('scenario')">
+          <input type="checkbox" id="sk-scenario">
+          <div class="skill-cb">✓</div>
+          <span class="skill-level-dot dot-p"></span>
+          <span class="skill-name">Scenario Map</span>
+          <span class="skill-desc" id="sd-scenario">08 · триггеры / ветки</span>
+        </div>
+        <div class="skill-row" id="sk-row-eureka" onclick="toggleSkill('eureka')">
+          <input type="checkbox" id="sk-eureka">
+          <div class="skill-cb">✓</div>
+          <span class="skill-level-dot dot-p"></span>
+          <span class="skill-name">EUREKA · Earnings Quality</span>
+          <span class="skill-desc">QoE / Beneish / Accruals</span>
+        </div>
+        <div class="skill-row" id="sk-row-lifecycle" onclick="toggleSkill('lifecycle')">
+          <input type="checkbox" id="sk-lifecycle">
+          <div class="skill-cb">✓</div>
+          <span class="skill-level-dot dot-p"></span>
+          <span class="skill-name">Life Cycle · FV Hyperbola</span>
+          <span class="skill-desc" id="sd-lifecycle">стадия / fair value</span>
+        </div>
+        <div class="skill-row" id="sk-row-report" onclick="toggleSkill('report')">
+          <input type="checkbox" id="sk-report">
+          <div class="skill-cb">✓</div>
+          <span class="skill-level-dot dot-p"></span>
+          <span class="skill-name">Final Report Card</span>
+          <span class="skill-desc" id="sd-report">09 · решение-карточка</span>
+        </div>
+        <div class="skill-row" id="sk-row-triage" onclick="toggleSkill('triage')">
+          <input type="checkbox" id="sk-triage">
+          <div class="skill-cb">✓</div>
+          <span class="skill-level-dot dot-p"></span>
+          <span class="skill-name">Idea Triage</span>
+          <span class="skill-desc" id="sd-triage">11 · воронка идей</span>
+        </div>
+
+      </div>
+
+      <div class="skills-legend">
+        <div class="legend-item"><span class="skill-level-dot dot-l"></span> Lite+</div>
+        <div class="legend-item"><span class="skill-level-dot dot-s"></span> Standard+</div>
+        <div class="legend-item"><span class="skill-level-dot dot-p"></span> Pro only</div>
+      </div>
+    </div>
+
+    <!-- BUILD BUTTON -->
+    <button class="build-btn" id="build-btn" onclick="buildPrompt()" disabled>
+      <span id="btn-label">Собрать промпт</span>
+      <span>→</span>
+    </button>
+    <div style="text-align:center; margin-top:10px;">
+      <button onclick="buildTemplatePrompt()"
+        style="background:none;border:none;cursor:pointer;
+               font-family:'IBM Plex Mono',monospace;font-size:10px;
+               color:var(--muted);letter-spacing:0.08em;
+               text-decoration:underline;text-underline-offset:3px;
+               padding:4px 8px;transition:color 0.15s;"
+        onmouseover="this.style.color='var(--ink2)'"
+        onmouseout="this.style.color='var(--muted)'">
+        <span id="template-btn-label">Создать системный промпт →</span>
+      </button>
+    </div>
+
+    <!-- JUDGE TOGGLE -->
+    <div class="judge-toggle" onclick="toggleJudge()" id="judge-toggle-row">
+      <span id="judge-toggle-icon" class="judge-toggle-icon">▲</span>
+      <span id="judge-toggle-label">Промпт Судьи · разобрать готовый отчёт</span>
+    </div>
+
+    <!-- JUDGE SECTION -->
+    <div class="judge-section" id="judge-section">
+      <div class="judge-label" id="judge-lbl-paste">Вставь готовый анализ</div>
+      <div class="judge-hint" id="judge-hint-text">Скопируй ответ ИИ после основного промпта и вставь сюда. Судья атакует допущения, ищет смещения и проверяет математику.</div>
+      <textarea class="judge-textarea" id="judge-report"
+        placeholder="Вставь сюда готовый отчёт ИИ..."></textarea>
+      <button class="judge-btn" id="judge-btn" onclick="buildJudgePrompt()">
+        <span id="judge-btn-label">⚖ Собрать промпт Судьи</span>
+        <span>→</span>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- OUTPUT -->
+  <div class="output-card" id="output-card">
+    <div class="output-header">
+      <div class="output-meta">
+        <span class="output-badge" id="out-badge">Standard</span>
+        <span class="output-ticker-label" id="out-label">—</span>
+      </div>
+      <button class="copy-btn" id="copy-btn" onclick="copyPrompt()">
+        <span>⎘</span><span id="copy-label">Скопировать</span>
+      </button>
+    </div>
+    <div class="output-body" id="output-body">Заполните форму и нажмите «Собрать промпт»</div>
+  </div>
+
+  <div class="footer">
+    <span id="footer-main">Скопируй промпт → вставь в Claude, ChatGPT или любой другой ИИ</span><br>
+    <span id="footer-sub">ИИ сам найдёт актуальные данные · v2.5.2</span>
+  </div>
+
+</div>
+
+<script>
+
+// ─── I18N ─────────────────────────────────────────────────────────────────
+let uiLang = 'ru';
+
+const STRINGS = {
+ru: {
+  eyebrow: 'Prompt Builder · v2.5.2',
+  tagline: 'Введи тикер — получи промпт для своего ИИ',
+  lbl_model: 'ИИ-ассистент',
+  cap_claude: 'Project · файлы',
+  lbl_level: 'Уровень анализа',
+  td_lite1: '2 мин · быстрая', td_lite2: 'проверка идеи',
+  td_std1: '5 мин · решение',  td_std2: 'о входе/удержании',
+  td_pro1: '15 мин · глубокий', td_pro2: 'разбор позиции',
+  lbl_ticker: 'Тикер',
+  lbl_instr: 'Тип инструмента',
+  chip_auto: 'Авто', chip_stock: 'Акция',
+  lbl_goal: 'Зачем смотришь',
+  chip_buy: 'Хочу купить', chip_add: 'Думаю докупить',
+  chip_hold: 'Уже держу', chip_res: 'Просто изучаю', chip_sell: 'Думаю продать',
+  lbl_weight: 'Текущая доля в портфеле',
+  hint_weight: '0% — если позиции ещё нет',
+  lbl_role: 'Моя роль',
+  opt: 'необязательно',
+  chip_inv: 'Инвестор', chip_spec: 'Спекулянт', chip_sav: 'Сберегатель',
+  lbl_horizon: 'Горизонт',
+  ph_horizon: 'например: 1–2 года, до следующего отчёта, 3 месяца...',
+  lbl_dd: 'Допустимая просадка по позиции',
+  hint_dd: 'Нужно для стоп‑логики и размера позиции (risk budget)',
+  persona: 'Промпт автоматически просит ИИ использовать твой профиль из персонализации. Если профиль не настроен — ИИ задаст минимум вопросов и сделает допущения явно.',
+  lbl_sys: 'Моя инвест-система',
+  title_claude: 'Какие файлы подключены в Claude Project?',
+  title_gpt: 'Какие файлы подключены в ChatGPT Project?',
+  title_gem: 'Какие файлы подключены в Gem (База знаний)?',
+  req: 'обязателен', opt_badge: 'опционально',
+  warn_req: '⛔ Не хватает обязательных файлов. Подключи их — без них промпт не использует твою систему.',
+  warn_opt: '⚠ Часть файлов не подключена — промпт сообщит ИИ какие данные недоступны.',
+  lbl_skills: 'Скиллы · набор по уровню',
+  skills_auto: '● авто',
+  sn_passport: 'Паспорт инвестора', sd_passport: '02 · профиль / риск',
+  sn_const: 'Конституция / QPTA', sd_const: '03 · правила / лимиты',
+  sd_snap: '04 · портфель / Heat', sd_ctx: '07 · макро / режимы',
+  sd_company: '06 · бизнес / финансы', sd_gates: '12 · чеклист входа',
+  sd_price: 'ценовая сила · моат', sd_scenario: '08 · триггеры / ветки',
+  sd_lifecycle: 'стадия / fair value', sd_report: '09 · решение-карточка',
+  sd_triage: '11 · воронка идей',
+  btn_build: 'Собрать промпт',
+  btn_template: 'Создать системный промпт →',
+  btn_copy: 'Скопировать', copied: 'Скопировано ✓',
+  out_empty: 'Заполните форму и нажмите «Собрать промпт»',
+  footer_main: 'Скопируй промпт → вставь в Claude, ChatGPT или любой другой ИИ',
+  footer_sub: 'ИИ сам найдёт актуальные данные · v2.5.2',
+  // Промпт-строки
+  p_ticker: 'ТИКЕР', p_goal: 'ЦЕЛЬ', p_role: 'МОЯ РОЛЬ', p_horizon: 'ГОРИЗОНТ',
+  p_bmk: 'БЕНЧМАРК (ALPHA-GATE)', p_dd: 'ДОПУСТИМАЯ ПРОСАДКА ПО ПОЗИЦИИ',
+  p_weight: 'ТЕКУЩАЯ ДОЛЯ В ПОРТФЕЛЕ',
+  p_ctx: 'КОНТЕКСТ ПОЗИЦИИ (если знаешь из моего профиля — используй; если нет — спроси в рамках лимита вопросов):',
+  p_entry: '• Средняя цена входа: $___',
+  p_thesis: '• Тезис при первом входе всё ещё в силе? ___',
+  gl_first: 'рассматриваю первый вход',
+  gl_add: 'уже держу позицию, рассматриваю докупку',
+  gl_hold: 'уже держу, оцениваю — держать или выходить',
+  gl_res: 'изучаю, без конкретного решения',
+  gl_sell: 'думаю продать или срезать позицию',
+  // Judge UI
+  judge_toggle:    'Промпт Судьи · разобрать готовый отчёт',
+  judge_lbl_paste: 'Вставь готовый анализ',
+  judge_hint:      'Скопируй ответ ИИ после основного промпта и вставь сюда. Судья атакует допущения, ищет смещения и проверяет математику.',
+  judge_ph:        'Вставь сюда готовый отчёт ИИ...',
+  judge_btn:       '⚖ Собрать промпт Судьи',
+  judge_badge:     'Судья',
+},
+en: {
+  eyebrow: 'Prompt Builder · v2.5.2',
+  tagline: 'Enter ticker — get a prompt for your AI',
+  lbl_model: 'AI assistant',
+  cap_claude: 'Project · files',
+  lbl_level: 'Analysis depth',
+  td_lite1: '2 min · quick', td_lite2: 'idea check',
+  td_std1: '5 min · entry or', td_std2: 'hold decision',
+  td_pro1: '15 min · deep', td_pro2: 'position review',
+  lbl_ticker: 'Ticker',
+  lbl_instr: 'Instrument type',
+  chip_auto: 'Auto', chip_stock: 'Stock',
+  lbl_goal: 'Your goal',
+  chip_buy: 'Want to buy', chip_add: 'Adding to position',
+  chip_hold: 'Reviewing hold', chip_res: 'Just researching', chip_sell: 'Considering exit',
+  lbl_weight: 'Current portfolio weight',
+  hint_weight: '0% if no position yet',
+  lbl_role: 'My role',
+  opt: 'optional',
+  chip_inv: 'Investor', chip_spec: 'Speculator', chip_sav: 'Saver',
+  lbl_horizon: 'Horizon',
+  ph_horizon: 'e.g.: 1–2 years, next earnings, 3 months...',
+  lbl_dd: 'Max drawdown per position',
+  hint_dd: 'Used for stop logic and position sizing (risk budget)',
+  persona: 'The prompt automatically asks the AI to use your personalization profile. If no profile is set — the AI will ask minimal questions and state assumptions explicitly.',
+  lbl_sys: 'My investment system',
+  title_claude: 'Which files are in your Claude Project?',
+  title_gpt: 'Which files are in your ChatGPT Project?',
+  title_gem: 'Which files are in your Gem (Knowledge base)?',
+  req: 'required', opt_badge: 'optional',
+  warn_req: '⛔ Required files missing. Add them — without them the prompt cannot use your system.',
+  warn_opt: '⚠ Some files not connected — the prompt will tell the AI which data is unavailable.',
+  lbl_skills: 'Skills · set by level',
+  skills_auto: '● auto',
+  sn_passport: 'Investor Passport', sd_passport: '02 · profile / risk',
+  sn_const: 'Constitution / QPTA', sd_const: '03 · rules / limits',
+  sd_snap: '04 · portfolio / Heat', sd_ctx: '07 · macro / regimes',
+  sd_company: '06 · business / financials', sd_gates: '12 · entry checklist',
+  sd_price: 'pricing power · moat', sd_scenario: '08 · triggers / branches',
+  sd_lifecycle: 'stage / fair value', sd_report: '09 · decision card',
+  sd_triage: '11 · idea funnel',
+  btn_build: 'Build prompt',
+  btn_template: 'Create system prompt →',
+  btn_copy: 'Copy', copied: 'Copied ✓',
+  out_empty: 'Fill in the form and click "Build prompt"',
+  footer_main: 'Copy prompt → paste into Claude, ChatGPT or any other AI',
+  footer_sub: 'AI will find current data · v2.5.2',
+  p_ticker: 'TICKER', p_goal: 'GOAL', p_role: 'MY ROLE', p_horizon: 'HORIZON',
+  p_bmk: 'BENCHMARK (ALPHA-GATE)', p_dd: 'MAX DRAWDOWN PER POSITION',
+  p_weight: 'CURRENT PORTFOLIO WEIGHT',
+  p_ctx: 'POSITION CONTEXT (use from my profile if available; otherwise ask within the question limit):',
+  p_entry: '• Average entry price: $___',
+  p_thesis: '• Is the original thesis still valid? ___',
+  gl_first: 'considering first entry',
+  gl_add: 'holding position, considering adding',
+  gl_hold: 'holding, evaluating whether to keep or exit',
+  gl_res: 'researching, no specific decision',
+  gl_sell: 'considering selling or trimming position',
+  // Judge UI
+  judge_toggle:    'Judge prompt · audit the existing report',
+  judge_lbl_paste: 'Paste the completed analysis',
+  judge_hint:      'Copy the AI response from your main prompt and paste it here. The Judge attacks assumptions, hunts biases, and checks the math.',
+  judge_ph:        'Paste the AI report here...',
+  judge_btn:       '⚖ Build Judge prompt',
+  judge_badge:     'Judge',
+},
+uk: {
+  eyebrow: 'Prompt Builder · v2.5.2',
+  tagline: 'Введи тикер — отримай промпт для свого ШІ',
+  lbl_model: 'ШІ-асистент',
+  cap_claude: 'Project · файли',
+  lbl_level: 'Рівень аналізу',
+  td_lite1: '2 хв · швидка', td_lite2: 'перевірка ідеї',
+  td_std1: '5 хв · рішення', td_std2: 'щодо входу/утримання',
+  td_pro1: '15 хв · глибокий', td_pro2: 'розбір позиції',
+  lbl_ticker: 'Тикер',
+  lbl_instr: 'Тип інструменту',
+  chip_auto: 'Авто', chip_stock: 'Акція',
+  lbl_goal: 'Навіщо дивишся',
+  chip_buy: 'Хочу купити', chip_add: 'Думаю докупити',
+  chip_hold: 'Вже тримаю', chip_res: 'Просто вивчаю', chip_sell: 'Думаю продати',
+  lbl_weight: 'Поточна частка в портфелі',
+  hint_weight: '0% — якщо позиції ще немає',
+  lbl_role: 'Моя роль',
+  opt: "необов'язково",
+  chip_inv: 'Інвестор', chip_spec: 'Спекулянт', chip_sav: 'Ощадник',
+  lbl_horizon: 'Горизонт',
+  ph_horizon: 'наприклад: 1–2 роки, до наступного звіту, 3 місяці...',
+  lbl_dd: 'Допустима просадка по позиції',
+  hint_dd: 'Потрібно для стоп‑логіки та розміру позиції (risk budget)',
+  persona: "Промпт автоматично просить ШІ використовувати твій профіль з персоналізації. Якщо профіль не налаштовано — ШІ поставить мінімум питань і зробить припущення явно.",
+  lbl_sys: 'Моя інвест-система',
+  title_claude: 'Які файли підключені у Claude Project?',
+  title_gpt: 'Які файли підключені у ChatGPT Project?',
+  title_gem: 'Які файли підключені у Gem (База знань)?',
+  req: "обов'язковий", opt_badge: 'опціонально',
+  warn_req: "⛔ Бракує обов'язкових файлів. Підключи їх — без них промпт не використає твою систему.",
+  warn_opt: '⚠ Частина файлів не підключена — промпт повідомить ШІ які дані недоступні.',
+  lbl_skills: 'Скіли · набір по рівню',
+  skills_auto: '● авто',
+  sn_passport: 'Паспорт інвестора', sd_passport: '02 · профіль / ризик',
+  sn_const: 'Конституція / QPTA', sd_const: "03 · правила / ліміти",
+  sd_snap: '04 · портфель / Heat', sd_ctx: '07 · макро / режими',
+  sd_company: '06 · бізнес / фінанси', sd_gates: '12 · чеклист входу',
+  sd_price: 'цінова сила · моат', sd_scenario: '08 · тригери / гілки',
+  sd_lifecycle: 'стадія / fair value', sd_report: '09 · картка рішення',
+  sd_triage: '11 · воронка ідей',
+  btn_build: 'Зібрати промпт',
+  btn_template: 'Створити системний промпт →',
+  btn_copy: 'Скопіювати', copied: 'Скопійовано ✓',
+  out_empty: "Заповни форму та натисни «Зібрати промпт»",
+  footer_main: 'Скопіюй промпт → встав у Claude, ChatGPT або будь-який інший ШІ',
+  footer_sub: 'ШІ сам знайде актуальні дані · v2.5.2',
+  p_ticker: 'ТИКЕР', p_goal: 'ЦІЛЬ', p_role: 'МОЯ РОЛЬ', p_horizon: 'ГОРИЗОНТ',
+  p_bmk: 'БЕНЧМАРК (ALPHA-GATE)', p_dd: 'ДОПУСТИМА ПРОСАДКА ПО ПОЗИЦІЇ',
+  p_weight: 'ПОТОЧНА ЧАСТКА В ПОРТФЕЛІ',
+  p_ctx: 'КОНТЕКСТ ПОЗИЦІЇ (якщо знаєш з мого профілю — використай; якщо ні — запитай у межах ліміту питань):',
+  p_entry: '• Середня ціна входу: $___',
+  p_thesis: '• Тезис першого входу досі в силі? ___',
+  gl_first: 'розглядаю перший вхід',
+  gl_add: 'вже тримаю позицію, розглядаю докупівлю',
+  gl_hold: 'вже тримаю, оцінюю — тримати чи виходити',
+  gl_res: 'вивчаю, без конкретного рішення',
+  gl_sell: 'думаю продати або скоротити позицію',
+  // Judge UI
+  judge_toggle:    'Промпт Судді · розібрати готовий звіт',
+  judge_lbl_paste: 'Встав готовий аналіз',
+  judge_hint:      'Скопіюй відповідь ШІ після основного промпту і встав сюди. Суддя атакує припущення, шукає зміщення і перевіряє математику.',
+  judge_ph:        'Встав сюди готовий звіт ШІ...',
+  judge_btn:       '⚖ Зібрати промпт Судді',
+  judge_badge:     'Суддя',
+}
+};
+
+function s(key) {
+  const d = STRINGS[uiLang] || STRINGS.ru;
+  return (d[key] !== undefined) ? d[key] : (STRINGS.ru[key] || key);
+}
+
+function setLang(l) {
+  uiLang = l;
+  ['ru','en','uk'].forEach(code => {
+    const b = document.getElementById('lang-' + code);
+    if (b) b.classList.toggle('active', code === l);
+  });
+  applyLang();
+  // Обновляем GOAL_LABELS
+  GOAL_LABELS.first_buy       = s('gl_first');
+  GOAL_LABELS.add_to_position = s('gl_add');
+  GOAL_LABELS.hold_review     = s('gl_hold');
+  GOAL_LABELS.research        = s('gl_res');
+  GOAL_LABELS.consider_sell   = s('gl_sell');
+  // Horizon placeholder
+  const hp = document.getElementById('horizon');
+  if (hp) hp.placeholder = s('ph_horizon');
+  // Judge textarea placeholder
+  const jr = document.getElementById('judge-report');
+  if (jr) jr.placeholder = s('judge_ph');
+  onFieldChange();
+}
+
+function applyLang() {
+  const ids = {
+    'hdr-eyebrow':'eyebrow', 'hdr-tagline':'tagline',
+    'lbl-model':'lbl_model', 'cap-claude':'cap_claude',
+    'lbl-level':'lbl_level',
+    'td-lite1':'td_lite1', 'td-lite2':'td_lite2',
+    'td-std1':'td_std1',  'td-std2':'td_std2',
+    'td-pro1':'td_pro1',  'td-pro2':'td_pro2',
+    'lbl-ticker':'lbl_ticker',
+    'lbl-instr':'lbl_instr', 'chip-auto':'chip_auto', 'chip-stock':'chip_stock',
+    'lbl-goal':'lbl_goal',
+    'chip-buy':'chip_buy', 'chip-add':'chip_add', 'chip-hold':'chip_hold',
+    'chip-res':'chip_res', 'chip-sell':'chip_sell',
+    'lbl-weight':'lbl_weight', 'hint-weight':'hint_weight',
+    'lbl-role':'lbl_role', 'opt-role':'opt', 'opt-horizon':'opt', 'opt-dd':'opt',
+    'chip-inv':'chip_inv', 'chip-spec':'chip_spec', 'chip-sav':'chip_sav',
+    'lbl-horizon':'lbl_horizon',
+    'lbl-dd':'lbl_dd', 'hint-dd':'hint_dd',
+    'persona-text':'persona',
+    'lbl-sys':'lbl_sys',
+    'title-claude':'title_claude', 'title-gpt':'title_gpt', 'title-gem':'title_gem',
+    'warn-required':'warn_req', 'warn-optional':'warn_opt',
+    'lbl-skills':'lbl_skills', 'skills-auto-label':'skills_auto',
+    'sn-passport':'sn_passport', 'sd-passport':'sd_passport',
+    'sn-const':'sn_const', 'sd-const':'sd_const',
+    'sd-snap':'sd_snap', 'sd-ctx':'sd_ctx', 'sd-company':'sd_company',
+    'sd-gates':'sd_gates', 'sd-price':'sd_price', 'sd-scenario':'sd_scenario',
+    'sd-lifecycle':'sd_lifecycle', 'sd-report':'sd_report', 'sd-triage':'sd_triage',
+    'btn-label':'btn_build', 'template-btn-label':'btn_template', 'copy-label':'btn_copy',
+    'footer-main':'footer_main', 'footer-sub':'footer_sub',
+    // Judge
+    'judge-toggle-label':'judge_toggle',
+    'judge-lbl-paste':'judge_lbl_paste',
+    'judge-hint-text':'judge_hint',
+    'judge-btn-label':'judge_btn',
+  };
+  Object.entries(ids).forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = s(key);
+  });
+  // req/opt badges через querySelectorAll
+  document.querySelectorAll('.file-req-badge').forEach(el => el.textContent = s('req'));
+  document.querySelectorAll('.file-opt-badge').forEach(el => el.textContent = s('opt_badge'));
+  // output-body placeholder только если не заполнен
+  const ob = document.getElementById('output-body');
+  if (ob && !ob._raw) ob.textContent = s('out_empty');
+}
+// ─── END I18N ──────────────────────────────────────────────────────────────
+
+// ─── PROMPT STRINGS (generated prompt text) ──────────────────
+const PS = {
+ru: {
+  // Вступительные фразы
+  ai_lite:     'Ты — портфельный аналитик. Быстрый анализ',
+  ai_std:      'Ты — старший портфельный аналитик. Анализ',
+  ai_std_for:  'для принятия решения.',
+  ai_pro:      'Ты — старший портфельный аналитик хедж-фонда. Глубокий анализ',
+  // Секции
+  sec_ctx:     '━━━ КОНТЕКСТ ━━━',
+  sec_find:    '━━━ ЧТО НАЙТИ (данные на сегодня) ━━━',
+  sec_find_fill: 'Найди через поиск и заполни таблицу — без домыслов:',
+  sec_find_fill2: 'Заполни таблицу точными данными с источниками:',
+  sec_find_fill3: 'Полная таблица метрик с источниками и датами:',
+  sec_mkt:     '━━━ 1. ВЗГЛЯД РЫНКА ━━━',
+  sec_ana:     '━━━ 2. ВЗГЛЯД АНАЛИТИКОВ ━━━',
+  sec_biz:     '━━━ 3. КАЧЕСТВО БИЗНЕСА (если подключены скиллы) ━━━',
+  sec_rop_std: '━━━ 3. МОЙ ROP-РАСЧЁТ ━━━',
+  sec_rop_pro: '━━━ 4. МОЙ ROP-РАСЧЁТ ━━━',
+  sec_result:  '━━━ ИТОГ ━━━',
+  sec_audit:   '━━━ АУДИТ ДАННЫХ ━━━',
+  sec_role:    'ФОКУС РОЛИ',
+  // Таблица метрик
+  m_price:     'Цена сейчас',
+  m_target:    'Таргет аналитиков',
+  m_updown:    'Upside/Downside',
+  m_bhs:       'Buy / Hold / Sell',
+  m_eps_fwd:   'EPS fwd консенсус',
+  m_rps_fwd:   'RPS fwd консенсус',
+  m_nm_cons:   'Net Margin конс.',
+  m_eps_both:  'EPS fwd конс. / факт ttm',
+  m_rps_both:  'RPS fwd конс. / факт ttm',
+  m_nm_both:   'Net Margin конс. / факт',
+  m_eps_yoy:   'EPS рост YoY (ожид.)',
+  m_rps_yoy:   'RPS рост YoY (ожид.)',
+  // Итог
+  verdict:     'ВЕРДИКТ',
+  v_opts:      'КУПИТЬ / ДЕРЖАТЬ / НЕ ТРОГАТЬ / ПРОДАТЬ / ЧАСТИЧНО',
+  v_why:       'одно предложение почему.',
+  v_ctx:       'Контекст',
+  v_ctx_hint:  'как рыночный режим и мой портфель влияют на это решение — 1 строка',
+  v_risk:      'Риск-параметр: допустимая просадка по позиции',
+  v_stop:      'Стоп/размер позиции должны соответствовать.',
+  scenarios:   'СЦЕНАРИИ И ДЕЙСТВИЯ',
+  s_noenter:   'Не входить / Стоп',
+  s_hold:      'Держать / Добавить',
+  s_add:       'Докупить / Держать',
+  s_stop:      'Стоп',
+  s_entry:     'Вход',
+  s_target:    'Цель',
+  triggers:    'ТРИГГЕРЫ',
+  t_bear:      'Bear → реализуется если',
+  t_base:      'Base → предположение',
+  t_bull:      'Bull → катализатор',
+  t_bear_v:    '1–2 конкретных события или метрики',
+  t_base_v:    'что должно выполниться',
+  t_bull_v:    'что должно случиться',
+  red_flags:   'КРАСНЫЕ ФЛАГИ',
+  rf_hint:     'максимум 2 — то что аннулирует тезис',
+  // ROP
+  rop_formula: 'Формула: Price = P/E × EPS = P/S × RPS = P/S × (EPS / Net Margin)',
+  rop_build:   'Построй три сценария, используй разные предположения по мультипликаторам:',
+  rop_build2:  'Построй три сценария с обоснованием каждого предположения.',
+  rop_also:    'Дополнительно посчитай:',
+  rop_ret:     'Доходность по каждому сценарию = (Цена-цель/Цена сейчас − 1)',
+  rop_pwret:   'Probability-weighted expected return (по твоим вероятностям)',
+  rop_consist: 'Проверь консистентность: P/E ≈ P/S / Net Margin',
+  rop_consist2:'Проверь консистентность: P/E ≈ P/S / Net Margin (покажи проверку явно)',
+  rop_bear_j:  'Обоснование Bear',
+  rop_base_j:  'Обоснование Base',
+  rop_bull_j:  'Обоснование Bull',
+  rop_bear_hint: 'почему именно такие EPS / мультипликаторы',
+  rop_base_hint: 'почему именно такие EPS / мультипликаторы',
+  rop_bull_hint: 'почему именно такие EPS / мультипликаторы',
+  rop_bear_hint2: 'почему именно такие цифры — что должно произойти',
+  rop_base_hint2: 'базовый сценарий — что нужно чтобы он реализовался',
+  rop_bull_hint2: 'оптимистичный сценарий — катализатор и предположения',
+  rop_check:   'Проверка P/E = P/S / Net Margin:',
+  rop_horizon: '12–18 мес',
+  // Аудит
+  audit_dq:    'DATA QUALITY: High / Med / Low — одна строка почему.',
+  audit_check: 'Что проверить вручную (3 пункта):',
+  // v2.4 — Backsolve
+  backsolve_title: 'BACKSOLVE (обязательно):',
+  backsolve_1: '• EPS_implied = Price / P/E_fwd',
+  backsolve_2: '• RPS_implied = Price / P/S_fwd',
+  backsolve_3: '• NetMargin_implied = P/S_fwd / P/E_fwd',
+  backsolve_4: 'Сравни каждую implied-цифру с консенсусом. Покажи расхождения.',
+  backsolve_5: 'Объясни одним предложением: что рынок закладывает и чего НЕ закладывает.',
+  // v2.4 — P/E calibration
+  pe_calib_title: 'ОБОСНОВАНИЕ МУЛЬТИПЛИКАТОРА (обязательно для каждого сценария):',
+  pe_calib_1: '1. Определи Life-Cycle стадию (EarlyGrowth / Expansion / Shakeout / Maturity / Decline)',
+  pe_calib_2: '2. Приведи исторические перцентили P/E (p25/p50/p75) за 3–5 лет',
+  pe_calib_3: '3. Bear: P/E ≤ p25 ИЛИ уровень стагнирующего аналога в секторе',
+  pe_calib_4: '4. Base: p25–p50, скорректированный на текущую стадию роста',
+  pe_calib_5: '5. Bull: p50–p75, но НЕ выше исторического пика эйфории',
+  pe_calib_6: 'Покажи: какой диапазон P/E используешь и почему.',
+  // v2.4 — Revenue decomposition
+  rev_decomp: 'Декомпозируй Revenue хотя бы на 2 драйвера (сегменты, Units × ASP, или география). Не ставь Revenue "из головы".',
+  // v2.4 — Sensitivity check
+  sensitivity: 'SENSITIVITY CHECK: Если изменение Base P/E на ±3x меняет alpha-gate (PASS↔FAIL) → отметь: "Alpha чувствительна к мультипликатору. Вердикт условный."',
+  // v2.4 — Anti-FOMO tone
+  tone_rule: '• ТОН: нейтральный, фактический. ЗАПРЕЩЕНЫ: "идеальная возможность", "надо брать", "упустишь шанс", "фундаментально идеально". Допустимо: "математически обосновано при условиях X, Y, Z". Решение принимает пользователь.',
+  // v2.4 — Post-earnings pricing
+  post_earn_price: '• Если отчёт вышел < 48ч назад, укажи ОБЕ цены: (a) последний close ДО отчёта, (b) текущая. ROP считай от текущей. Разницу отметь.',
+  // v2.4 — Alpha-gate normalization
+  alpha_norm: 'Alpha-gate: SPY return = 8%/год × (горизонт мес / 12). Горизонт SPY = горизонт ROP. Покажи: горизонт (мес), SPY return (%), NVDA prob-weighted return (%), alpha (п.п.).',
+  // v2.4 — Implied expectations (Pro)
+  sec_implied: '━━━ ЧТО РЫНОК ЗАКЛАДЫВАЕТ В ЦЕНУ ━━━',
+  implied_1: '1. Implied Revenue Growth: ___ (из P/S_fwd vs текущей выручки)',
+  implied_2: '2. Implied Net Margin: ___ (P/S_fwd / P/E_fwd)',
+  implied_3: '3. Implied EPS: ___ (Price / P/E_fwd)',
+  implied_4: '4. Где расхождение с моим Base: ___',
+  implied_5: '5. Что должно случиться, чтобы рынок ошибался: ___',
+  // v2.4 — EUREKA strict
+  eureka_strict: 'Рассчитай EurekaScore по 8 метрикам. Если данных для ≥3 метрик нет — статус "Review", НЕ угадывай. Покажи: какие метрики рассчитаны, какие отсутствуют.',
+  // v2.4 — Skills execution order
+  skills_order_title: 'ПОРЯДОК ВЫПОЛНЕНИЯ СКИЛЛОВ:',
+  skills_order: '1. Passport + Constitution → лимиты\n2. Snapshot + Context → G0 (свежесть < 7 дней)\n3. Company + Price Power → качество бизнеса\n4. EUREKA + Life-Cycle → качество прибыли + стадия → калибровка P/E\n5. ROP → три сценария с калиброванным P/E\n6. Scenario Map → триггеры\n7. Quality Gates → G0–G4\n8. Report → карточка',
+  // profileBlock
+  prof_title:  'МОЙ ПРОФИЛЬ:',
+  prof_claude: 'Используй мой профиль из персонализации/Custom Instructions (риск, портфель, горизонт, предпочтения, ограничения).',
+  prof_q:      'Если профиля нет или он неполный — задай максимум',
+  prof_q2:     'вопрос(ов) ТОЛЬКО про мои цели/риск/горизонт, затем сделай явные допущения (ASSUMPTIONS).',
+  prof_gpt:    'У тебя нет доступа к моим файлам вне Project. Используй только то, что я указал выше (роль, цель, горизонт, доля, бенчмарк, допустимая просадка).',
+  prof_gpt_q:  'Если данных не хватает — задай максимум',
+  prof_gpt_q2: 'вопрос(ов) про мой риск-профиль. Данные о компании ищи через Browsing.',
+  prof_gem:    'У тебя нет доступа к моим файлам вне Gem. Используй только то, что я указал выше (роль, цель, горизонт, доля, бенчмарк, допустимая просадка).',
+  prof_gem_q2: 'вопрос(ов) про мой риск-профиль. Данные о компании ищи через Google Search.',
+  // roleFocusBlock
+  role_adapt:  'Адаптируй акценты под профиль из персонализации.',
+  role_inv_lite: 'Акцент: устойчивость FCF, долгосрочный потенциал, качество бизнеса.',
+  role_inv_std:  'Акцент: конкурентный ров, ROIC vs WACC, история аллокации капитала, оценка на 3-5 лет.',
+  role_spec_lite:'Акцент: краткосрочный катализатор, момент, соотношение риск/доходность.',
+  role_spec_std: 'Акцент: краткосрочный сетап. Чёткий катализатор, технический момент, R:R >= 3:1.',
+  role_sav_lite: 'Акцент: стабильность дивидендов, защита от просадки, низкая волатильность.',
+  role_sav_std:  'Акцент: стабильность. Дивиденды (покрытие FCF), поведение в кризисы 2008/2020/2022, низкая бета.',
+  // goalContext
+  gc_add_title: 'ФОКУС АНАЛИЗА: ДОКУПКА (не первый вход)',
+  gc_add_q:     'Вопрос не "стоит ли покупать", а "обосновано ли увеличение позиции":',
+  gc_add_1:     'Тезис первого входа — всё ещё в силе или изменился?',
+  gc_add_2:     'Это усреднение вниз (цена упала) или добавление на силе (цена выросла)?',
+  gc_add_3:     'Что изменилось фундаментально с момента первой покупки?',
+  gc_hold_title:'ФОКУС АНАЛИЗА: ПЕРЕСМОТР ПОЗИЦИИ',
+  gc_hold_1:    'Тезис входа — в силе или что-то сломалось?',
+  gc_hold_2:    'Что должно произойти, чтобы держать дальше? Чтобы выйти?',
+  gc_hold_3:    'Есть ли более привлекательная альтернатива на эти деньги?',
+  gc_sell_title:'ФОКУС АНАЛИЗА: ВЫХОД ИЛИ СОКРАЩЕНИЕ',
+  gc_sell_1:    'Почему тезис мог устареть или исполниться?',
+  gc_sell_2:    'Потенциал роста vs риск удержания — что перевешивает?',
+  gc_sell_3:    'Частичный выход или полный? При каких уровнях?',
+  gc_dd_suffix: 'Какой будет итоговый вес и комфортен ли он при просадке ещё',
+  // instrumentNote
+  instr_auto_title: 'ТИП: AUTO (определи сам)',
+  instr_auto_1: 'Сначала определи по источникам: это акция или ETF.',
+  instr_auto_2: 'Если ETF — добавь блок: TER, tracking error vs',
+  instr_auto_3: ', топ-холдинги, AUM, ликвидность, bid-ask спред, тип репликации.',
+  instr_etf_title: 'ТИП: ETF',
+  instr_etf_1: '• TER (комиссия), tracking error vs',
+  instr_etf_2: '• Топ-10 холдингов и концентрация (вес топ-5)',
+  instr_etf_3: '• AUM и среднедневной объём (ликвидность, bid-ask спред)',
+  instr_etf_4: '• Физическая или синтетическая репликация',
+  instr_stock_title: 'ТИП: Акция',
+  // getSourceRule
+  src_title:   'ПРАВИЛА ДЛЯ ИИ (обязательно):',
+  src_claude:  '• Для поиска данных используй веб-поиск (tool_use) или данные из Project-файлов.',
+  src_gpt:     '• Для поиска данных используй Browsing (веб-поиск). Не опирайся на данные до даты отсечки.',
+  src_gemini:  '• Для поиска данных используй Google Search. Не опирайся на данные до даты отсечки.',
+  src_2:       '• Любая ключевая цифра — только с источником (ссылка) и датой обновления.',
+  src_3:       '• Для ТЕКУЩЕЙ ЦЕНЫ обязательно укажи timestamp котировки (дата+время+таймзона) и площадку/валюту.',
+  src_3fmt:    '  Формат: "Цена = $123.45 (as of YYYY-MM-DD HH:MM UTC, NASDAQ) [источник]"',
+  src_4:       '• Если цифры расходятся между источниками — покажи оба значения и объясни разницу.',
+  src_5:       '• Если доступа к интернету нет — скажи об этом сразу и попроси 1-2 ссылки или цифры.',
+  src_6:       '• Не задавай вопросы о фактах по компании/рынку — это ищи сам.',
+  src_7:       '• Запрещено выдумывать числа. Если данных нет — пиши "нет данных".',
+  src_8:       '• Любую оценку давай диапазоном + метод + 2-3 ключевых предположения.',
+  // questionBudget
+  qb:          'Лимит уточняющих вопросов',
+  qb2:         'Вопросы — только про мой профиль/цели/ограничения (не про факты компании). Если данных не хватает — делай допущения и перечисли их в ASSUMPTIONS.',
+  // startBlocksRule
+  sbr_intro:   'В НАЧАЛЕ ОТВЕТА придерживайся порядка:',
+  sbr_1:       '1) ASSUMPTIONS (только если чего-то не хватило; максимум 6 пунктов):',
+  sbr_2:       '2) DATA QUALITY: High / Med / Low — одна строка почему.',
+  sbr_3:       '3) ACTION CARD (обязательно, 1 экран):',
+  sbr_price:   '• Цена сейчас + timestamp + биржа/валюта',
+  sbr_bmk:     '• Бенчмарк для alpha-gate',
+  sbr_bmk2:    'Покажи expected return акции vs',
+  sbr_bmk3:    'за тот же горизонт.',
+  sbr_dd:      '• Допустимая просадка по позиции',
+  sbr_dd2:     'Стоп‑логика и размер позиции должны это уважать.',
+  sbr_prem:    '• Премия/дисконт к сектору и к собственной истории (P/E, P/S) — 1 строка «почему рынок так оценивает»',
+  sbr_cons:    '• Консенсус аналитиков: Target, Buy/Hold/Sell, динамика пересмотров (вверх/вниз) + что они ждут по EPS/RPS/марже',
+  sbr_rop:     '• Мой ROP: Bear/Base/Bull коридор цен + вероятность + ожидаемая доходность (prob-weighted) + alpha vs',
+  sbr_tbl:     'ТАБЛИЦА (коротко, 3 строки) «Рынок vs Аналитики vs ROP» — покажи расхождения сразу:',
+  sbr_col1:    'Взгляд', sbr_col2: 'Что говорит (1 строка)',
+  sbr_col3:    'Ключевое число', sbr_col4: 'Вывод для действия',
+  sbr_mkt_row: '(премия/дисконт, что «в цене»)',
+  sbr_ana_row: '(консенсус, драйвер)',
+  sbr_rop_row: '(мои сценарии)',
+  sbr_dec:     '• Решение ДЛЯ МЕНЯ: что делать сейчас + уровни входа/выхода/стоп + размер позиции (Δвес и итоговый вес) в рамках лимитов (Heat/NBE/конституция)',
+  sbr_trig:    '• 3 триггера (метрики/события), которые меняют сценарий',
+  sbr_after:   'Только после этого — основной анализ.',
+  // maxDrawdownText
+  dd_auto:     'AUTO (используй мой профиль/конституцию; если нет — спроси в рамках лимита вопросов)',
+  // buildTemplatePrompt
+  tmpl_ai:     'Ты — опытный инвестиционный ассистент. Сгенерируй мой персональный мастер‑шаблон для анализа ценных бумаг (акции/ETF).',
+  tmpl_inputs: 'МОИ ВВОДНЫЕ (известно заранее):',
+  tmpl_style:  '• Стиль',
+  tmpl_instr:  '• Инструменты',
+  tmpl_bmk:    '• Бенчмарк для alpha-gate',
+  tmpl_dd:     '• Допустимая просадка по позиции',
+  tmpl_note:   'ВАЖНО:',
+  tmpl_n1:     '• Используй мой профиль из персонализации/Custom Instructions, если он уже есть. Если профиля достаточно — НЕ задавай вопросов и сразу выдай мастер‑шаблон.',
+  tmpl_n2:     '• Если профиля нет или он неполный — задай максимум 3 коротких вопроса ОДНИМ списком (без длинных объяснений). После моего ответа — выдай мастер‑шаблон.',
+  tmpl_n3:     "  Если я отвечу «пропустить» — сделай разумные допущения и явно перечисли их.",
+  tmpl_req:    'ТРЕБОВАНИЯ К МАСТЕР‑ШАБЛОНУ:',
+  tmpl_r1:     "1) Работает для любого тикера: я пишу «TICKER + зачем смотришь + горизонт».",
+  tmpl_r2:     '2) Каждый ответ начинается с: ASSUMPTIONS (если нужно) + DATA QUALITY.',
+  tmpl_r3:     '3) Ключевые цифры — только с источником и датой; для цены — timestamp котировки (YYYY-MM-DD HH:MM UTC) + биржа/валюта.',
+  tmpl_r4:     '4) Fallback: нет интернета → сказать сразу и попросить 1–2 ссылки/цифры.',
+  tmpl_r5:     '5) Лимит уточняющих вопросов: Lite=1, Standard=2, Pro=3. Только про мой профиль/цели, не про факты компании.',
+  tmpl_r6:     '6) Запрещено выдумывать данные. Если данных нет — пиши «нет данных».',
+  tmpl_out:    'ЧТО ВЫДАТЬ:',
+  tmpl_a:      'A) ПРОФИЛЬ ИНВЕСТОРА — 5–7 строк: кто я, что ищу, что избегаю.',
+  tmpl_b:      'B) МАСТЕР‑ШАБЛОН — готовый текст для сохранения в Custom Instructions / System Prompt.',
+  tmpl_c:      'C) ПРИМЕР ЗАПРОСА — 1 строка.',
+  tmpl_badge:  'Шаблон',
+  tmpl_label:  'Персональный системный промпт',
+  // role hints (buildTemplatePrompt)
+  rh_inv:      'долгосрочный инвестор (компаундинг, качество)',
+  rh_spec:     'тактический спекулянт (сетапы, катализаторы)',
+  rh_sav:      'консервативный сберегатель (стабильность, дивиденды)',
+  rh_none:     'стиль пока не определён',
+  ih_etf:      'в основном ETF',
+  ih_stock:    'в основном акции',
+  ih_both:     'акции и ETF',
+  tmpl_dd_none:'не указана (выведи из профиля/спроси)',
+  // macroContextBlock strings
+  mctx_hdr:        '━━━ 0. МАКРО-РЕЖИМ (обязательно перед оценкой) ━━━',
+  mctx_has_file:   'Прочти SUMMARY LINE из 07_context_card.md.',
+  mctx_has_fresh:  'Если карточка свежая (< 7 дней) — используй готовые значения: Macro / Market / Liquidity / Sentiment режимы + лимиты NBE и Heat.',
+  mctx_has_stale:  'Если карточка старше 7 дней или SUMMARY LINE пуст — выполни auto-fetch (шаги ниже) и построй строку самостоятельно.',
+  mctx_no_file:    '07_context_card.md не подключён. Выполни быстрый auto-fetch через поиск:',
+  mctx_q1:         '• "S&P 500 price 200 day moving average today" → S&P выше или ниже EMA200?',
+  mctx_q2:         '• "VIX volatility index current" → уровень (low<15 / medium 15–22 / high>22)',
+  mctx_q3:         '• "ISM Manufacturing PMI latest 2025" → >52 GROWTH / 50–52 NEUTRAL / <50 DOWNTURN',
+  mctx_q4:         '• "US CPI inflation YoY latest" → <2.5% COOLING / 2.5–4% ELEVATED / >4% HOT',
+  mctx_q5:         '• "US high yield OAS spread current" → <350 TIGHT / 350–550 NORMAL / >550 WIDE',
+  mctx_q6:         '• "CNN Fear Greed index today" → 0–35 RISK-OFF / 35–65 NEUTRAL / 65–100 RISK-ON',
+  mctx_output:     'Выведи ОДНОЙ строкой перед любым блоком анализа:',
+  mctx_fmt:        '📍 РЕЖИМ: Macro [___] | Market [BULL/BEAR] | VIX [__] | Sentiment [___] | → P/E Bear [-__% к норме] / Heat-лимит [___%]',
+  mctx_pe_note:    'Используй режим для калибровки мультипликаторов: BEAR/RISK-OFF → P/E Bear сжимается на 15–25% от исторического P25; BULL/RISK-ON → P/E Bull может достигать P75.',
+  // Judge prompt strings
+  judge_role:      'Ты — Devil\'s Advocate Analyst. Твоя единственная задача — атаковать готовый инвестиционный анализ и найти слабые места. Ты не аналитик, который строит тезис — ты Судья, который его проверяет на прочность.',
+  judge_report_hdr:'━━━ ОТЧЁТ НА АУДИТ ━━━',
+  judge_tasks_hdr: '━━━ ЗАДАЧИ СУДЬИ ━━━',
+  judge_t1_hdr:    '1. СТРЕСС-ТЕСТ ДОПУЩЕНИЙ',
+  judge_t1_1:      'Возьми каждую ключевую цифру Base-сценария (EPS, Net Margin, P/E, Revenue growth).',
+  judge_t1_2:      '• Что если каждая из них ошибается на −20%? Пересчитай Target — покажи новое число.',
+  judge_t1_3:      '• Какая одна переменная наиболее чувствительна — меняет вердикт (КУПИТЬ ↔ ДЕРЖАТЬ ↔ НЕ ТРОГАТЬ) при малом изменении?',
+  judge_t2_hdr:    '2. BIAS SCAN',
+  judge_t2_0:      'Проверь наличие следующих когнитивных смещений:',
+  judge_t2_1:      '• Anchoring bias: не привязан ли анализ к цене входа или к круглым числам?',
+  judge_t2_2:      '• Recency bias: не переоценивает ли последний квартал как долгосрочный тренд?',
+  judge_t2_3:      '• Narrative bias: не «тянет» ли бизнес-нарратив завышенные мультипликаторы без числового обоснования?',
+  judge_t2_4:      '• Confirmation bias: искал ли аналитик опровергающие факты — или только подтверждающие?',
+  judge_t2_5:      'Для каждого найденного bias — укажи конкретное место в тексте, где он проявляется.',
+  judge_t3_hdr:    '3. МАТЕМАТИЧЕСКАЯ ПРОВЕРКА',
+  judge_t3_1:      '• Проверь P/E = P/S / Net Margin для каждого сценария. Покажи: ✓ или ✗ с числами.',
+  judge_t3_2:      '• Проверь: prob-weighted return = Σ(Prob_i × Return_i). Сходится?',
+  judge_t3_3:      '• Проверь Alpha-gate: горизонт SPY нормирован так же, как горизонт ROP? Если нет — укажи расхождение.',
+  judge_t4_hdr:    '4. АДЕКВАТНОСТЬ ВЕРДИКТА',
+  judge_t4_1:      '• Поддерживают ли данные в отчёте этот вердикт — или он декларативный (написан без опоры на цифры)?',
+  judge_t4_2:      '• Если Bull и Bear оба правдоподобны с вероятностью ≥ 30% каждый — вердикт должен быть ДЕРЖАТЬ, а не КУПИТЬ. Проверь это.',
+  judge_t4_3:      '• Достаточно ли Red Flags — или что-то критическое было проигнорировано?',
+  judge_result_hdr:'━━━ РЕШЕНИЕ СУДЬИ ━━━',
+  judge_verdict:   'ВЕРДИКТ СУДЬИ: [CONFIRM / REVISE / OVERTURN]',
+  judge_v_confirm: '• CONFIRM — анализ корректен, вердикт математически обоснован',
+  judge_v_revise:  '• REVISE — логика верна, но ≥1 допущение требует пересмотра',
+  judge_v_overturn:'• OVERTURN — вердикт меняется при объективном взгляде на цифры',
+  judge_findings:  'КРИТИЧЕСКИЕ НАХОДКИ (максимум 3, ранжированы по важности):',
+  judge_rev_verd:  'ПЕРЕСМОТРЕННЫЙ ВЕРДИКТ (только при REVISE / OVERTURN): [Купить / Держать / Не трогать / Продать / Частично] — одна строка почему.',
+  judge_rules_hdr: 'ПРАВИЛА ДЛЯ СУДЬИ:',
+  judge_r1:        '• Только факты и математика. Запрещено «мне кажется» или «возможно».',
+  judge_r2:        '• Если в отчёте нет нужных данных для проверки — пиши явно: «Данных для проверки нет».',
+  judge_r3:        '• Не перефразируй отчёт. Атакуй его.',
+  judge_r4:        '• Цель — сделать инвестора умнее, а не найти критику ради критики.',
+},
+
+en: {
+  ai_lite:     'You are a portfolio analyst. Quick analysis of',
+  ai_std:      'You are a senior portfolio analyst. Analysis of',
+  ai_std_for:  'for a decision.',
+  ai_pro:      'You are a senior hedge fund analyst. Deep analysis of',
+  sec_ctx:     '━━━ CONTEXT ━━━',
+  sec_find:    '━━━ FIND (current data) ━━━',
+  sec_find_fill: 'Search and fill the table — no guessing:',
+  sec_find_fill2: 'Fill the table with accurate data and sources:',
+  sec_find_fill3: 'Full metrics table with sources and dates:',
+  sec_mkt:     '━━━ 1. MARKET VIEW ━━━',
+  sec_ana:     '━━━ 2. ANALYSTS VIEW ━━━',
+  sec_biz:     '━━━ 3. BUSINESS QUALITY (if skills connected) ━━━',
+  sec_rop_std: '━━━ 3. MY ROP VALUATION ━━━',
+  sec_rop_pro: '━━━ 4. MY ROP VALUATION ━━━',
+  sec_result:  '━━━ CONCLUSION ━━━',
+  sec_audit:   '━━━ DATA AUDIT ━━━',
+  sec_role:    'ROLE FOCUS',
+  m_price:     'Current price',
+  m_target:    'Analyst target',
+  m_updown:    'Upside/Downside',
+  m_bhs:       'Buy / Hold / Sell',
+  m_eps_fwd:   'EPS fwd consensus',
+  m_rps_fwd:   'RPS fwd consensus',
+  m_nm_cons:   'Net Margin cons.',
+  m_eps_both:  'EPS fwd cons. / actual ttm',
+  m_rps_both:  'RPS fwd cons. / actual ttm',
+  m_nm_both:   'Net Margin cons. / actual',
+  m_eps_yoy:   'EPS growth YoY (est.)',
+  m_rps_yoy:   'RPS growth YoY (est.)',
+  verdict:     'VERDICT',
+  v_opts:      'BUY / HOLD / PASS / SELL / TRIM',
+  v_why:       'one sentence why.',
+  v_ctx:       'Context',
+  v_ctx_hint:  'how the market regime and my portfolio affect this decision — 1 line',
+  v_risk:      'Risk parameter: max drawdown per position',
+  v_stop:      'Stop/position size must comply.',
+  scenarios:   'SCENARIOS & ACTIONS',
+  s_noenter:   'Stay out / Stop',
+  s_hold:      'Hold / Add',
+  s_add:       'Add / Hold',
+  s_stop:      'Stop',
+  s_entry:     'Entry',
+  s_target:    'Target',
+  triggers:    'TRIGGERS',
+  t_bear:      'Bear → triggers if',
+  t_base:      'Base → assumption',
+  t_bull:      'Bull → catalyst',
+  t_bear_v:    '1–2 specific events or metrics',
+  t_base_v:    'what needs to happen',
+  t_bull_v:    'what needs to occur',
+  red_flags:   'RED FLAGS',
+  rf_hint:     'max 2 — what invalidates the thesis',
+  rop_formula: 'Formula: Price = P/E × EPS = P/S × RPS = P/S × (EPS / Net Margin)',
+  rop_build:   'Build three scenarios using different multiple assumptions:',
+  rop_build2:  'Build three scenarios with justification for each assumption.',
+  rop_also:    'Also calculate:',
+  rop_ret:     'Return per scenario = (Target price / Current price − 1)',
+  rop_pwret:   'Probability-weighted expected return (using your probabilities)',
+  rop_consist: 'Check consistency: P/E ≈ P/S / Net Margin',
+  rop_consist2:'Check consistency: P/E ≈ P/S / Net Margin (show the check explicitly)',
+  rop_bear_j:  'Bear justification',
+  rop_base_j:  'Base justification',
+  rop_bull_j:  'Bull justification',
+  rop_bear_hint: 'why these specific EPS / multiples',
+  rop_base_hint: 'why these specific EPS / multiples',
+  rop_bull_hint: 'why these specific EPS / multiples',
+  rop_bear_hint2: 'why these numbers — what needs to happen',
+  rop_base_hint2: 'base case — what is needed to materialize',
+  rop_bull_hint2: 'optimistic scenario — catalyst and assumptions',
+  rop_check:   'P/E = P/S / Net Margin check:',
+  rop_horizon: '12–18 months',
+  audit_dq:    'DATA QUALITY: High / Med / Low — one line why.',
+  audit_check: 'What to verify manually (3 points):',
+  // v2.4
+  backsolve_title: 'BACKSOLVE (mandatory):',
+  backsolve_1: '• EPS_implied = Price / P/E_fwd',
+  backsolve_2: '• RPS_implied = Price / P/S_fwd',
+  backsolve_3: '• NetMargin_implied = P/S_fwd / P/E_fwd',
+  backsolve_4: 'Compare each implied figure with consensus. Show discrepancies.',
+  backsolve_5: 'Explain in one sentence: what the market prices in and what it does NOT.',
+  pe_calib_title: 'MULTIPLE JUSTIFICATION (mandatory for each scenario):',
+  pe_calib_1: '1. Determine Life-Cycle stage (EarlyGrowth / Expansion / Shakeout / Maturity / Decline)',
+  pe_calib_2: '2. Provide historical P/E percentiles (p25/p50/p75) over 3–5 years',
+  pe_calib_3: '3. Bear: P/E ≤ p25 OR level of a stagnating sector peer',
+  pe_calib_4: '4. Base: p25–p50, adjusted for current growth stage',
+  pe_calib_5: '5. Bull: p50–p75, but NOT above historical euphoria peak',
+  pe_calib_6: 'Show: which P/E range you use and why.',
+  rev_decomp: 'Decompose Revenue into at least 2 drivers (segments, Units × ASP, or geography). Do not guess Revenue.',
+  sensitivity: 'SENSITIVITY CHECK: If changing Base P/E by ±3x flips the alpha-gate (PASS↔FAIL) → note: "Alpha sensitive to multiple. Verdict conditional."',
+  tone_rule: '• TONE: neutral, factual. FORBIDDEN: "ideal opportunity", "must buy", "you will miss out", "fundamentally ideal". Allowed: "mathematically justified under conditions X, Y, Z". The user makes the decision.',
+  post_earn_price: '• If earnings released < 48h ago, show BOTH prices: (a) last close BEFORE report, (b) current. Calculate ROP from current price. Note the difference.',
+  alpha_norm: 'Alpha-gate: SPY return = 8%/yr × (horizon months / 12). SPY horizon = ROP horizon. Show: horizon (mo), SPY return (%), stock prob-weighted return (%), alpha (p.p.).',
+  sec_implied: '━━━ WHAT THE MARKET PRICES IN ━━━',
+  implied_1: '1. Implied Revenue Growth: ___ (from P/S_fwd vs current revenue)',
+  implied_2: '2. Implied Net Margin: ___ (P/S_fwd / P/E_fwd)',
+  implied_3: '3. Implied EPS: ___ (Price / P/E_fwd)',
+  implied_4: '4. Discrepancy with my Base: ___',
+  implied_5: '5. What needs to happen for the market to be wrong: ___',
+  eureka_strict: 'Calculate EurekaScore from 8 metrics. If data missing for ≥3 metrics → status "Review", do NOT guess. Show: which metrics calculated, which missing.',
+  skills_order_title: 'SKILLS EXECUTION ORDER:',
+  skills_order: '1. Passport + Constitution → limits\n2. Snapshot + Context → G0 (freshness < 7 days)\n3. Company + Price Power → business quality\n4. EUREKA + Life-Cycle → earnings quality + stage → P/E calibration\n5. ROP → three scenarios with calibrated P/E\n6. Scenario Map → triggers\n7. Quality Gates → G0–G4\n8. Report → decision card',
+  prof_title:  'MY PROFILE:',
+  prof_claude: 'Use my profile from Personalization/Custom Instructions (risk, portfolio, horizon, preferences, constraints).',
+  prof_q:      'If profile is missing or incomplete — ask at most',
+  prof_q2:     'question(s) ONLY about my goals/risk/horizon, then state explicit assumptions (ASSUMPTIONS).',
+  prof_gpt:    'You have no access to my files outside the Project. Use only what I specified above (role, goal, horizon, weight, benchmark, max drawdown).',
+  prof_gpt_q:  'If data is insufficient — ask at most',
+  prof_gpt_q2: 'question(s) about my risk profile. Find company data via Browsing.',
+  prof_gem:    'You have no access to my files outside the Gem. Use only what I specified above (role, goal, horizon, weight, benchmark, max drawdown).',
+  prof_gem_q2: 'question(s) about my risk profile. Find company data via Google Search.',
+  role_adapt:  'Adapt emphasis to the profile from personalization.',
+  role_inv_lite: 'Focus: FCF sustainability, long-term potential, business quality.',
+  role_inv_std:  'Focus: competitive moat, ROIC vs WACC, capital allocation history, 3–5 year valuation.',
+  role_spec_lite:'Focus: short-term catalyst, momentum, risk/reward ratio.',
+  role_spec_std: 'Focus: short-term setup. Clear catalyst, technical momentum, R:R >= 3:1.',
+  role_sav_lite: 'Focus: dividend stability, drawdown protection, low volatility.',
+  role_sav_std:  'Focus: stability. Dividends (FCF coverage), behavior in crises 2008/2020/2022, low beta.',
+  gc_add_title: 'ANALYSIS FOCUS: ADDING TO POSITION (not a first entry)',
+  gc_add_q:     'The question is not "should I buy" but "is increasing the position justified":',
+  gc_add_1:     'Is the original thesis still valid or has it changed?',
+  gc_add_2:     'Is this averaging down (price fell) or adding to a winner (price rose)?',
+  gc_add_3:     'What has changed fundamentally since the first purchase?',
+  gc_hold_title:'ANALYSIS FOCUS: POSITION REVIEW',
+  gc_hold_1:    'Is the entry thesis still valid or has something broken?',
+  gc_hold_2:    'What needs to happen to keep holding? To exit?',
+  gc_hold_3:    'Is there a more attractive alternative for this capital?',
+  gc_sell_title:'ANALYSIS FOCUS: EXIT OR TRIM',
+  gc_sell_1:    'Why might the thesis have expired or played out?',
+  gc_sell_2:    'Upside potential vs risk of holding — what outweighs?',
+  gc_sell_3:    'Partial exit or full? At what levels?',
+  gc_dd_suffix: 'What will the total weight be and is it comfortable with another',
+  instr_auto_title: 'TYPE: AUTO (determine yourself)',
+  instr_auto_1: 'First determine from sources: is this a stock or ETF.',
+  instr_auto_2: 'If ETF — add block: TER, tracking error vs',
+  instr_auto_3: ', top holdings, AUM, liquidity, bid-ask spread, replication type.',
+  instr_etf_title: 'TYPE: ETF',
+  instr_etf_1: '• TER (fee), tracking error vs',
+  instr_etf_2: '• Top-10 holdings and concentration (weight of top-5)',
+  instr_etf_3: '• AUM and average daily volume (liquidity, bid-ask spread)',
+  instr_etf_4: '• Physical or synthetic replication',
+  instr_stock_title: 'TYPE: Stock',
+  src_title:   'AI RULES (mandatory):',
+  src_claude:  '• For data search use web search (tool_use) or Project files.',
+  src_gpt:     '• For data search use Browsing (web search). Do not rely on data before the cutoff date.',
+  src_gemini:  '• For data search use Google Search. Do not rely on data before the cutoff date.',
+  src_2:       '• Every key figure — only with source (link) and update date.',
+  src_3:       '• For CURRENT PRICE always include the quote timestamp (date+time+timezone) and exchange/currency.',
+  src_3fmt:    '  Format: "Price = $123.45 (as of YYYY-MM-DD HH:MM UTC, NASDAQ) [source]"',
+  src_4:       '• If figures differ between sources — show both values and explain the difference.',
+  src_5:       '• If no internet access — say so immediately and ask for 1–2 links or figures.',
+  src_6:       '• Do not ask questions about company/market facts — find them yourself.',
+  src_7:       '• Do not fabricate numbers. If data is missing — write "no data".',
+  src_8:       '• Give any estimate as a range + method + 2–3 key assumptions.',
+  qb:          'Question limit',
+  qb2:         'Questions — only about my profile/goals/constraints (not company facts). If data is missing — make assumptions and list them in ASSUMPTIONS.',
+  sbr_intro:   'AT THE START OF YOUR RESPONSE follow this order:',
+  sbr_1:       '1) ASSUMPTIONS (only if something was missing; max 6 points):',
+  sbr_2:       '2) DATA QUALITY: High / Med / Low — one line why.',
+  sbr_3:       '3) ACTION CARD (mandatory, 1 screen):',
+  sbr_price:   '• Current price + timestamp + exchange/currency',
+  sbr_bmk:     '• Benchmark for alpha-gate',
+  sbr_bmk2:    'Show expected return of stock vs',
+  sbr_bmk3:    'over the same horizon.',
+  sbr_dd:      '• Max drawdown per position',
+  sbr_dd2:     'Stop logic and position size must respect this.',
+  sbr_prem:    '• Premium/discount to sector and own history (P/E, P/S) — 1 line "why market values it this way"',
+  sbr_cons:    '• Analyst consensus: Target, Buy/Hold/Sell, revision trend (up/down) + what they expect for EPS/RPS/margin',
+  sbr_rop:     '• My ROP: Bear/Base/Bull price range + probability + expected return (prob-weighted) + alpha vs',
+  sbr_tbl:     'TABLE (brief, 3 rows) "Market vs Analysts vs ROP" — show divergences immediately:',
+  sbr_col1:    'View', sbr_col2: 'What it says (1 line)',
+  sbr_col3:    'Key number', sbr_col4: 'Implication for action',
+  sbr_mkt_row: '(premium/discount, what is "priced in")',
+  sbr_ana_row: '(consensus, driver)',
+  sbr_rop_row: '(my scenarios)',
+  sbr_dec:     '• Decision FOR ME: what to do now + entry/exit/stop levels + position size (Δweight and total weight) within limits (Heat/NBE/constitution)',
+  sbr_trig:    '• 3 triggers (metrics/events) that change the scenario',
+  sbr_after:   'Only after this — the main analysis.',
+  dd_auto:     'AUTO (use my profile/constitution; if unavailable — ask within the question limit)',
+  tmpl_ai:     'You are an experienced investment assistant. Generate my personalized master template for securities analysis (stocks/ETFs).',
+  tmpl_inputs: 'MY INPUTS (known in advance):',
+  tmpl_style:  '• Style',
+  tmpl_instr:  '• Instruments',
+  tmpl_bmk:    '• Benchmark for alpha-gate',
+  tmpl_dd:     '• Max drawdown per position',
+  tmpl_note:   'IMPORTANT:',
+  tmpl_n1:     '• Use my profile from Personalization/Custom Instructions if it already exists. If the profile is sufficient — do NOT ask questions and immediately provide the master template.',
+  tmpl_n2:     '• If the profile is missing or incomplete — ask at most 3 short questions in ONE list (no long explanations). After my answer — provide the master template.',
+  tmpl_n3:     '  If I answer "skip" — make reasonable assumptions and list them explicitly.',
+  tmpl_req:    'MASTER TEMPLATE REQUIREMENTS:',
+  tmpl_r1:     '1) Works for any ticker: I write "TICKER + why you are looking + horizon".',
+  tmpl_r2:     '2) Every response starts with: ASSUMPTIONS (if needed) + DATA QUALITY.',
+  tmpl_r3:     '3) Key figures — only with source and date; for price — quote timestamp (YYYY-MM-DD HH:MM UTC) + exchange/currency.',
+  tmpl_r4:     '4) Fallback: no internet → say so immediately and ask for 1–2 links/figures.',
+  tmpl_r5:     '5) Clarifying question limit: Lite=1, Standard=2, Pro=3. Only about my profile/goals, not company facts.',
+  tmpl_r6:     '6) Do not fabricate data. If data is missing — write "no data".',
+  tmpl_out:    'WHAT TO PROVIDE:',
+  tmpl_a:      'A) INVESTOR PROFILE — 5–7 lines: who I am, what I seek, what I avoid.',
+  tmpl_b:      'B) MASTER TEMPLATE — ready text to save in Custom Instructions / System Prompt.',
+  tmpl_c:      'C) EXAMPLE REQUEST — 1 line.',
+  tmpl_badge:  'Template',
+  tmpl_label:  'Personal system prompt',
+  rh_inv:      'long-term investor (compounding, quality)',
+  rh_spec:     'tactical speculator (setups, catalysts)',
+  rh_sav:      'conservative saver (stability, dividends)',
+  rh_none:     'style not yet defined',
+  ih_etf:      'primarily ETFs',
+  ih_stock:    'primarily stocks',
+  ih_both:     'stocks and ETFs',
+  tmpl_dd_none:'not specified (derive from profile/ask)',
+  // macroContextBlock strings
+  mctx_hdr:        '━━━ 0. MACRO REGIME (required before valuation) ━━━',
+  mctx_has_file:   'Read the SUMMARY LINE from 07_context_card.md.',
+  mctx_has_fresh:  'If the card is fresh (< 7 days) — use the ready values: Macro / Market / Liquidity / Sentiment regimes + NBE and Heat limits.',
+  mctx_has_stale:  'If the card is older than 7 days or SUMMARY LINE is empty — run auto-fetch (steps below) and build the line yourself.',
+  mctx_no_file:    '07_context_card.md is not connected. Run a quick auto-fetch via search:',
+  mctx_q1:         '• "S&P 500 price 200 day moving average today" → Is S&P above or below EMA200?',
+  mctx_q2:         '• "VIX volatility index current" → level (low<15 / medium 15–22 / high>22)',
+  mctx_q3:         '• "ISM Manufacturing PMI latest 2025" → >52 GROWTH / 50–52 NEUTRAL / <50 DOWNTURN',
+  mctx_q4:         '• "US CPI inflation YoY latest" → <2.5% COOLING / 2.5–4% ELEVATED / >4% HOT',
+  mctx_q5:         '• "US high yield OAS spread current" → <350 TIGHT / 350–550 NORMAL / >550 WIDE',
+  mctx_q6:         '• "CNN Fear Greed index today" → 0–35 RISK-OFF / 35–65 NEUTRAL / 65–100 RISK-ON',
+  mctx_output:     'Output ONE LINE before any analysis block:',
+  mctx_fmt:        '📍 REGIME: Macro [___] | Market [BULL/BEAR] | VIX [__] | Sentiment [___] | → P/E Bear [-__% vs norm] / Heat limit [___%]',
+  mctx_pe_note:    'Use regime to calibrate multiples: BEAR/RISK-OFF → P/E Bear compresses 15–25% below historical P25; BULL/RISK-ON → P/E Bull may reach P75.',
+  // Judge prompt strings
+  judge_role:      'You are a Devil\'s Advocate Analyst. Your sole task is to attack a completed investment analysis and find its weakest points. You are not an analyst building a thesis — you are the Judge stress-testing it.',
+  judge_report_hdr:'━━━ REPORT UNDER AUDIT ━━━',
+  judge_tasks_hdr: '━━━ JUDGE\'S TASKS ━━━',
+  judge_t1_hdr:    '1. STRESS-TEST THE ASSUMPTIONS',
+  judge_t1_1:      'Take every key figure in the Base scenario (EPS, Net Margin, P/E, Revenue growth).',
+  judge_t1_2:      '• What if each is wrong by −20%? Recalculate the Target — show the new number.',
+  judge_t1_3:      '• Which single variable is most sensitive — flips the verdict (BUY ↔ HOLD ↔ PASS) with a small change?',
+  judge_t2_hdr:    '2. BIAS SCAN',
+  judge_t2_0:      'Check for the following cognitive biases:',
+  judge_t2_1:      '• Anchoring bias: is the analysis anchored to the entry price or round numbers?',
+  judge_t2_2:      '• Recency bias: does the last quarter get over-weighted as a long-term trend?',
+  judge_t2_3:      '• Narrative bias: does the business story inflate multiples without numerical support?',
+  judge_t2_4:      '• Confirmation bias: did the analyst look for disconfirming evidence — or only confirming?',
+  judge_t2_5:      'For each bias found — cite the specific text where it appears.',
+  judge_t3_hdr:    '3. MATH CHECK',
+  judge_t3_1:      '• Check P/E = P/S / Net Margin for each scenario. Show: ✓ or ✗ with the actual numbers.',
+  judge_t3_2:      '• Check: prob-weighted return = Σ(Prob_i × Return_i). Does it add up?',
+  judge_t3_3:      '• Check Alpha-gate: is the SPY horizon normalized the same way as the ROP horizon? If not — flag the discrepancy.',
+  judge_t4_hdr:    '4. VERDICT ADEQUACY',
+  judge_t4_1:      '• Do the data in the report actually support this verdict — or is it declarative (stated without numeric backing)?',
+  judge_t4_2:      '• If both Bull and Bear are plausible at ≥30% probability each — the verdict should be HOLD, not BUY. Verify this.',
+  judge_t4_3:      '• Are the Red Flags sufficient — or was something critical overlooked?',
+  judge_result_hdr:'━━━ JUDGE\'S RULING ━━━',
+  judge_verdict:   'JUDGE\'S VERDICT: [CONFIRM / REVISE / OVERTURN]',
+  judge_v_confirm: '• CONFIRM — analysis is correct, verdict is mathematically supported',
+  judge_v_revise:  '• REVISE — logic is sound, but ≥1 assumption needs revision',
+  judge_v_overturn:'• OVERTURN — verdict changes under an objective reading of the numbers',
+  judge_findings:  'CRITICAL FINDINGS (max 3, ranked by importance):',
+  judge_rev_verd:  'REVISED VERDICT (only for REVISE / OVERTURN): [Buy / Hold / Pass / Sell / Trim] — one sentence why.',
+  judge_rules_hdr: 'JUDGE\'S RULES:',
+  judge_r1:        '• Facts and math only. No "I think" or "perhaps".',
+  judge_r2:        '• If the report lacks data needed for a check — state it explicitly: "No data available for this check".',
+  judge_r3:        '• Do not paraphrase the report. Attack it.',
+  judge_r4:        '• Goal: make the investor smarter — not find criticism for its own sake.',
+},
+
+uk: {
+  ai_lite:     'Ти — портфельний аналітик. Швидкий аналіз',
+  ai_std:      'Ти — старший портфельний аналітик. Аналіз',
+  ai_std_for:  'для прийняття рішення.',
+  ai_pro:      'Ти — старший аналітик хедж-фонду. Глибокий аналіз',
+  sec_ctx:     '━━━ КОНТЕКСТ ━━━',
+  sec_find:    '━━━ ЩО ЗНАЙТИ (дані на сьогодні) ━━━',
+  sec_find_fill: 'Знайди через пошук і заповни таблицю — без домислів:',
+  sec_find_fill2: 'Заповни таблицю точними даними з джерелами:',
+  sec_find_fill3: 'Повна таблиця метрик з джерелами та датами:',
+  sec_mkt:     '━━━ 1. ПОГЛЯД РИНКУ ━━━',
+  sec_ana:     '━━━ 2. ПОГЛЯД АНАЛІТИКІВ ━━━',
+  sec_biz:     '━━━ 3. ЯКІСТЬ БІЗНЕСУ (якщо підключені скіли) ━━━',
+  sec_rop_std: '━━━ 3. МІЙ ROP-РОЗРАХУНОК ━━━',
+  sec_rop_pro: '━━━ 4. МІЙ ROP-РОЗРАХУНОК ━━━',
+  sec_result:  '━━━ ПІДСУМОК ━━━',
+  sec_audit:   '━━━ АУДИТ ДАНИХ ━━━',
+  sec_role:    'ФОКУС РОЛІ',
+  m_price:     'Ціна зараз',
+  m_target:    'Таргет аналітиків',
+  m_updown:    'Upside/Downside',
+  m_bhs:       'Buy / Hold / Sell',
+  m_eps_fwd:   'EPS fwd консенсус',
+  m_rps_fwd:   'RPS fwd консенсус',
+  m_nm_cons:   'Net Margin конс.',
+  m_eps_both:  'EPS fwd конс. / факт ttm',
+  m_rps_both:  'RPS fwd конс. / факт ttm',
+  m_nm_both:   'Net Margin конс. / факт',
+  m_eps_yoy:   'EPS зростання YoY (очік.)',
+  m_rps_yoy:   'RPS зростання YoY (очік.)',
+  verdict:     'ВЕРДИКТ',
+  v_opts:      'КУПИТИ / ТРИМАТИ / НЕ ЧІПАТИ / ПРОДАТИ / ЧАСТКОВО',
+  v_why:       'одне речення чому.',
+  v_ctx:       'Контекст',
+  v_ctx_hint:  'як ринковий режим і мій портфель впливають на це рішення — 1 рядок',
+  v_risk:      'Ризик-параметр: допустима просадка по позиції',
+  v_stop:      'Стоп/розмір позиції мають відповідати.',
+  scenarios:   'СЦЕНАРІЇ ТА ДІЇ',
+  s_noenter:   'Не входити / Стоп',
+  s_hold:      'Тримати / Додати',
+  s_add:       'Докупити / Тримати',
+  s_stop:      'Стоп',
+  s_entry:     'Вхід',
+  s_target:    'Ціль',
+  triggers:    'ТРИГЕРИ',
+  t_bear:      'Bear → реалізується якщо',
+  t_base:      'Base → припущення',
+  t_bull:      'Bull → каталізатор',
+  t_bear_v:    '1–2 конкретних події або метрики',
+  t_base_v:    'що має виконатись',
+  t_bull_v:    'що має статись',
+  red_flags:   'ЧЕРВОНІ ПРАПОРИ',
+  rf_hint:     'максимум 2 — те що анулює тезу',
+  rop_formula: 'Формула: Price = P/E × EPS = P/S × RPS = P/S × (EPS / Net Margin)',
+  rop_build:   'Побудуй три сценарії, використовуй різні припущення щодо мультиплікаторів:',
+  rop_build2:  'Побудуй три сценарії з обґрунтуванням кожного припущення.',
+  rop_also:    'Додатково обрахуй:',
+  rop_ret:     'Дохідність по кожному сценарію = (Ціна-ціль/Ціна зараз − 1)',
+  rop_pwret:   'Probability-weighted expected return (за твоїми ймовірностями)',
+  rop_consist: 'Перевір консистентність: P/E ≈ P/S / Net Margin',
+  rop_consist2:'Перевір консистентність: P/E ≈ P/S / Net Margin (покажи перевірку явно)',
+  rop_bear_j:  'Обґрунтування Bear',
+  rop_base_j:  'Обґрунтування Base',
+  rop_bull_j:  'Обґрунтування Bull',
+  rop_bear_hint: 'чому саме такі EPS / мультиплікатори',
+  rop_base_hint: 'чому саме такі EPS / мультиплікатори',
+  rop_bull_hint: 'чому саме такі EPS / мультиплікатори',
+  rop_bear_hint2: 'чому саме такі цифри — що має статись',
+  rop_base_hint2: 'базовий сценарій — що потрібно щоб він реалізувався',
+  rop_bull_hint2: 'оптимістичний сценарій — каталізатор і припущення',
+  rop_check:   'Перевірка P/E = P/S / Net Margin:',
+  rop_horizon: '12–18 міс',
+  audit_dq:    'DATA QUALITY: High / Med / Low — один рядок чому.',
+  audit_check: 'Що перевірити вручну (3 пункти):',
+  // v2.4
+  backsolve_title: 'BACKSOLVE (обов\'язково):',
+  backsolve_1: '• EPS_implied = Price / P/E_fwd',
+  backsolve_2: '• RPS_implied = Price / P/S_fwd',
+  backsolve_3: '• NetMargin_implied = P/S_fwd / P/E_fwd',
+  backsolve_4: 'Порівняй кожну implied-цифру з консенсусом. Покажи розбіжності.',
+  backsolve_5: 'Поясни одним реченням: що ринок закладає і чого НЕ закладає.',
+  pe_calib_title: 'ОБҐРУНТУВАННЯ МУЛЬТИПЛІКАТОРА (обов\'язково для кожного сценарію):',
+  pe_calib_1: '1. Визнач Life-Cycle стадію (EarlyGrowth / Expansion / Shakeout / Maturity / Decline)',
+  pe_calib_2: '2. Наведи історичні перцентилі P/E (p25/p50/p75) за 3–5 років',
+  pe_calib_3: '3. Bear: P/E ≤ p25 АБО рівень стагнуючого аналога в секторі',
+  pe_calib_4: '4. Base: p25–p50, скоригований на поточну стадію зростання',
+  pe_calib_5: '5. Bull: p50–p75, але НЕ вище історичного піку ейфорії',
+  pe_calib_6: 'Покажи: який діапазон P/E використовуєш і чому.',
+  rev_decomp: 'Декомпозуй Revenue щонайменше на 2 драйвери (сегменти, Units × ASP або географія). Не став Revenue "з голови".',
+  sensitivity: 'SENSITIVITY CHECK: Якщо зміна Base P/E на ±3x змінює alpha-gate (PASS↔FAIL) → відміть: "Alpha чутлива до мультиплікатора. Вердикт умовний."',
+  tone_rule: '• ТОН: нейтральний, фактичний. ЗАБОРОНЕНІ: "ідеальна можливість", "треба брати", "пропустиш шанс". Допустимо: "математично обґрунтовано за умов X, Y, Z". Рішення приймає користувач.',
+  post_earn_price: '• Якщо звіт вийшов < 48г тому, вкажи ОБІ ціни: (a) останній close ДО звіту, (b) поточна. ROP рахуй від поточної. Різницю відміть.',
+  alpha_norm: 'Alpha-gate: SPY return = 8%/рік × (горизонт міс / 12). Горизонт SPY = горизонт ROP. Покажи: горизонт (міс), SPY return (%), prob-weighted return (%), alpha (п.п.).',
+  sec_implied: '━━━ ЩО РИНОК ЗАКЛАДАЄ В ЦІНУ ━━━',
+  implied_1: '1. Implied Revenue Growth: ___ (з P/S_fwd vs поточної виручки)',
+  implied_2: '2. Implied Net Margin: ___ (P/S_fwd / P/E_fwd)',
+  implied_3: '3. Implied EPS: ___ (Price / P/E_fwd)',
+  implied_4: '4. Де розбіжність з моїм Base: ___',
+  implied_5: '5. Що має статись, щоб ринок помилявся: ___',
+  eureka_strict: 'Розрахуй EurekaScore за 8 метриками. Якщо даних для ≥3 метрик немає — статус "Review", НЕ вгадуй. Покажи: які метрики розраховані, які відсутні.',
+  skills_order_title: 'ПОРЯДОК ВИКОНАННЯ СКІЛІВ:',
+  skills_order: '1. Passport + Constitution → ліміти\n2. Snapshot + Context → G0 (свіжість < 7 днів)\n3. Company + Price Power → якість бізнесу\n4. EUREKA + Life-Cycle → якість прибутку + стадія → калібрування P/E\n5. ROP → три сценарії з каліброваним P/E\n6. Scenario Map → тригери\n7. Quality Gates → G0–G4\n8. Report → картка',
+  prof_title:  'МІЙ ПРОФІЛЬ:',
+  prof_claude: 'Використовуй мій профіль з персоналізації/Custom Instructions (ризик, портфель, горизонт, уподобання, обмеження).',
+  prof_q:      'Якщо профілю немає або він неповний — постав максимум',
+  prof_q2:     'питань ТІЛЬКИ про мої цілі/ризик/горизонт, потім зроби явні припущення (ASSUMPTIONS).',
+  prof_gpt:    'У тебе немає доступу до моїх файлів поза Project. Використовуй лише те, що я вказав вище (роль, ціль, горизонт, частка, бенчмарк, допустима просадка).',
+  prof_gpt_q:  'Якщо даних не вистачає — постав максимум',
+  prof_gpt_q2: 'питань про мій ризик-профіль. Дані про компанію шукай через Browsing.',
+  prof_gem:    'У тебе немає доступу до моїх файлів поза Gem. Використовуй лише те, що я вказав вище (роль, ціль, горизонт, частка, бенчмарк, допустима просадка).',
+  prof_gem_q2: 'питань про мій ризик-профіль. Дані про компанію шукай через Google Search.',
+  role_adapt:  'Адаптуй акценти під профіль з персоналізації.',
+  role_inv_lite: 'Акцент: стійкість FCF, довгостроковий потенціал, якість бізнесу.',
+  role_inv_std:  'Акцент: конкурентний рів, ROIC vs WACC, історія алокації капіталу, оцінка на 3–5 років.',
+  role_spec_lite:'Акцент: короткостроковий каталізатор, момент, співвідношення ризик/дохідність.',
+  role_spec_std: 'Акцент: короткостроковий сетап. Чіткий каталізатор, технічний момент, R:R >= 3:1.',
+  role_sav_lite: 'Акцент: стабільність дивідендів, захист від просадки, низька волатильність.',
+  role_sav_std:  'Акцент: стабільність. Дивіденди (покриття FCF), поведінка в кризи 2008/2020/2022, низька бета.',
+  gc_add_title: 'ФОКУС АНАЛІЗУ: ДОКУПІВЛЯ (не перший вхід)',
+  gc_add_q:     'Питання не "чи варто купувати", а "чи обґрунтоване збільшення позиції":',
+  gc_add_1:     'Теза першого входу — досі в силі чи змінилась?',
+  gc_add_2:     'Це усереднення вниз (ціна впала) чи додавання на силі (ціна зросла)?',
+  gc_add_3:     'Що змінилось фундаментально з моменту першої покупки?',
+  gc_hold_title:'ФОКУС АНАЛІЗУ: ПЕРЕГЛЯД ПОЗИЦІЇ',
+  gc_hold_1:    'Теза входу — в силі чи щось зламалось?',
+  gc_hold_2:    'Що має статись, щоб тримати далі? Щоб вийти?',
+  gc_hold_3:    'Чи є привабливіша альтернатива для цих грошей?',
+  gc_sell_title:'ФОКУС АНАЛІЗУ: ВИХІД АБО СКОРОЧЕННЯ',
+  gc_sell_1:    'Чому теза могла застаріти або виконатись?',
+  gc_sell_2:    'Потенціал зростання vs ризик утримання — що переважає?',
+  gc_sell_3:    'Частковий вихід чи повний? При яких рівнях?',
+  gc_dd_suffix: 'Якою буде підсумкова частка і чи комфортна вона при просадці ще',
+  instr_auto_title: 'ТИП: AUTO (визнач сам)',
+  instr_auto_1: 'Спочатку визнач за джерелами: це акція чи ETF.',
+  instr_auto_2: 'Якщо ETF — додай блок: TER, tracking error vs',
+  instr_auto_3: ', топ-холдинги, AUM, ліквідність, bid-ask спред, тип реплікації.',
+  instr_etf_title: 'ТИП: ETF',
+  instr_etf_1: '• TER (комісія), tracking error vs',
+  instr_etf_2: '• Топ-10 холдингів і концентрація (вага топ-5)',
+  instr_etf_3: '• AUM та середньоденний обсяг (ліквідність, bid-ask спред)',
+  instr_etf_4: '• Фізична або синтетична реплікація',
+  instr_stock_title: 'ТИП: Акція',
+  src_title:   'ПРАВИЛА ДЛЯ ШІ (обов\'язково):',
+  src_claude:  '• Для пошуку даних використовуй веб-пошук (tool_use) або дані з Project-файлів.',
+  src_gpt:     '• Для пошуку даних використовуй Browsing (веб-пошук). Не спирайся на дані до дати відсічки.',
+  src_gemini:  '• Для пошуку даних використовуй Google Search. Не спирайся на дані до дати відсічки.',
+  src_2:       '• Будь-яка ключова цифра — тільки з джерелом (посилання) і датою оновлення.',
+  src_3:       '• Для ПОТОЧНОЇ ЦІНИ обов\'язково вкажи timestamp котирування (дата+час+часовий пояс) і майданчик/валюту.',
+  src_3fmt:    '  Формат: "Ціна = $123.45 (as of YYYY-MM-DD HH:MM UTC, NASDAQ) [джерело]"',
+  src_4:       '• Якщо цифри розходяться між джерелами — покажи обидва значення і поясни різницю.',
+  src_5:       '• Якщо немає доступу до інтернету — скажи про це одразу і попроси 1–2 посилання або цифри.',
+  src_6:       '• Не став питань про факти щодо компанії/ринку — шукай сам.',
+  src_7:       '• Заборонено вигадувати числа. Якщо даних немає — пиши "немає даних".',
+  src_8:       '• Будь-яку оцінку давай діапазоном + метод + 2–3 ключових припущення.',
+  qb:          'Ліміт уточнюючих питань',
+  qb2:         'Питання — тільки про мій профіль/цілі/обмеження (не про факти компанії). Якщо даних не вистачає — роби припущення та перелічи їх у ASSUMPTIONS.',
+  sbr_intro:   'НА ПОЧАТКУ ВІДПОВІДІ дотримуйся порядку:',
+  sbr_1:       '1) ASSUMPTIONS (тільки якщо чогось не вистачило; максимум 6 пунктів):',
+  sbr_2:       '2) DATA QUALITY: High / Med / Low — один рядок чому.',
+  sbr_3:       '3) ACTION CARD (обов\'язково, 1 екран):',
+  sbr_price:   '• Ціна зараз + timestamp + біржа/валюта',
+  sbr_bmk:     '• Бенчмарк для alpha-gate',
+  sbr_bmk2:    'Покажи expected return акції vs',
+  sbr_bmk3:    'за той самий горизонт.',
+  sbr_dd:      '• Допустима просадка по позиції',
+  sbr_dd2:     'Стоп‑логіка та розмір позиції мають це поважати.',
+  sbr_prem:    '• Премія/дисконт до сектору і до власної історії (P/E, P/S) — 1 рядок «чому ринок так оцінює»',
+  sbr_cons:    '• Консенсус аналітиків: Target, Buy/Hold/Sell, динаміка перегляду (вгору/вниз) + що вони очікують по EPS/RPS/маржі',
+  sbr_rop:     '• Мій ROP: Bear/Base/Bull коридор цін + ймовірність + очікувана дохідність (prob-weighted) + alpha vs',
+  sbr_tbl:     'ТАБЛИЦЯ (коротко, 3 рядки) «Ринок vs Аналітики vs ROP» — покажи розбіжності одразу:',
+  sbr_col1:    'Погляд', sbr_col2: 'Що каже (1 рядок)',
+  sbr_col3:    'Ключове число', sbr_col4: 'Висновок для дії',
+  sbr_mkt_row: '(премія/дисконт, що «в ціні»)',
+  sbr_ana_row: '(консенсус, драйвер)',
+  sbr_rop_row: '(мої сценарії)',
+  sbr_dec:     '• Рішення ДЛЯ МЕНЕ: що робити зараз + рівні входу/виходу/стоп + розмір позиції (Δвага та підсумкова вага) в рамках лімітів (Heat/NBE/конституція)',
+  sbr_trig:    '• 3 тригери (метрики/події), що змінюють сценарій',
+  sbr_after:   'Тільки після цього — основний аналіз.',
+  dd_auto:     'AUTO (використовуй мій профіль/конституцію; якщо немає — запитай у межах ліміту питань)',
+  tmpl_ai:     'Ти — досвідчений інвестиційний асистент. Згенеруй мій персональний майстер‑шаблон для аналізу цінних паперів (акції/ETF).',
+  tmpl_inputs: 'МОЇ ВХІДНІ ДАНІ (відомо заздалегідь):',
+  tmpl_style:  '• Стиль',
+  tmpl_instr:  '• Інструменти',
+  tmpl_bmk:    '• Бенчмарк для alpha-gate',
+  tmpl_dd:     '• Допустима просадка по позиції',
+  tmpl_note:   'ВАЖЛИВО:',
+  tmpl_n1:     '• Використовуй мій профіль з персоналізації/Custom Instructions, якщо він уже є. Якщо профілю достатньо — НЕ став питань і одразу видай майстер‑шаблон.',
+  tmpl_n2:     '• Якщо профілю немає або він неповний — постав максимум 3 коротких питання ОДНИМ списком (без довгих пояснень). Після моєї відповіді — видай майстер‑шаблон.',
+  tmpl_n3:     "  Якщо я відповім «пропустити» — зроби розумні припущення та явно їх перелічи.",
+  tmpl_req:    'ВИМОГИ ДО МАЙСТЕР‑ШАБЛОНУ:',
+  tmpl_r1:     "1) Працює для будь-якого тикера: я пишу «TICKER + навіщо дивишся + горизонт».",
+  tmpl_r2:     '2) Кожна відповідь починається з: ASSUMPTIONS (якщо потрібно) + DATA QUALITY.',
+  tmpl_r3:     '3) Ключові цифри — тільки з джерелом і датою; для ціни — timestamp котирування (YYYY-MM-DD HH:MM UTC) + біржа/валюта.',
+  tmpl_r4:     '4) Fallback: немає інтернету → сказати одразу і попросити 1–2 посилання/цифри.',
+  tmpl_r5:     '5) Ліміт уточнюючих питань: Lite=1, Standard=2, Pro=3. Тільки про мій профіль/цілі, не про факти компанії.',
+  tmpl_r6:     '6) Заборонено вигадувати дані. Якщо даних немає — пиши «немає даних».',
+  tmpl_out:    'ЩО ВИДАТИ:',
+  tmpl_a:      'A) ПРОФІЛЬ ІНВЕСТОРА — 5–7 рядків: хто я, що шукаю, чого уникаю.',
+  tmpl_b:      'B) МАЙСТЕР‑ШАБЛОН — готовий текст для збереження в Custom Instructions / System Prompt.',
+  tmpl_c:      'C) ПРИКЛАД ЗАПИТУ — 1 рядок.',
+  tmpl_badge:  'Шаблон',
+  tmpl_label:  'Персональний системний промпт',
+  rh_inv:      'довгостроковий інвестор (компаундинг, якість)',
+  rh_spec:     'тактичний спекулянт (сетапи, каталізатори)',
+  rh_sav:      'консервативний ощадник (стабільність, дивіденди)',
+  rh_none:     'стиль поки не визначено',
+  ih_etf:      'переважно ETF',
+  ih_stock:    'переважно акції',
+  ih_both:     'акції та ETF',
+  tmpl_dd_none:'не вказана (виведи з профілю/запитай)',
+  // macroContextBlock strings
+  mctx_hdr:        '━━━ 0. МАКРО-РЕЖИМ (обов\'язково перед оцінкою) ━━━',
+  mctx_has_file:   'Прочитай SUMMARY LINE з 07_context_card.md.',
+  mctx_has_fresh:  'Якщо картка свіжа (< 7 днів) — використовуй готові значення: Macro / Market / Liquidity / Sentiment режими + ліміти NBE та Heat.',
+  mctx_has_stale:  'Якщо картка старша 7 днів або SUMMARY LINE порожній — виконай auto-fetch (кроки нижче) і побудуй рядок самостійно.',
+  mctx_no_file:    '07_context_card.md не підключений. Виконай швидкий auto-fetch через пошук:',
+  mctx_q1:         '• "S&P 500 price 200 day moving average today" → S&P вище або нижче EMA200?',
+  mctx_q2:         '• "VIX volatility index current" → рівень (low<15 / medium 15–22 / high>22)',
+  mctx_q3:         '• "ISM Manufacturing PMI latest 2025" → >52 GROWTH / 50–52 NEUTRAL / <50 DOWNTURN',
+  mctx_q4:         '• "US CPI inflation YoY latest" → <2.5% COOLING / 2.5–4% ELEVATED / >4% HOT',
+  mctx_q5:         '• "US high yield OAS spread current" → <350 TIGHT / 350–550 NORMAL / >550 WIDE',
+  mctx_q6:         '• "CNN Fear Greed index today" → 0–35 RISK-OFF / 35–65 NEUTRAL / 65–100 RISK-ON',
+  mctx_output:     'Виведи ОДНИМ рядком перед будь-яким блоком аналізу:',
+  mctx_fmt:        '📍 РЕЖИМ: Macro [___] | Market [BULL/BEAR] | VIX [__] | Sentiment [___] | → P/E Bear [-__% до норми] / Heat-ліміт [___%]',
+  mctx_pe_note:    'Використовуй режим для калібрування мультиплікаторів: BEAR/RISK-OFF → P/E Bear стискається на 15–25% від історичного P25; BULL/RISK-ON → P/E Bull може досягти P75.',
+  // Judge prompt strings
+  judge_role:      'Ти — Devil\'s Advocate Analyst. Твоє єдине завдання — атакувати готовий інвестиційний аналіз і знайти слабкі місця. Ти не аналітик, що будує тезис — ти Суддя, який перевіряє його на міцність.',
+  judge_report_hdr:'━━━ ЗВІТ НА АУДИТ ━━━',
+  judge_tasks_hdr: '━━━ ЗАВДАННЯ СУДДІ ━━━',
+  judge_t1_hdr:    '1. СТРЕС-ТЕСТ ПРИПУЩЕНЬ',
+  judge_t1_1:      'Візьми кожну ключову цифру Base-сценарію (EPS, Net Margin, P/E, Revenue growth).',
+  judge_t1_2:      '• Що якщо кожна з них помиляється на −20%? Перерахуй Target — покажи нове число.',
+  judge_t1_3:      '• Яка одна змінна найбільш чутлива — змінює вердикт (КУПИТИ ↔ ТРИМАТИ ↔ НЕ ЧІПАТИ) при малій зміні?',
+  judge_t2_hdr:    '2. BIAS SCAN',
+  judge_t2_0:      'Перевір наявність таких когнітивних зміщень:',
+  judge_t2_1:      '• Anchoring bias: чи не прив\'язаний аналіз до ціни входу або до круглих чисел?',
+  judge_t2_2:      '• Recency bias: чи не переоцінює останній квартал як довгостроковий тренд?',
+  judge_t2_3:      '• Narrative bias: чи не «тягне» бізнес-наратив завищені мультиплікатори без числового обґрунтування?',
+  judge_t2_4:      '• Confirmation bias: чи шукав аналітик факти, що спростовують — чи лише ті, що підтверджують?',
+  judge_t2_5:      'Для кожного знайденого bias — вкажи конкретне місце в тексті, де він проявляється.',
+  judge_t3_hdr:    '3. МАТЕМАТИЧНА ПЕРЕВІРКА',
+  judge_t3_1:      '• Перевір P/E = P/S / Net Margin для кожного сценарію. Покажи: ✓ або ✗ з числами.',
+  judge_t3_2:      '• Перевір: prob-weighted return = Σ(Prob_i × Return_i). Сходиться?',
+  judge_t3_3:      '• Перевір Alpha-gate: горизонт SPY нормований так само, як горизонт ROP? Якщо ні — вкажи розбіжність.',
+  judge_t4_hdr:    '4. АДЕКВАТНІСТЬ ВЕРДИКТУ',
+  judge_t4_1:      '• Чи підтримують дані у звіті цей вердикт — чи він декларативний (написаний без опори на цифри)?',
+  judge_t4_2:      '• Якщо Bull і Bear обидва правдоподібні з імовірністю ≥ 30% кожен — вердикт має бути ТРИМАТИ, а не КУПИТИ. Перевір це.',
+  judge_t4_3:      '• Чи достатньо Red Flags — або щось критичне було проігноровано?',
+  judge_result_hdr:'━━━ РІШЕННЯ СУДДІ ━━━',
+  judge_verdict:   'ВЕРДИКТ СУДДІ: [CONFIRM / REVISE / OVERTURN]',
+  judge_v_confirm: '• CONFIRM — аналіз коректний, вердикт математично обґрунтований',
+  judge_v_revise:  '• REVISE — логіка вірна, але ≥1 припущення потребує перегляду',
+  judge_v_overturn:'• OVERTURN — вердикт змінюється при об\'єктивному погляді на цифри',
+  judge_findings:  'КРИТИЧНІ ЗНАХІДКИ (максимум 3, ранжовані за важливістю):',
+  judge_rev_verd:  'ПЕРЕГЛЯНУТИЙ ВЕРДИКТ (лише при REVISE / OVERTURN): [Купити / Тримати / Не чіпати / Продати / Частково] — один рядок чому.',
+  judge_rules_hdr: 'ПРАВИЛА ДЛЯ СУДДІ:',
+  judge_r1:        '• Лише факти і математика. Заборонено «мені здається» або «можливо».',
+  judge_r2:        '• Якщо у звіті немає потрібних даних для перевірки — пиши явно: «Даних для перевірки немає».',
+  judge_r3:        '• Не перефразовуй звіт. Атакуй його.',
+  judge_r4:        '• Мета — зробити інвестора розумнішим, а не знайти критику заради критики.',
+}
+};
+
+function p(key) {
+  const d = PS[uiLang] || PS.ru;
+  return (d[key] !== undefined) ? d[key] : (PS.ru[key] || key);
+}
+// ─── END PROMPT STRINGS ────────────────────────────────────────
+
+
+// ─── STATE ────────────────────────────────────────────────
+let mode  = 'analysis';
+let level = 'std';
+let aiModel = 'claude'; // claude | gpt | gemini
+const chips = { 'instrument-group': 'auto', 'dd-group': 'auto' }; // auto по умолчанию
+
+// ─── MODE ─────────────────────────────────────────────────
+function setMode(m) {
+  mode = 'analysis';
+  // Скиллы всегда видны если система включена
+}
+
+// ─── LEVEL ────────────────────────────────────────────────
+function setLevel(l) {
+  level = l;
+  ['lite','std','pro'].forEach(x => {
+    document.getElementById('tab-' + x).className = 'level-tab' + (x === l ? ' active-' + x : '');
+  });
+  applySkillsForLevel(l);
+}
+// ─── MODEL ────────────────────────────────────────────────
+function setModel(m) {
+  aiModel = m;
+  ['claude','gpt','gemini'].forEach(id => {
+    document.getElementById('model-' + id).classList.toggle('active', id === m);
+  });
+
+  if (mode !== 'analysis') return;
+
+  const sysRow = document.getElementById('system-toggle-row');
+  const sysDiv = document.getElementById('system-divider');
+  sysRow.style.display = 'flex';
+  sysDiv.style.display = 'block';
+
+  // Переключаем видимые панели файлов
+  ['claude','gpt','gemini'].forEach(id => {
+    const el = document.getElementById('files-' + id);
+    if (el) el.style.display = id === m ? 'block' : 'none';
+  });
+
+  // Сбрасываем чекбоксы при смене модели
+  ['f02','f03','f04','f06','f07','f08',
+   'g02','g03','g04','g06','g07','g08',
+   'm01','m02','m03'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.checked = false;
+  });
+
+  // Сбрасываем панель и предупреждения
+  document.getElementById('system-toggle').checked = false;
+  document.getElementById('system-panel').classList.remove('visible');
+  document.getElementById('warn-required').className = 'warn-block';
+  document.getElementById('warn-optional').className = 'warn-block';
+}
+
+
+// ─── CHIPS ────────────────────────────────────────────────
+function selectChip(group, btn, value) {
+  document.querySelectorAll(`#${group} .chip`).forEach(c => {
+    c.classList.remove('selected', 'selected-amber');
+  });
+  if (chips[group] === value && group !== 'instrument-group') {
+    chips[group] = null;
+  } else {
+    btn.classList.add('selected');
+    chips[group] = value;
+  }
+  onFieldChange();
+  updateWeightField();
+}
+
+function getChip(group) { return chips[group] || null; }
+function updateWeightField() {
+  const goal = getChip('goal-group');
+  const showWeight = goal && !['first_buy','research'].includes(goal);
+  const wf = document.getElementById('weight-field');
+  if (wf) wf.classList.toggle('visible', !!showWeight);
+  if (!showWeight && document.getElementById('weight-input')) {
+    document.getElementById('weight-input').value = '';
+  }
+  // Entry price — show for add/hold/sell
+  const epf = document.getElementById('entry-price-field');
+  if (epf) epf.classList.toggle('visible', !!showWeight);
+  if (!showWeight && document.getElementById('entry-price-input')) {
+    document.getElementById('entry-price-input').value = '';
+  }
+}
+
+
+// ─── SKILLS ───────────────────────────────────────────────────
+const SKILLS_BY_LEVEL = {
+  lite: ['passport','constitution','snapshot','context'],
+  std:  ['passport','constitution','snapshot','context','company','gates','rop','price'],
+  pro:  ['passport','constitution','snapshot','context','company','gates','rop','price',
+         'scenario','eureka','lifecycle','report','triage'],
+};
+
+const SKILL_META = {
+  passport:     { file: '02_investor_passport.md',       label: 'Паспорт инвестора (риск-профиль, психология, ограничения)' },
+  constitution: { file: '03_investment_constitution.md', label: 'Конституция (QPTA, Anti-Ruin, Quality Gates, лимиты позиций)' },
+  snapshot:     { file: '04_portfolio_snapshot.md',      label: 'Portfolio Snapshot (текущий портфель, Heat, NBE, кэш)' },
+  context:      { file: '07_context_card.md',            label: 'Context Card (макро-режим, рыночный фон, риск-аппетит)' },
+  company:      { file: '06_company_card.md',            label: 'Company Card (бизнес-модель, финансы, ров, Fair Value)' },
+  gates:        { file: '12_quality_gates.md',           label: 'Quality Gates G0-G4 (чеклист допуска перед входом)' },
+  rop:          { file: 'ROP_valuation.md',              label: 'ROP Valuation (Bear/Base/Bull по EPS×P/E, alpha-gate vs бенчмарк)' },
+  price:        { file: 'Price_power.md',                label: 'Price Power (ценовая сила, PricePowerFactor 0-5)' },
+  scenario:     { file: '08_scenario_map.md',            label: 'Scenario Map (триггеры, ветки действий, алерты)' },
+  eureka:       { file: 'EUREKA_test.md',                label: 'EUREKA Earnings Quality (QoE, Beneish M-Score, Accruals, EurekaScore 0-100)' },
+  lifecycle:    { file: 'Life _cycle.md',                 label: 'Life Cycle & FV Hyperbola (стадия компании, fair-value кольца)' },
+  report:       { file: '09_final_report.md',            label: 'Final Report Card (решение-карточка, Quality Gates summary)' },
+  triage:       { file: '11_idea_triage.md',             label: 'Idea Triage (воронка: Inbox - Research - Ready - Capital)' },
+};
+
+const SKILL_META_GEMINI = {
+  passport:     { file: '01_pravila.docx',   label: 'Правила / паспорт инвестора (01_pravila.docx)' },
+  constitution: { file: '01_pravila.docx',   label: 'Конституция / QPTA (01_pravila.docx)' },
+  snapshot:     { file: '02_portfel.docx',   label: 'Portfolio Snapshot (02_portfel.docx)' },
+  context:      { file: '02_portfel.docx',   label: 'Context Card (02_portfel.docx)' },
+  company:      { file: '03_analitika.docx', label: 'Company Card (03_analitika.docx)' },
+  gates:        { file: '03_analitika.docx', label: 'Quality Gates (03_analitika.docx)' },
+  rop:          { file: '03_analitika.docx', label: 'ROP Valuation (03_analitika.docx)' },
+  price:        { file: '03_analitika.docx', label: 'Price Power (03_analitika.docx)' },
+  scenario:     { file: '03_analitika.docx', label: 'Scenario Map (03_analitika.docx)' },
+  eureka:       { file: '03_analitika.docx', label: 'EUREKA Earnings Quality (03_analitika.docx)' },
+  lifecycle:    { file: '03_analitika.docx', label: 'Life Cycle & FV Hyperbola (03_analitika.docx)' },
+  report:       { file: '03_analitika.docx', label: 'Final Report Card (03_analitika.docx)' },
+  triage:       { file: '03_analitika.docx', label: 'Idea Triage (03_analitika.docx)' },
+};
+
+let skillsAutoMode = true;
+
+function getActiveSkills() {
+  return Object.keys(SKILL_META).filter(id => {
+    const el = document.getElementById('sk-' + id);
+    return el && el.checked;
+  });
+}
+
+function toggleSkill(id) {
+  const cb = document.getElementById('sk-' + id);
+  if (cb) cb.checked = !cb.checked;
+  skillsAutoMode = false;
+  const lbl = document.getElementById('skills-auto-label');
+  if (lbl) {
+    lbl.textContent = 'вручную';
+    lbl.style.background = 'var(--warn-bg)';
+    lbl.style.color = 'var(--warn)';
+  }
+  updateSkillsUI();
+}
+
+function applySkillsForLevel(l) {
+  if (!skillsAutoMode) return;
+  const active = SKILLS_BY_LEVEL[l] || SKILLS_BY_LEVEL.std;
+  Object.keys(SKILL_META).forEach(id => {
+    const el = document.getElementById('sk-' + id);
+    if (el) el.checked = active.includes(id);
+  });
+  updateSkillsUI();
+}
+
+function updateSkillsUI() {
+  Object.keys(SKILL_META).forEach(id => {
+    const row = document.getElementById('sk-row-' + id);
+    const cb  = document.getElementById('sk-' + id);
+    if (row && cb) row.classList.toggle('active', cb.checked);
+  });
+}
+
+function resetSkillsToAuto() {
+  skillsAutoMode = true;
+  const lbl = document.getElementById('skills-auto-label');
+  if (lbl) {
+    lbl.textContent = 'авто';
+    lbl.style.background = 'var(--lite-bg)';
+    lbl.style.color = 'var(--lite)';
+  }
+  applySkillsForLevel(level);
+}
+
+function buildSkillsBlock() {
+  if (!isSystemOn()) return '';
+  const bmk = getBenchmark();
+  const active = getActiveSkills();
+  if (!active.length) return '';
+  const isG = aiModel === 'gemini';
+
+  // Маппинг скилл → блок промпта + конкретная инструкция
+  const SKILL_INSTRUCTIONS = {
+    passport: {
+      block: 'ПРОФИЛЬ И ЛИМИТЫ',
+      file: isG ? '01_pravila.docx' : '02_investor_passport.md',
+      instruction: 'Прочитай риск-профиль, психологические ограничения и правило "я не торгую когда...". ' +
+        'Учитывай их при формировании ВЕРДИКТА и уровней входа/выхода.',
+    },
+    constitution: {
+      block: 'ПРАВИЛА И ЛИМИТЫ',
+      file: isG ? '01_pravila.docx' : '03_investment_constitution.md',
+      instruction: 'Перед выводом проверь: (1) QPTA — качество, вероятность, тайминг, альтернатива; ' +
+        '(2) лимиты позиции (Heat, NBE); (3) Anti-Ruin: не предлагай действий запрещённых конституцией.',
+    },
+    snapshot: {
+      block: 'ПОРТФЕЛЬ',
+      file: isG ? '02_portfel.docx' : '04_portfolio_snapshot.md',
+      instruction: 'Проверь: текущий вес тикера в портфеле, свободный Heat, NBE-лимит. ' +
+        'Если тикер уже в портфеле — учитывай среднюю цену входа при расчёте действий в таблице сценариев.',
+    },
+    context: {
+      block: 'РЫНОЧНЫЙ КОНТЕКСТ (Блок 1)',
+      file: isG ? '02_portfel.docx' : '07_context_card.md',
+      instruction: 'Используй текущий макро-режим и риск-аппетит рынка при оценке мультипликаторов ' +
+        'в Блоке 1 (Взгляд рынка). Укажи: рынок сейчас risk-on или risk-off, как это влияет на P/E и P/S данного сектора.',
+    },
+    company: {
+      block: 'БИЗНЕС-КАЧЕСТВО (Блоки 1–3)',
+      file: isG ? '03_analitika.docx' : '06_company_card.md',
+      instruction: 'Заполни или обнови карточку компании: бизнес-модель, конкурентный ров, история FCF. ' +
+        'Используй данные карточки как основу для предположений по марже и мультипликаторам в ROP-расчёте.',
+    },
+    gates: {
+      block: 'ДОПУСК К СДЕЛКЕ (перед ИТОГОМ)',
+      file: isG ? '03_analitika.docx' : '12_quality_gates.md',
+      instruction: 'Прогони чеклист Quality Gates G0–G4 перед финальным выводом. ' +
+        'Если хотя бы один gate FAIL — укажи это в ВЕРДИКТЕ явно и объясни что нужно исправить.',
+    },
+    rop: {
+      block: 'БЛОК 3 — ROP-РАСЧЁТ',
+      file: isG ? '03_analitika.docx' : 'ROP_valuation.md',
+      instruction: 'Применяй точно по скиллу: Price = P/E × EPS = P/S × RPS = P/S × (EPS / Net Margin). ' +
+        'Три сценария (Bear/Base/Bull) с явными предположениями по каждой переменной. ' +
+        'Проверь консистентность: P/E ≈ P/S / Net Margin. Дай alpha-gate vs SPY за тот же горизонт.',
+    },
+    price: {
+      block: 'БЛОК 2 — ВЗГЛЯД АНАЛИТИКОВ',
+      file: isG ? '03_analitika.docx' : 'Price_power.md',
+      instruction: 'Оцени PricePowerFactor (0–5): может ли компания поднимать цены выше инфляции ' +
+        'без потери доли рынка. Используй результат как модификатор Net Margin в ROP-сценариях: ' +
+        'высокий Price Power → маржа устойчива или растёт; низкий → маржа под давлением в Bear-сценарии.',
+    },
+    scenario: {
+      block: 'БЛОК 3 + ИТОГ',
+      file: isG ? '03_analitika.docx' : '08_scenario_map.md',
+      instruction: 'Заполни или обнови карту сценариев. Триггеры из карты — используй как основу ' +
+        'для раздела ТРИГГЕРЫ в итоговой таблице. Ветки действий из карты → ДЕЙСТВИЕ в таблице сценариев.',
+    },
+    eureka: {
+      block: 'БЛОК 2 — КАЧЕСТВО ПРИБЫЛИ',
+      file: isG ? '03_analitika.docx' : 'EUREKA_test.md',
+      instruction: 'Рассчитай EurekaScore (0–100): QoE = CFO/NI, FCF vs Earnings, Sloan Accrual Ratio, ' +
+        'Beneish M-Score, DSO, Inventory Days, SBC/CFO, Capex & Intangibles. ' +
+        'Статус Gold/Silver/Bronze/Red Flag выведи в Блоке 2 (Взгляд аналитиков) рядом с EPS-ожиданиями. ' +
+        'Red Flag → обязательно отметить в КРАСНЫХ ФЛАГАХ итога.',
+    },
+    lifecycle: {
+      block: 'БЛОК 3 — МУЛЬТИПЛИКАТОРЫ',
+      file: isG ? '03_analitika.docx' : 'Life _cycle.md',
+      instruction: 'Определи стадию компании (EarlyGrowth / Expansion / Shakeout / Maturity / Decline). ' +
+        'Используй стадию для калибровки P/E и P/S в ROP-сценариях: ' +
+        'EarlyGrowth/Expansion → более высокие мультипликаторы оправданы; Maturity/Decline → сжатие мультипликаторов в Bear.',
+    },
+    report: {
+      block: 'ИТОГ — ФИНАЛЬНАЯ КАРТОЧКА',
+      file: isG ? '03_analitika.docx' : '09_final_report.md',
+      instruction: 'После всех блоков заполни финальную карточку по шаблону: ' +
+        'Q-score (качество бизнеса), V-score (оценка), M-score (моментум), вердикт по роли (Investor/Speculator/Saver), ' +
+        'уровни входа/выхода, триггеры инвалидации тезиса.',
+    },
+    triage: {
+      block: 'ПАЙПЛАЙН (только если идея новая)',
+      file: isG ? '03_analitika.docx' : '11_idea_triage.md',
+      instruction: 'Если это первый анализ тикера — определи статус идеи по воронке: ' +
+        'Inbox → Research → Ready → Capital. Укажи что нужно проверить прежде чем переводить в Ready.',
+    },
+  };
+
+  // Группируем активные скиллы по блокам промпта
+  const byBlock = {};
+  const seenFiles = new Set();
+
+  active.forEach(id => {
+    const instr = SKILL_INSTRUCTIONS[id];
+    if (!instr) return;
+    const fileKey = isG ? instr.file : id;
+    if (isG && seenFiles.has(fileKey)) return; // Gemini: не дублируем один файл
+    seenFiles.add(fileKey);
+
+    if (!byBlock[instr.block]) byBlock[instr.block] = [];
+    byBlock[instr.block].push({ id, file: instr.file, instruction: instr.instruction });
+  });
+
+  const blocks = Object.keys(byBlock);
+  if (!blocks.length) return '';
+
+  let out = '\n\n━━━ ИНСТРУКЦИИ ПО СКИЛЛАМ ━━━\n';
+  out += 'Применяй каждый скилл в указанном блоке анализа:\n';
+
+  blocks.forEach(block => {
+    out += `\n▸ ${block}\n`;
+    byBlock[block].forEach(({ file, instruction }) => {
+      out += `  Файл: ${file}\n`;
+      out += `  Инструкция: ${instruction}\n`;
+    });
+  });
+
+  out += '\nВАЖНО: каждый скилл даёт конкретный численный вывод — включи его в соответствующий блок ответа. Не упоминай скиллы в ответе — просто применяй их логику.';
+
+  // v2.4: Skills execution order
+  if (active.length >= 4) {
+    out += '\n\n' + p('skills_order_title') + '\n' + p('skills_order');
+  }
+  return out;
+}
+
+function onFieldChange() {
+  const ticker = document.getElementById('ticker').value.trim();
+  const sysOn = isSystemOn();
+  const f = sysOn ? getFiles() : { f02: true, f03: true, f04: true };
+  const missingReq = sysOn && (
+    aiModel === 'gemini'
+      ? (!getFiles().m01 || !getFiles().m02 || !getFiles().m03)
+      : (!f.f02 || !f.f03 || !f.f04)
+  );
+  document.getElementById('build-btn').disabled = !ticker || missingReq;
+}
+
+
+// ─── SYSTEM MODE ─────────────────────────────────────────
+function onSystemToggle() {
+  const on = document.getElementById('system-toggle').checked;
+  document.getElementById('system-panel').classList.toggle('visible', on);
+  const sk = document.getElementById('skills-section');
+  if (sk) sk.classList.toggle('visible', on);
+  if (on) {
+    skillsAutoMode = true;
+    resetSkillsToAuto();
+  }
+  onFilesChange();
+}
+
+function isSystemOn() {
+  return document.getElementById('system-toggle').checked;
+}
+
+function getFiles() {
+  const get = id => { const el = document.getElementById(id); return el ? el.checked : false; };
+  if (aiModel === 'gemini') {
+    return { m01: get('m01'), m02: get('m02'), m03: get('m03') };
+  }
+  const prefix = aiModel === 'gpt' ? 'g' : 'f';
+  return {
+    f02: get(prefix + '02'),
+    f03: get(prefix + '03'),
+    f04: get(prefix + '04'),
+    f06: get(prefix + '06'),
+    f07: get(prefix + '07'),
+    f08: get(prefix + '08'),
+  };
+}
+
+function onFilesChange() {
+  if (!isSystemOn()) {
+    document.getElementById('warn-required').className = 'warn-block';
+    document.getElementById('warn-optional').className = 'warn-block';
+    onFieldChange();
+    return;
+  }
+  const f = getFiles();
+
+  let missingReq, missingOpt;
+  if (aiModel === 'gemini') {
+    missingReq = !f.m01 || !f.m02 || !f.m03;
+    missingOpt = false; // у Gemini все файлы обязательные
+  } else {
+    missingReq = !f.f02 || !f.f03 || !f.f04;
+    missingOpt = !f.f06 || !f.f07 || !f.f08;
+  }
+
+  const warnReq = document.getElementById('warn-required');
+  const warnOpt = document.getElementById('warn-optional');
+
+  warnReq.className = 'warn-block' + (missingReq ? ' error' : '');
+  warnOpt.className = 'warn-block' + (!missingReq && missingOpt ? ' warn' : '');
+  onFieldChange();
+}
+
+function systemPromptBlock(files) {
+  // ── GEMINI ──────────────────────────────────────────
+  if (aiModel === 'gemini') {
+    const req = [], missing = [];
+    if (files.m01) req.push('01_pravila.docx (правила/протокол/конституция)');
+    else missing.push('01_pravila.docx — НЕ подключён');
+    if (files.m02) req.push('02_portfel.docx (снимок портфеля)');
+    else missing.push('02_portfel.docx — НЕ подключён');
+    if (files.m03) req.push('03_analitika.docx (шаблоны аналитики/карточка компании)');
+    else missing.push('03_analitika.docx — НЕ подключён');
+
+    let block = '\n━━━ МОЯ ИНВЕСТ-СИСТЕМА (Gemini Gem · База знаний) ━━━\n';
+    block += 'Работай строго по моим файлам из Базы знаний.\n\n';
+    if (req.length)     block += 'ПОДКЛЮЧЁННЫЕ файлы (используй их):\n' + req.map(f => '• ' + f).join('\n') + '\n\n';
+    if (missing.length) block += '⛔ ОТСУТСТВУЮЩИЕ (скажи об этом в начале ответа):\n' + missing.map(f => '• ' + f).join('\n') + '\n\n';
+    block += `ПРАВИЛА ИЗ ПРОТОКОЛА (применяй всегда):
+• Соблюдай правила из 01_pravila.docx перед любым ответом
+• Проверяй актуальность снимка портфеля (02_portfel.docx) — не старше 7 дней
+• Для анализа компании используй структуру из 03_analitika.docx
+• Данные о рынке ищи через Google Search
+• Запрещено выдумывать числа. "Нет данных" лучше, чем угадывать`;
+    return block;
+  }
+
+  // ── CLAUDE + GPT (одинаковая структура файлов) ──────
+  const modelLabel = aiModel === 'gpt' ? 'ChatGPT Project' : 'Claude Project';
+  const searchNote = aiModel === 'gpt'
+    ? '• Данные о рынке ищи через Browsing'
+    : '• Данные о рынке ищи через веб-поиск (tool_use)';
+
+  const req = [], opt = [], missing = [];
+
+  if (files.f02) req.push('02_investor_passport.md (паспорт инвестора)');
+  else missing.push('02_investor_passport.md — НЕ подключён');
+
+  if (files.f03) req.push('03_investment_constitution.md (конституция)');
+  else missing.push('03_investment_constitution.md — НЕ подключена');
+
+  if (files.f04) req.push('04_portfolio_snapshot.md (снимок портфеля)');
+  else missing.push('04_portfolio_snapshot.md — НЕ подключён');
+
+  if (files.f07) opt.push('07_context_card.md (рыночный контекст — используй SUMMARY LINE)');
+  else opt.push('07_context_card.md — НЕ подключён; промпт выполнит auto-fetch режима самостоятельно');
+
+  if (files.f06) opt.push('06_company_card.md (карточка компании)');
+  else opt.push('06_company_card.md — НЕ подключён, работай без него');
+
+  if (files.f08) opt.push('08_scenario_map.md (карта сценариев)');
+  else opt.push('08_scenario_map.md — НЕ подключён, работай без него');
+
+  let block = `\n━━━ МОЯ ИНВЕСТ-СИСТЕМА (${modelLabel}) ━━━\n`;
+  block += 'Работай строго по моим файлам из Project.\n\n';
+  if (req.length)     block += 'ОБЯЗАТЕЛЬНЫЕ файлы (используй их):\n' + req.map(f => '• ' + f).join('\n') + '\n\n';
+  if (missing.length) block += '⛔ ОТСУТСТВУЮЩИЕ (скажи об этом в начале ответа):\n' + missing.map(f => '• ' + f).join('\n') + '\n\n';
+  block += 'ОПЦИОНАЛЬНЫЕ:\n' + opt.map(f => '• ' + f).join('\n') + '\n\n';
+  block += `ПРАВИЛА ИЗ КОНСТИТУЦИИ (применяй всегда):
+• Перед любым действием — 0-Gate: Snapshot (04) < 7 дней, Context (07) < 7 дней
+• Любая сделка — только через QPTA (03_constitution) + Quality Gates G0–G4
+• Размер позиции — по формулам из Раздела F конституции
+• Запрещено: naked options, усреднение без правила, решения без журнала (10)
+• Лимиты портфеля: проверь NBE, Directional Heat, концентрации (03 + 04)
+${searchNote}`;
+  return block;
+}
+
+
+function buildPrompt() {
+
+  const ticker  = document.getElementById('ticker').value.trim().toUpperCase();
+  const goal    = getChip('goal-group');
+  const role    = getChip('role-group');
+  const horizon = document.getElementById('horizon').value.trim();
+  const instr   = getChip('instrument-group') || 'auto';
+  const sysBlock = isSystemOn() ? systemPromptBlock(getFiles()) : '';
+  const skillsBlock = isSystemOn() ? buildSkillsBlock() : '';
+
+  if (!ticker) return;
+
+  let prompt = '';
+  if (level === 'lite')     prompt = buildLite(ticker, goal, role, horizon, instr, sysBlock, skillsBlock);
+  else if (level === 'std') prompt = buildStandard(ticker, goal, role, horizon, instr, sysBlock, skillsBlock);
+  else                      prompt = buildPro(ticker, goal, role, horizon, instr, sysBlock, skillsBlock);
+
+  const badgeClass = { lite: 'output-badge badge-lite', std: 'output-badge badge-std', pro: 'output-badge badge-pro' };
+  const badgeLabel = { lite: 'Lite', std: 'Standard', pro: 'Pro' };
+
+  document.getElementById('out-badge').className = badgeClass[level];
+  document.getElementById('out-badge').textContent = badgeLabel[level];
+  document.getElementById('out-label').textContent = ticker + (instr === 'etf' ? ' · ETF' : '');
+
+  renderOutput(prompt);
+}
+
+
+// ─── SHARED PROMPT BLOCKS ────────────────────────────────────
+function getSourceRule() {
+  const searchNote = aiModel === 'gpt'
+    ? p('src_gpt')
+    : aiModel === 'gemini'
+    ? p('src_gemini')
+    : p('src_claude');
+  return `${p('src_title')}
+${searchNote}
+${p('src_2')}
+${p('src_3')}
+${p('src_3fmt')}
+${p('post_earn_price')}
+${p('src_4')}
+${p('src_5')}
+${p('src_6')}
+${p('src_7')}
+${p('src_8')}
+${p('tone_rule')}`;
+}
+
+function startBlocksRule(benchmark, maxDDText) {
+  return `ПОРЯДОК РАБОТЫ (внутренний): Сначала СОБЕРИ данные → ПОСЧИТАЙ ROP → только потом СФОРМИРУЙ ACTION CARD. В ответе ACTION CARD первым, но он должен быть СЛЕДСТВИЕМ расчётов.
+
+${p('sbr_intro')}
+
+${p('sbr_1')}
+• ...
+${p('sbr_2')}
+
+${p('sbr_3')}
+${p('sbr_price')}
+${p('sbr_bmk')}: ${benchmark}. ${p('sbr_bmk2')} ${benchmark} ${p('sbr_bmk3')}
+${p('sbr_dd')}: ${maxDDText}. ${p('sbr_dd2')}
+${p('sbr_prem')}
+${p('sbr_cons')}
+${p('sbr_rop')} ${benchmark}
+
+${p('sbr_tbl')}
+| ${p('sbr_col1')} | ${p('sbr_col2')} | ${p('sbr_col3')} | ${p('sbr_col4')} |
+|---|---|---:|---|
+| ${p('sbr_col1') === 'Взгляд' ? 'Рынок' : (p('sbr_col1') === 'View' ? 'Market' : 'Ринок')} | ${p('sbr_mkt_row')} | EPS_implied / P/E / P/S | ... |
+| ${p('sbr_col1') === 'Взгляд' ? 'Аналитики' : (p('sbr_col1') === 'View' ? 'Analysts' : 'Аналітики')} | ${p('sbr_ana_row')} | Target / EPS_fwd | ... |
+| ROP | ${p('sbr_rop_row')} | Base price / ExpRet | ... |
+
+${p('sbr_dec')}
+${p('sbr_trig')}
+
+${p('sbr_after')}`;
+}
+
+function questionBudget() {
+  const n = (level === 'lite') ? 1 : (level === 'std') ? 2 : 3;
+  return `${p('qb')}: ${n}. ${p('qb2')}`;
+}
+
+function profileBlock(nQ) {
+  if (aiModel === 'claude') {
+    return `${p('prof_title')}
+${p('prof_claude')}
+${p('prof_q')} ${nQ} ${p('prof_q2')}`;
+  }
+  if (aiModel === 'gpt') {
+    return `${p('prof_title')}
+${p('prof_gpt')}
+${p('prof_gpt_q')} ${nQ} ${p('prof_gpt_q2')}`;
+  }
+  return `${p('prof_title')}
+${p('prof_gem')}
+${p('prof_gpt_q')} ${nQ} ${p('prof_gem_q2')}`;
+}
+
+function roleFocusBlock(role, depth) {
+  if (!role) return p('role_adapt');
+  if (role === 'INVESTOR') {
+    if (depth === 'lite') return p('role_inv_lite');
+    if (depth === 'std')  return p('role_inv_std');
+    return `${uiLang === 'en'
+      ? 'Focus: long-term business owner.\n• Moat durability and management quality\n• ROIC vs WACC 5-year trend\n• FCF compounding, buyback and dividend history\n• Red flags: dilution, reckless M&A, falling ROIC with rising debt'
+      : uiLang === 'uk'
+      ? 'Акцент: довгостроковий власник бізнесу.\n• Стійкість рову та якість менеджменту\n• ROIC vs WACC в 5-річній динаміці\n• FCF-компаундинг, історія викупів і дивідендів\n• Червоні прапори: розмиття, нерозважливі M&A, падіння ROIC при зростанні боргу'
+      : 'Акцент: долгосрочный владелец бизнеса.\n• Устойчивость рва и качество менеджмента\n• ROIC vs WACC в 5-летней динамике\n• FCF-компаундинг, история выкупов и дивидендов\n• Красные флаги: размытие, бездумные M&A, падение ROIC при росте долга'}`;
+  }
+  if (role === 'SPECULATOR') {
+    if (depth === 'lite') return p('role_spec_lite');
+    if (depth === 'std')  return p('role_spec_std');
+    return `${uiLang === 'en'
+      ? 'Focus: tactical trader with asymmetric setup.\n• Short-term catalyst (earnings / event / reversal)\n• Technical momentum: trend, support/resistance levels\n• Clear setup: target / stop / R:R\n• Trade duration and exit trigger'
+      : uiLang === 'uk'
+      ? 'Акцент: тактичний трейдер з асиметричним сетапом.\n• Короткостроковий каталізатор (звіт / подія / розворот)\n• Технічний момент: тренд, рівні підтримки/опору\n• Чіткий сетап: ціль / стоп / R:R\n• Термін угоди і тригер виходу'
+      : 'Акцент: тактический трейдер с асимметричным сетапом.\n• Краткосрочный катализатор (отчёт / событие / разворот)\n• Технический момент: тренд, уровни поддержки/сопротивления\n• Чёткий сетап: цель / стоп / R:R\n• Срок сделки и триггер выхода'}`;
+  }
+  if (role === 'SAVER') {
+    if (depth === 'lite') return p('role_sav_lite');
+    if (depth === 'std')  return p('role_sav_std');
+    return `${uiLang === 'en'
+      ? 'Focus: conservative saver.\n• Dividend stability and history, FCF payout coverage\n• Behavior in crises: max drawdown 2008, 2020, 2022\n• Correlation with inflation, real yield\n• Red flags: debt growing faster than FCF, high cyclicality'
+      : uiLang === 'uk'
+      ? 'Акцент: консервативний ощадник.\n• Стабільність і історія дивідендів, FCF-покриття виплат\n• Поведінка в кризи: макс. просадка 2008, 2020, 2022\n• Кореляція з інфляцією, реальна дохідність\n• Червоні прапори: борг зростає швидше FCF, висока циклічність'
+      : 'Акцент: консервативный сберегатель.\n• Стабильность и история дивидендов, FCF-покрытие выплат\n• Поведение в кризисы: макс. просадка 2008, 2020, 2022\n• Корреляция с инфляцией, реальная доходность\n• Красные флаги: долг растёт быстрее FCF, высокая цикличность'}`;
+  }
+  return '';
+}
+
+function instrumentNote(instr, ticker) {
+  const bmk = getBenchmark();
+  if (instr === 'auto') {
+    return `${p('instr_auto_title')}
+${p('instr_auto_1')}
+${p('instr_auto_2')} ${bmk}${p('instr_auto_3')}`;
+  }
+  if (instr === 'etf') {
+    return `${p('instr_etf_title')}
+${p('instr_etf_1')} ${bmk}
+${p('instr_etf_2')}
+${p('instr_etf_3')}
+${p('instr_etf_4')}`;
+  }
+  return p('instr_stock_title');
+}
+
+
+// ── MACRO CONTEXT BLOCK (always injected in Standard/Pro) ────────────────
+function macroContextBlock() {
+  const hasContext = isSystemOn() && getActiveSkills().includes('context');
+  let out = `\n${p('mctx_hdr')}\n`;
+  if (hasContext) {
+    out += `${p('mctx_has_file')}\n`;
+    out += `${p('mctx_has_fresh')}\n`;
+    out += `${p('mctx_has_stale')}\n`;
+    out += `${p('mctx_q1')}\n`;
+    out += `${p('mctx_q2')}\n`;
+    out += `${p('mctx_q3')}\n`;
+    out += `${p('mctx_q4')}\n`;
+    out += `${p('mctx_q5')}\n`;
+    out += `${p('mctx_q6')}\n`;
+  } else {
+    out += `${p('mctx_no_file')}\n`;
+    out += `${p('mctx_q1')}\n`;
+    out += `${p('mctx_q2')}\n`;
+    out += `${p('mctx_q3')}\n`;
+    out += `${p('mctx_q4')}\n`;
+    out += `${p('mctx_q5')}\n`;
+    out += `${p('mctx_q6')}\n`;
+  }
+  out += `${p('mctx_output')}\n`;
+  out += `${p('mctx_fmt')}\n`;
+  out += `${p('mctx_pe_note')}`;
+  return out;
+}
+
+// ── LITE ─────────────────────────────────────────────────
+function buildLite(ticker, goal, role, horizon, instr, sysBlock='', skillsBlock='') {
+  const ctx = buildCtx(ticker, goal, role, horizon);
+  const instrNote = instrumentNote(instr, ticker);
+  const gc = goalContext(goal);
+  const bmk = getBenchmark();
+  const ddT = maxDrawdownText();
+  const ddShort = (getChip('dd-group') && getChip('dd-group') !== 'auto') ? getChip('dd-group') : 'AUTO';
+  return `${p('ai_lite')} ${ticker}.${sysBlock}${skillsBlock}
+
+${p('sec_ctx')}
+${ctx}${instrNote ? '\n' + instrNote : ''}
+
+${profileBlock(1)}
+
+${p('sec_find')}
+${p('sec_find_fill')}
+
+| ${p('m_price').padEnd(20)}| $___            | Source + date   |
+|-${'-'.repeat(20)}-|-----------------|-----------------| 
+| 52w High / Low       | $___ / $___     |                 |
+| P/E fwd              | ___x            |                 |
+| P/S fwd              | ___x            |                 |
+| ${p('m_eps_fwd').padEnd(20)}| $___            |                 |
+| ${p('m_rps_fwd').padEnd(20)}| $___            |                 |
+| ${p('m_nm_cons').padEnd(20)}| ___%            |                 |
+| ${p('m_target').padEnd(20)}| $___ (__ anal.) |                 |
+| ${p('m_updown').padEnd(20)}| ___%            |                 |
+
+${p('sec_mkt')}
+${p('backsolve_title')}
+${p('backsolve_1')}
+${p('backsolve_2')}
+${p('backsolve_3')}
+${p('backsolve_5')}
+${p('sec_ana')}
+${p('sec_rop_std')}
+${p('rop_formula')}
+${p('rop_build')}
+
+| Scenario | EPS | P/E | RPS | P/S | Net Margin | Target    |
+|----------|-----|-----|-----|-----|------------|-----------|
+| Bear     |     |     |     |     |            | $___      |
+| Base     |     |     |     |     |            | $___      |
+| Bull     |     |     |     |     |            | $___      |
+
+
+${p('sec_result')}
+
+${p('verdict')}: [${p('v_opts')}] — ${p('v_why')}
+${p('v_ctx')}: [${p('v_ctx_hint')}]
+${p('v_risk')} = ${ddShort}. ${p('v_stop')}
+
+${p('scenarios')}:
+
+| Scenario | Prob.       | Target    | Action                         | Entry / Exit / Stop           | Position size (Δwt / total)  |
+|----------|-------------|-----------|--------------------------------|-------------------------------|------------------------------|
+| Bear     | ___%        | $___      | [${p('s_noenter')}]           | ${p('s_stop')} $___           | Δ___% → ___% |
+| Base     | ___%        | $___      | [${p('s_hold')}]              | ${p('s_entry')} $___–$___, ${p('s_target')} $___ | Δ___% → ___% |
+| Bull     | ___%        | $___      | [${p('s_add')}]               | ${p('s_target')} $___         | Δ___% → ___% |
+
+${p('triggers')}:
+• ${p('t_bear')}: [${p('t_bear_v')}]
+• ${p('t_base')}: [${p('t_base_v')}]
+• ${p('t_bull')}: [${p('t_bull_v')}]
+
+${p('red_flags')}: [${p('rf_hint')}]
+
+${getSourceRule()}
+${questionBudget()}
+
+${gc}\n\n${startBlocksRule(bmk, ddT)}`;
+}
+
+// ── STANDARD ─────────────────────────────────────────────
+function buildStandard(ticker, goal, role, horizon, instr, sysBlock='', skillsBlock='') {
+  const ctx = buildCtx(ticker, goal, role, horizon);
+  const instrNote = instrumentNote(instr, ticker);
+  const rf = roleFocusBlock(role, 'std');
+  const gc = goalContext(goal);
+  const bmk = getBenchmark();
+  const ddT = maxDrawdownText();
+  const ddShort = (getChip('dd-group') && getChip('dd-group') !== 'auto') ? getChip('dd-group') : 'AUTO';
+  return `${p('ai_std')} ${ticker} ${p('ai_std_for')}${sysBlock}${skillsBlock}
+
+${p('sec_ctx')}
+${ctx}${instrNote ? '\n' + instrNote : ''}
+
+${profileBlock(2)}
+${p('sec_role')}: ${rf}
+
+${p('sec_find')}
+${p('sec_find_fill2')}
+
+| ${p('m_price').padEnd(26)}| $___            | Source + date   |
+|-${'-'.repeat(26)}-|-----------------|-----------------| 
+| 52w High / Low               | $___ / $___     |                 |
+| Market Cap                   | $___B           |                 |
+| P/E fwd / P/E ttm            | ___x / ___x     |                 |
+| P/S fwd / P/S ttm            | ___x / ___x     |                 |
+| ${p('m_eps_both').padEnd(26)}| $___ / $___     |                 |
+| ${p('m_rps_both').padEnd(26)}| $___ / $___     |                 |
+| ${p('m_nm_both').padEnd(26)} | ___% / ___%     |                 |
+| ${p('m_eps_yoy').padEnd(26)} | ___%            |                 |
+| ${p('m_rps_yoy').padEnd(26)} | ___%            |                 |
+| ${p('m_target').padEnd(26)}  | $___ (__ anal.) |                 |
+| ${p('m_bhs').padEnd(26)}     | __ / __ / __    |                 |
+${macroContextBlock()}
+
+${p('sec_mkt')}
+${p('backsolve_title')}
+${p('backsolve_1')}
+${p('backsolve_2')}
+${p('backsolve_3')}
+${p('backsolve_4')}
+${p('backsolve_5')}
+${p('sec_ana')}
+
+${p('sec_rop_std')}
+${p('rop_formula')}
+${p('rop_consist')}
+
+${p('pe_calib_title')}
+${p('pe_calib_1')}
+${p('pe_calib_2')}
+${p('pe_calib_3')}
+${p('pe_calib_4')}
+${p('pe_calib_5')}
+${p('pe_calib_6')}
+
+${p('rop_build2')}
+${p('rev_decomp')}
+${p('rop_also')}
+• ${p('rop_ret')}
+• ${p('rop_pwret')}
+• Alpha-gate vs ${bmk} (if available; otherwise use 8%/yr as assumption and note it)
+${p('alpha_norm')}
+${p('sensitivity')}
+
+| Scenario | EPS   | P/E  | RPS   | P/S  | Net Margin | Target    | vs now    |
+|----------|-------|------|-------|------|------------|-----------|-----------|
+| Bear     | $___  | ___x | $___  | ___x | ___%       | $___      | ___%      |
+| Base     | $___  | ___x | $___  | ___x | ___%       | $___      | ___%      |
+| Bull     | $___  | ___x | $___  | ___x | ___%       | $___      | ___%      |
+
+${p('rop_bear_j')}: [${p('rop_bear_hint')}]
+${p('rop_base_j')}: [${p('rop_base_hint')}]
+${p('rop_bull_j')}: [${p('rop_bull_hint')}]
+
+
+${p('sec_result')}
+
+${p('verdict')}: [${p('v_opts')}] — ${p('v_why')}
+${p('v_ctx')}: [${p('v_ctx_hint')}]
+${p('v_risk')} = ${ddShort}. ${p('v_stop')}
+
+${p('scenarios')}:
+
+| Scenario | Prob.       | Target    | Action                         | Entry / Exit / Stop           | Position size (Δwt / total)  |
+|----------|-------------|-----------|--------------------------------|-------------------------------|------------------------------|
+| Bear     | ___%        | $___      | [${p('s_noenter')}]           | ${p('s_stop')} $___           | Δ___% → ___% |
+| Base     | ___%        | $___      | [${p('s_hold')}]              | ${p('s_entry')} $___–$___, ${p('s_target')} $___ | Δ___% → ___% |
+| Bull     | ___%        | $___      | [${p('s_add')}]               | ${p('s_target')} $___         | Δ___% → ___% |
+
+${p('triggers')}:
+• ${p('t_bear')}: [${p('t_bear_v')}]
+• ${p('t_base')}: [${p('t_base_v')}]
+• ${p('t_bull')}: [${p('t_bull_v')}]
+
+${p('red_flags')}: [${p('rf_hint')}]
+
+${getSourceRule()}
+${questionBudget()}
+
+${gc}\n\n${startBlocksRule(bmk, ddT)}`;
+}
+
+// ── PRO ──────────────────────────────────────────────────
+function buildPro(ticker, goal, role, horizon, instr, sysBlock='', skillsBlock='') {
+  const ctx = buildCtx(ticker, goal, role, horizon);
+  const instrNote = instrumentNote(instr, ticker);
+  const rf = roleFocusBlock(role, 'pro');
+  const gc = goalContext(goal);
+  const bmk = getBenchmark();
+  const ddT = maxDrawdownText();
+  const ddShort = (getChip('dd-group') && getChip('dd-group') !== 'auto') ? getChip('dd-group') : 'AUTO';
+  return `${p('ai_pro')} ${ticker}.${sysBlock}${skillsBlock}
+
+${p('sec_ctx')}
+${ctx}${instrNote ? '\n' + instrNote : ''}
+
+${profileBlock(3)}
+${p('sec_role')}: ${rf}
+
+${p('sec_find')}
+${p('sec_find_fill3')}
+
+| ${p('m_price').padEnd(26)}| $___            | Source + date   |
+|-${'-'.repeat(26)}-|-----------------|-----------------| 
+| 52w High / Low               | $___ / $___     |                 |
+| Market Cap / EV              | $___B / $___B   |                 |
+| P/E fwd / P/E ttm            | ___x / ___x     |                 |
+| P/S fwd / P/S ttm            | ___x / ___x     |                 |
+| EV/EBITDA fwd                | ___x            |                 |
+| ${p('m_eps_both').padEnd(26)}| $___ / $___     |                 |
+| ${p('m_rps_both').padEnd(26)}| $___ / $___     |                 |
+| ${p('m_nm_both').padEnd(26)} | ___% / ___%     |                 |
+| FCF Margin ttm               | ___%            |                 |
+| ${p('m_eps_yoy').padEnd(26)} | ___%            |                 |
+| ${p('m_rps_yoy').padEnd(26)} | ___%            |                 |
+| ROIC ttm                     | ___%            |                 |
+| Debt/FCF                     | ___x            |                 |
+| ${p('m_target').padEnd(26)}  | $___ (__ anal.) |                 |
+| ${p('m_bhs').padEnd(26)}     | __ / __ / __    |                 |
+${macroContextBlock()}
+
+${p('sec_mkt')}
+${p('backsolve_title')}
+${p('backsolve_1')}
+${p('backsolve_2')}
+${p('backsolve_3')}
+${p('backsolve_4')}
+${p('backsolve_5')}
+
+${p('sec_implied')}
+${p('implied_1')}
+${p('implied_2')}
+${p('implied_3')}
+${p('implied_4')}
+${p('implied_5')}
+
+${p('sec_ana')}
+${p('sec_biz')}
+If EUREKA_test.md connected:
+${p('eureka_strict')}
+If Life _cycle.md connected — state company stage and its effect on multiples
+If Price_power.md connected — give PricePowerFactor (0–5) and margin impact
+
+${p('sec_rop_pro')}
+${p('rop_formula')}
+${p('rop_consist2')}
+Horizon: ${horizon || p('rop_horizon')}
+
+${p('pe_calib_title')}
+${p('pe_calib_1')}
+${p('pe_calib_2')}
+${p('pe_calib_3')}
+${p('pe_calib_4')}
+${p('pe_calib_5')}
+${p('pe_calib_6')}
+
+${p('rev_decomp')}
+${p('rop_also')}
+• ${p('rop_ret')}
+• ${p('rop_pwret')}
+• Alpha-gate vs ${bmk} (if available; otherwise use 8%/yr as assumption and note it)
+${p('alpha_norm')}
+${p('sensitivity')}
+
+| Scenario | EPS   | P/E  | RPS   | P/S  | Net Margin | Target    | vs now    |
+|----------|-------|------|-------|------|------------|-----------|-----------|
+| Bear     | $___  | ___x | $___  | ___x | ___%       | $___      | ___%      |
+| Base     | $___  | ___x | $___  | ___x | ___%       | $___      | ___%      |
+| Bull     | $___  | ___x | $___  | ___x | ___%       | $___      | ___%      |
+
+${p('rop_bear_j')}: [${p('rop_bear_hint2')}]
+${p('rop_base_j')}: [${p('rop_base_hint2')}]
+${p('rop_bull_j')}: [${p('rop_bull_hint2')}]
+
+${p('rop_check')}
+Bear: ___ = ___ / ___  ✓/✗
+Base: ___ = ___ / ___  ✓/✗
+Bull: ___ = ___ / ___  ✓/✗
+
+
+${p('sec_result')}
+
+${p('verdict')}: [${p('v_opts')}] — ${p('v_why')}
+${p('v_ctx')}: [${p('v_ctx_hint')}]
+${p('v_risk')} = ${ddShort}. ${p('v_stop')}
+
+${p('scenarios')}:
+
+| Scenario | Prob.       | Target    | Action                         | Entry / Exit / Stop           | Position size (Δwt / total)  |
+|----------|-------------|-----------|--------------------------------|-------------------------------|------------------------------|
+| Bear     | ___%        | $___      | [${p('s_noenter')}]           | ${p('s_stop')} $___           | Δ___% → ___% |
+| Base     | ___%        | $___      | [${p('s_hold')}]              | ${p('s_entry')} $___–$___, ${p('s_target')} $___ | Δ___% → ___% |
+| Bull     | ___%        | $___      | [${p('s_add')}]               | ${p('s_target')} $___         | Δ___% → ___% |
+
+${p('triggers')}:
+• ${p('t_bear')}: [${p('t_bear_v')}]
+• ${p('t_base')}: [${p('t_base_v')}]
+• ${p('t_bull')}: [${p('t_bull_v')}]
+
+${p('red_flags')}: [${p('rf_hint')}]
+
+${p('sec_audit')}
+${p('audit_dq')}
+${p('audit_check')}
+1.
+2.
+3.
+
+${getSourceRule()}
+${questionBudget()}
+
+${gc}\n\n${startBlocksRule(bmk, ddT)}`;
+}
+
+// ── TEMPLATE ─────────────────────────────────────────────
+
+
+// ─── HELPERS ─────────────────────────────────────────────
+// ─── GOAL CONTEXT BLOCK ──────────────────────────────────
+function goalContext(goal) {
+  const dd = getChip('dd-group');
+  const ddHint = (!dd || dd === 'auto') ? '20%' : dd;
+  if (goal === 'add_to_position') {
+    return `\n${p('gc_add_title')}
+${p('gc_add_q')}
+• ${p('gc_add_1')}
+• ${p('gc_add_2')}
+• ${p('gc_add_3')}
+• ${p('gc_dd_suffix')} -${ddHint}?`;
+  }
+  if (goal === 'hold_review') {
+    return `\n${p('gc_hold_title')}
+• ${p('gc_hold_1')}
+• ${p('gc_hold_2')}
+• ${p('gc_hold_3')}`;
+  }
+  if (goal === 'consider_sell') {
+    return `\n${p('gc_sell_title')}
+• ${p('gc_sell_1')}
+• ${p('gc_sell_2')}
+• ${p('gc_sell_3')}`;
+  }
+  return '';
+}
+
+let GOAL_LABELS = {
+  first_buy:       'рассматриваю первый вход',
+  add_to_position: 'уже держу позицию, рассматриваю докупку',
+  hold_review:     'уже держу, оцениваю — держать или выходить',
+  research:        'изучаю, без конкретного решения',
+  consider_sell:   'думаю продать или срезать позицию',
+};
+
+function getWeight() {
+  const el = document.getElementById('weight-input');
+  if (!el || el.value === '') return null;
+  const v = parseFloat(el.value);
+  return isNaN(v) ? null : v;
+}
+
+function getBenchmark() {
+  return 'SPY';
+}
+
+function getMaxDrawdown() {
+  const dd = getChip('dd-group');
+  if (!dd || dd === 'auto') return null;
+  return dd; // '5%' | '15%' | '30%+'
+}
+
+function maxDrawdownText() {
+  const dd = getChip('dd-group');
+  if (!dd || dd === 'auto') return p('dd_auto');
+  return dd;
+}
+
+function buildCtx(ticker, goal, role, horizon) {
+  let lines = [`${s('p_ticker')}: ${ticker}`];
+  if (goal) lines.push(`${s('p_goal')}: ${GOAL_LABELS[goal] || goal}`);
+  if (role) {
+    const roleLabel = role === 'INVESTOR'   ? s('chip_inv')
+                    : role === 'SPECULATOR' ? s('chip_spec')
+                    : role === 'SAVER'      ? s('chip_sav')
+                    : role;
+    lines.push(`${s('p_role')}: ${roleLabel}`);
+  }
+  if (horizon) lines.push(`${s('p_horizon')}: ${horizon}`);
+
+  // Бенчмарк для alpha-gate
+  lines.push(`${s('p_bmk')}: ${getBenchmark()}`);
+
+  // Допустимая просадка
+  const dd = getChip('dd-group');
+  if (dd && dd !== 'auto') lines.push(`${s('p_dd')}: ${dd}`);
+  else lines.push(`${s('p_dd')}: AUTO`);
+
+  // Доля в портфеле
+  const w = getWeight();
+  const showWeight = goal && !['first_buy','research'].includes(goal);
+  if (showWeight) {
+    lines.push(`${s('p_weight')}: ${(w !== null && w > 0) ? w + '%' : '0% (позиции ещё нет или не указана)'}`);
+  }
+
+  // Средняя цена входа
+  const entryEl = document.getElementById('entry-price-input');
+  const entryPrice = entryEl ? parseFloat(entryEl.value) : NaN;
+
+  if (goal === 'add_to_position') {
+    lines.push(`\n${s('p_ctx')}`);
+    if (!isNaN(entryPrice) && entryPrice > 0) {
+      lines.push(`• Средняя цена входа: $${entryPrice}`);
+    } else {
+      lines.push(s('p_entry'));
+    }
+    lines.push(s('p_thesis'));
+  } else if ((goal === 'hold_review' || goal === 'consider_sell') && !isNaN(entryPrice) && entryPrice > 0) {
+    lines.push(`• Средняя цена входа: $${entryPrice}`);
+  }
+
+  return lines.join('\n');
+}
+
+function renderOutput(prompt) {
+  const body = document.getElementById('output-body');
+  body._raw = prompt;
+
+  const html = prompt
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/(━+[^\n━]+━+)/g, '<span style="color:var(--muted)">$1</span>')
+    .replace(/(─+[^\n─]+─+)/g, '<span style="color:var(--muted)">$1</span>')
+    .replace(/^(ВЕРДИКТ:|ЗА|РИСКИ|СПРАВЕДЛИВАЯ|АЛЬТЕРНАТИВА|БИЗНЕС|ОЦЕНКА|УРОВНИ|ЧТО ОТСЛЕЖИВАТЬ|КРАСНЫЕ ФЛАГИ|СЦЕНАРИИ|ФИНАНСЫ|ДАННЫЕ|МОЙ ПРОФИЛЬ|КОНТЕКСТ|ФОРМАТ|ПРАВИЛА|ASSUMPTIONS|DATA QUALITY|ACTION CARD)/gm,
+      '<span style="color:var(--ink);font-weight:500">$1</span>')
+    .replace(/(ТИКЕР:|ЦЕЛЬ:|МОЯ РОЛЬ:|ГОРИЗОНТ:|ТИП:|БЕНЧМАРК \(ALPHA-GATE\):|ДОПУСТИМАЯ ПРОСАДКА ПО ПОЗИЦИИ:)/g,
+      '<span style="color:var(--ink);font-weight:500">$1</span>')
+    .replace(/(БЕНЧМАРК|ДОПУСТИМАЯ ПРОСАДКА)/g,
+      '<span style="color:var(--ink);font-weight:500">$1</span>')
+    .replace(/(Запрещено выдумывать|Если (нет )?доступа|Лимит уточняющих|нет данных|не придумывай|timestamp)/gi,
+      '<span style="color:#b45309">$1</span>');
+
+  body.innerHTML = html;
+
+  const card = document.getElementById('output-card');
+  card.style.display = 'block';
+  card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function copyPrompt() {
+  const body = document.getElementById('output-body');
+  const text = body._raw || body.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    const lbl = document.getElementById('copy-label');
+    btn.classList.add('done');
+    lbl.textContent = s('copied');
+    setTimeout(() => { btn.classList.remove('done'); lbl.textContent = s('btn_copy'); }, 2000);
+  });
+}
+
+
+// ─── JUDGE ────────────────────────────────────────────────
+let judgeOpen = false;
+function toggleJudge() {
+  judgeOpen = !judgeOpen;
+  const section = document.getElementById('judge-section');
+  const icon    = document.getElementById('judge-toggle-icon');
+  section.classList.toggle('visible', judgeOpen);
+  icon.classList.toggle('open', judgeOpen);
+}
+
+function buildJudgePrompt() {
+  const report = (document.getElementById('judge-report').value || '').trim();
+  const ticker = (document.getElementById('ticker').value || '').trim().toUpperCase();
+  const role   = getChip('role-group') || '';
+  const horizon= (document.getElementById('horizon').value || '').trim();
+  const bmk    = getBenchmark();
+
+  const ctx = [
+    ticker   ? `Тикер: ${ticker}` : '',
+    role     ? `Роль инвестора: ${role}` : '',
+    horizon  ? `Горизонт: ${horizon}` : '',
+    bmk      ? `Бенчмарк (alpha-gate): ${bmk}` : '',
+  ].filter(Boolean).join('\n');
+
+  const reportBlock = report
+    ? `${p('judge_report_hdr')}\n${report}`
+    : `${p('judge_report_hdr')}\n[Отчёт не вставлен. Попроси пользователя скопировать и вставить анализ — иначе аудит невозможен.]`;
+
+  const prompt =
+`${p('judge_role')}
+
+━━━ КОНТЕКСТ ━━━
+${ctx || '(контекст не указан — используй данные из отчёта)'}
+
+${reportBlock}
+
+${p('judge_tasks_hdr')}
+
+${p('judge_t1_hdr')}
+${p('judge_t1_1')}
+${p('judge_t1_2')}
+${p('judge_t1_3')}
+
+${p('judge_t2_hdr')}
+${p('judge_t2_0')}
+${p('judge_t2_1')}
+${p('judge_t2_2')}
+${p('judge_t2_3')}
+${p('judge_t2_4')}
+${p('judge_t2_5')}
+
+${p('judge_t3_hdr')}
+${p('judge_t3_1')}
+${p('judge_t3_2')}
+${p('judge_t3_3')}
+
+${p('judge_t4_hdr')}
+${p('judge_t4_1')}
+${p('judge_t4_2')}
+${p('judge_t4_3')}
+
+${p('judge_result_hdr')}
+
+${p('judge_verdict')}
+${p('judge_v_confirm')}
+${p('judge_v_revise')}
+${p('judge_v_overturn')}
+
+${p('judge_findings')}
+1. ___
+2. ___
+3. ___
+
+${p('judge_rev_verd')}
+
+${p('judge_rules_hdr')}
+${p('judge_r1')}
+${p('judge_r2')}
+${p('judge_r3')}
+${p('judge_r4')}`;
+
+  const label = ticker ? `${s('judge_badge')} · ${ticker}` : s('judge_badge');
+  document.getElementById('out-badge').className   = 'output-badge badge-judge';
+  document.getElementById('out-badge').textContent = s('judge_badge');
+  document.getElementById('out-label').textContent = label;
+  renderOutput(prompt);
+}
+
+function buildTemplatePrompt() {
+  const role  = getChip('role-group');
+  const instr = getChip('instrument-group') || 'auto';
+  const bmk   = getBenchmark();
+  const dd    = getChip('dd-group');
+  const ddShort = (!dd || dd === 'auto') ? p('tmpl_dd_none') : dd;
+
+  const roleHint = role === 'INVESTOR'   ? p('rh_inv')
+                 : role === 'SPECULATOR' ? p('rh_spec')
+                 : role === 'SAVER'      ? p('rh_sav')
+                 : p('rh_none');
+
+  const instrHint = instr === 'etf'   ? p('ih_etf')
+                  : instr === 'stock' ? p('ih_stock')
+                  : p('ih_both');
+
+  const prompt = `${p('tmpl_ai')}
+
+${p('tmpl_inputs')}
+${p('tmpl_style')}: ${roleHint}
+${p('tmpl_instr')}: ${instrHint}
+${p('tmpl_bmk')}: ${bmk}
+${p('tmpl_dd')}: ${ddShort}
+
+${p('tmpl_note')}
+${p('tmpl_n1')}
+${p('tmpl_n2')}
+${p('tmpl_n3')}
+
+${p('tmpl_req')}
+${p('tmpl_r1')}
+${p('tmpl_r2')}
+${p('tmpl_r3')}
+${p('tmpl_r4')}
+${p('tmpl_r5')}
+${p('tmpl_r6')}
+
+${p('tmpl_out')}
+${p('tmpl_a')}
+${p('tmpl_b')}
+${p('tmpl_c')}`;
+
+  document.getElementById('out-badge').className   = 'output-badge badge-tmpl';
+  document.getElementById('out-badge').textContent = p('tmpl_badge');
+  document.getElementById('out-label').textContent = p('tmpl_label');
+  renderOutput(prompt);
+}
+
+// ─── INIT ─────────────────────────────────────────────────
+window.onload = () => {
+  applyLang();
+  document.querySelector('#instrument-group .chip').classList.add('selected');
+  setMode('analysis');
+  applySkillsForLevel('std'); // дефолт Standard
+};
+</script>
+</body>
+</html>

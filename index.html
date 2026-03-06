@@ -3785,7 +3785,7 @@ ${p('tmpl_c')}`;
 
 // ─── INIT ─────────────────────────────────────────────────
 window.onload = () => {
-  applyLang();
+  setLang(uiLang);
   document.querySelector('#instrument-group .chip').classList.add('selected');
   setMode('analysis');
   applySkillsForLevel('std'); // дефолт Standard

@@ -260,29 +260,56 @@ body::before {
 .persona-notice .icon { flex-shrink: 0; }
 
 /* BUILD BTN */
-.build-btn {
-  width: 100%;
-  padding: 17px 24px;
-  background: var(--ink);
-  border: none;
-  border-radius: 4px;
-  color: var(--bg);
-  font-family: 'Syne', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+/* ── ACTION BAR ─────────────────────────────────────────────── */
+.action-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
 }
-.build-btn:hover { background: var(--ink2); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
-.build-btn:active { transform: translateY(0); }
-.build-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; box-shadow: none; }
-.build-btn
-.build-btn.tmpl-mode:hover { background: #7c2d12; }
+.action-btn {
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 16px 10px;
+  border: none; border-radius: 4px;
+  font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+  letter-spacing: -0.01em; cursor: pointer; transition: all 0.18s;
+  line-height: 1.2; text-align: center;
+}
+.action-btn:active { transform: translateY(0) !important; }
+/* Snapshot — teal */
+.action-btn--snap {
+  background: #134e4a; color: #99f6e4;
+  border: 1px solid #0f766e;
+}
+.action-btn--snap:hover  { background: #0f766e; color: #fff; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(15,118,110,.3); }
+.action-btn--snap.open   { background: #0f766e; color: #fff; box-shadow: inset 0 2px 6px rgba(0,0,0,.2); }
+/* Main — ink */
+.action-btn--main {
+  background: var(--ink); color: var(--bg); font-size: 14px;
+}
+.action-btn--main:hover  { background: var(--ink2); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+.action-btn--main:disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; box-shadow: none; }
+.action-btn--main.tmpl-mode { background: #7c2d12; color: #fff; }
+.action-btn--main.tmpl-mode:hover { background: #6b2510; }
+/* Judge — red */
+.action-btn--judge {
+  background: #450a0a; color: #fca5a5;
+  border: 1px solid #991b1b;
+}
+.action-btn--judge:hover  { background: #991b1b; color: #fff; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(153,27,27,.3); }
+.action-btn--judge.open   { background: #991b1b; color: #fff; box-shadow: inset 0 2px 6px rgba(0,0,0,.2); }
+
+/* Trade — amber */
+.action-bar-trade { margin-top: 8px; }
+.action-btn--trade {
+  width: 100%;
+  background: #451a03; color: #fde68a;
+  border: 1px solid #b45309;
+}
+.action-btn--trade:hover  { background: #b45309; color: #fff; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(180,83,9,.3); }
+.action-btn--trade.open   { background: #b45309; color: #fff; box-shadow: inset 0 2px 6px rgba(0,0,0,.2); }
+
+/* Legacy — keep id-based selectors working */
+#build-btn { /* handled by action-btn--main */ }
 
 /* OUTPUT */
 .output-card {
@@ -324,25 +351,8 @@ body::before {
 .badge-judge { background: #fee2e2; color: #991b1b; }
 
 /* JUDGE SECTION */
-.judge-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 14px;
-  cursor: pointer;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #991b1b;
-  opacity: 0.7;
-  transition: opacity 0.15s;
-  user-select: none;
-}
-.judge-toggle:hover { opacity: 1; }
-.judge-toggle-icon { font-size: 14px; transition: transform 0.2s; }
-.judge-toggle-icon.open { transform: rotate(180deg); }
+/* judge-toggle row removed — action-bar handles this */
+
 
 .judge-section {
   display: none;
@@ -413,6 +423,53 @@ body::before {
 .judge-btn:active { transform: translateY(0); }
 .judge-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
 
+
+/* ── SNAPSHOT SECTION ────────────────────────────────────── */
+.snapshot-section {
+  display: none; background: var(--surface);
+  border: 1px solid #99f6e4; border-radius: 4px;
+  padding: 20px 24px; margin-top: 10px; animation: slideUp 0.25s ease;
+}
+.snapshot-section.visible { display: block; }
+.snapshot-label {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: #0f766e; margin-bottom: 8px; opacity: 0.8;
+}
+.snapshot-hint {
+  font-family: 'Literata', Georgia, serif; font-size: 12px;
+  color: var(--muted); font-style: italic; margin-bottom: 14px; line-height: 1.5;
+}
+.trade-prereq-hint {
+  font-family: 'Literata', Georgia, serif; font-size: 11px;
+  color: #b45309; font-style: italic; margin-top: 6px; line-height: 1.4;
+  padding: 4px 0;
+}
+.snapshot-depth-row {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
+}
+.snapshot-depth-lbl-el {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+}
+.depth-chip {
+  padding: 4px 12px; border: 1px solid #99f6e4; border-radius: 3px;
+  background: transparent; color: #0f766e;
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+  cursor: pointer; transition: all 0.12s; font-weight: 500;
+}
+.depth-chip:hover { background: #ccfbf1; }
+.depth-chip.selected { background: #0f766e; color: #fff; border-color: #0f766e; }
+.snapshot-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 14px 28px; background: #0f766e;
+  border: none; border-radius: 4px; color: #fff;
+  font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
+  letter-spacing: -0.02em; cursor: pointer; transition: all 0.15s;
+}
+.snapshot-btn:hover { background: #0d6460; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(15,118,110,.25); }
+.snapshot-btn:active { transform: translateY(0); }
+.snapshot-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
 .output-ticker-label {
   font-family: 'Syne', sans-serif;
   font-weight: 700;
@@ -897,6 +954,7 @@ body::before {
         <button class="chip selected" onclick="selectChip('instrument-group', this, 'auto')"><span id='chip-auto'>Auto</span></button>
         <button class="chip" onclick="selectChip('instrument-group', this, 'stock')"><span id='chip-stock'>Акция</span></button>
         <button class="chip" onclick="selectChip('instrument-group', this, 'etf')">ETF</button>
+        <button class="chip" onclick="selectChip('instrument-group', this, 'reit')">REIT</button>
       </div>
     </div>
 
@@ -976,7 +1034,7 @@ body::before {
     <!-- SYSTEM TOGGLE -->
     <div class="divider" id="system-divider" style="display:none"></div>
     <div class="system-toggle-row" id="system-toggle-row" style="display:none">
-      <span class="system-toggle-label">
+      <span class="system-toggle-label" id="lbl-sys">
         Моя инвест-система
         
       </span>
@@ -1223,41 +1281,32 @@ body::before {
       </div>
     </div>
 
-    <!-- BUILD BUTTON -->
-    <button class="build-btn" id="build-btn" onclick="buildPrompt()" disabled>
-      <span id="btn-label">Собрать промпт</span>
-      <span>→</span>
-    </button>
-    <div style="text-align:center; margin-top:10px;">
-      <button onclick="buildTemplatePrompt()"
-        style="background:none;border:none;cursor:pointer;
-               font-family:'IBM Plex Mono',monospace;font-size:10px;
-               color:var(--muted);letter-spacing:0.08em;
-               text-decoration:underline;text-underline-offset:3px;
-               padding:4px 8px;transition:color 0.15s;"
-        onmouseover="this.style.color='var(--ink2)'"
-        onmouseout="this.style.color='var(--muted)'">
-        <span id="template-btn-label">Создать системный промпт →</span>
+    <!-- ACTION BAR: Снэпшот | Собрать | Судья -->
+    <div class="action-bar">
+      <button class="action-btn action-btn--snap" id="snap-bar-btn" onclick="buildSnapshotPrompt()">
+        <span>🔍</span><span id="snap-bar-label">Бизнес-снэпшот</span>
+      </button>
+      <button class="action-btn action-btn--main" id="build-btn" onclick="buildPrompt()" disabled>
+        <span id="btn-label">Stock Report</span><span>→</span>
+      </button>
+      <button class="action-btn action-btn--judge" id="judge-bar-btn" onclick="buildJudgePrompt()">
+        <span>⚖</span><span id="judge-bar-label">Промпт судьи</span>
       </button>
     </div>
 
-    <!-- JUDGE TOGGLE -->
-    <div class="judge-toggle" onclick="toggleJudge()" id="judge-toggle-row">
-      <span id="judge-toggle-icon" class="judge-toggle-icon">▲</span>
-      <span id="judge-toggle-label">Промпт Судьи · разобрать готовый отчёт</span>
+    <!-- TRADE PLAN button — v2.6.0 -->
+    <div class="action-bar-trade">
+      <button class="action-btn action-btn--trade" id="trade-bar-btn" onclick="buildTradePrompt()">
+        <span>&#x1F4CB;</span><span id="trade-bar-label">&#x421;&#x434;&#x435;&#x43B;&#x43A;&#x430; &#x2014; &#x442;&#x43E;&#x440;&#x433;&#x43E;&#x432;&#x44B;&#x439; &#x43F;&#x43B;&#x430;&#x43D;</span>
+      </button>
+      <div class="trade-prereq-hint" id="trade-prereq-hint">⚠ Сначала запусти Stock Report — Trade Plan использует его результаты как вход.</div>
     </div>
 
-    <!-- JUDGE SECTION -->
-    <div class="judge-section" id="judge-section">
-      <div class="judge-label" id="judge-lbl-paste">Вставь готовый анализ</div>
-      <div class="judge-hint" id="judge-hint-text">Скопируй ответ ИИ после основного промпта и вставь сюда. Судья атакует допущения, ищет смещения и проверяет математику.</div>
-      <textarea class="judge-textarea" id="judge-report"
-        placeholder="Вставь сюда готовый отчёт ИИ..."></textarea>
-      <button class="judge-btn" id="judge-btn" onclick="buildJudgePrompt()">
-        <span id="judge-btn-label">⚖ Собрать промпт Судьи</span>
-        <span>→</span>
-      </button>
-    </div>
+    <!-- Template prompt button removed in v2.6.0 -->
+
+    <!-- SNAPSHOT PANEL removed in v2.0 — button builds prompt directly -->
+
+    <!-- JUDGE PANEL removed in v2.6.0 — button builds prompt directly with placeholder -->
 
   </div>
 
@@ -1329,7 +1378,7 @@ ru: {
   sd_price: 'ценовая сила · моат', sd_scenario: '08 · триггеры / ветки',
   sd_lifecycle: 'стадия / fair value', sd_report: '09 · решение-карточка',
   sd_triage: '11 · воронка идей',
-  btn_build: 'Собрать промпт',
+  btn_build: 'Stock Report',
   btn_template: 'Создать системный промпт →',
   btn_copy: 'Скопировать', copied: 'Скопировано ✓',
   out_empty: 'Заполните форму и нажмите «Собрать промпт»',
@@ -1347,13 +1396,94 @@ ru: {
   gl_hold: 'уже держу, оцениваю — держать или выходить',
   gl_res: 'изучаю, без конкретного решения',
   gl_sell: 'думаю продать или срезать позицию',
+  // Snapshot UI
+  snapshot_bar:    'Бизнес-снэпшот',
+  snapshot_toggle: 'Бизнес-снэпшот · понять компанию и её рвы',
+  snapshot_lbl:    'Бизнес-снэпшот v2',
+  snapshot_hint:   '7 слоёв глубины: суть → деньги → метрики → скрытая переменная → цикл → рвы → синтез. Без Buy/Sell.',
+  snapshot_btn:    '🔍 Собрать промпт Снэпшота',
+  snapshot_badge:  'Снэпшот',
+  // Localized prompt labels
+  snap_lbl_company:       '━━━ КОМПАНИЯ ━━━',
+  snap_lbl_ticker:  'Тикер',
+  snap_lbl_context:       '━━━ КОНТЕКСТ ━━━',
+  snap_lbl_role:    'Роль инвестора',
+  snap_lbl_horizon: 'Горизонт',
+  snap_lbl_bmk:     'Бенчмарк (alpha-gate)',
+  snap_lbl_no_ctx:        '(контекст не указан — используй данные из отчёта)',
+  snap_lbl_paste:  '[ВСТАВЬ ОТЧЁТ СЮДА — скопируй полный ответ ИИ и вставь вместо этой строки]',
+  // Snapshot prompt text
+  snap_role:       'Ты — бизнес-аналитик и эксперт по конкурентным преимуществам. Задача: помочь инвестору понять, что ГЛАВНОЕ в бизнесе компании — через последовательное углубление от очевидного к скрытому.',
+  snap_task:       'Анализ строится по принципу «луковица» — каждый слой снимает очевидное объяснение и открывает более глубокое. Каждый слой заканчивается мостиком к следующему. Используй веб-поиск для свежих данных (10-K, investor day, 2–3 аналитических обзора).',
+  snap_rule:       'ПРАВИЛА: 1) Нарратив, не таблицы — таблицы только где указано. 2) Конкретные числа в каждом утверждении. 3) Каждый ров подтверждён ≥1 фактом. 4) Никаких Buy/Sell — только понимание. 5) Минимум 2 раза фрейм «большинство думает X, на самом деле Y». 6) Тон: уверенный, конкретный, как аналитик объясняет коллеге за кофе. 7) Длина ~2000–3000 слов.',
+  snap_s1_hdr:     '━━━ СЛОЙ 1 — СУТЬ БИЗНЕСА (для любого человека) ━━━',
+  snap_s1_1:       '1a. Одно предложение (≤25 слов): "[Компания] зарабатывает на [механизм], потому что [почему клиент платит]." Тест: если можно написать про 10 компаний — плохо.',
+  snap_s1_2:       '1b. Аналогия: "Это как [бытовой пример], только [масштаб/отличие]." Раскрывает механизм заработка, не продукт.',
+  snap_s1_3:       '1c. Job-to-be-done: "Клиент нанимает эту компанию, чтобы [задача с числами]."',
+  snap_s1_4:       '1d. Экономическая формула бизнеса: [Input] × [Множитель] × [Загрузка] = Выручка; Выручка − [расходы] = Операционный доход.',
+  snap_s2_hdr:     '━━━ СЛОЙ 2 — КАК ТЕКУТ ДЕНЬГИ (анатомия P&L) ━━━',
+  snap_s2_1:       '2a. Карта выручки (таблица): Сегмент | % выручки | Модель оплаты | Рост YoY | Маржа сегмента.',
+  snap_s2_2:       '2b. Профиль маржинальности: Gross → Operating → FCF Margin (TTM). Одно предложение — почему маржа такая и куда движется.',
+  snap_s2_3:       '2c. Тип бизнеса: asset-heavy / asset-light / platform-network — и одно предложение почему.',
+  snap_s3_hdr:     '━━━ СЛОЙ 3 — МЕТРИКИ ЗДОРОВЬЯ ━━━',
+  snap_s3_1:       '3a. North Star метрика: одна метрика, которая лучше всего предсказывает рост выручки и FCF. Текущее значение + тренд.',
+  snap_s3_2:       '3b. Ещё 2–3 ключевых метрики. Для каждой: значение + порог тревоги + почему важна.',
+  snap_s3_3:       '3c. КЛЮЧЕВОЙ ЭЛЕМЕНТ — «Большинство смотрят на [очевидная метрика]. Но на самом деле [скрытая метрика] важнее, потому что [причина с числовым примером].»',
+  snap_s4_hdr:     '━━━ СЛОЙ 4 — СКРЫТАЯ ПЕРЕМЕННАЯ (Hidden Driver) ━━━',
+  snap_s4_1:       '4a. «Цену акции [компания] на самом деле двигает не [очевидное], а [скрытая переменная].» Объясни механизм: [переменная] → влияние на бизнес → влияние на мультипликатор → влияние на цену.',
+  snap_s4_2:       '4b. Покажи на числах: «Если [переменная] меняется на X → стоимость меняется на Y%. Без изменения бизнеса.»',
+  snap_s4_3:       '4c. Таблица ориентиров:\n| Показатель | Сейчас | Дёшево (покупать) | Нормально | Дорого (осторожно) |\n|------------|--------|-------------------|-----------|---------------------|',
+  snap_s5_hdr:     '━━━ СЛОЙ 5 — ЦИКЛ БИЗНЕСА (где мы сейчас) ━━━',
+  snap_s5_1:       '5a. Тип цикла этой индустрии (supply / credit / inventory / capex / adoption — назови конкретный).',
+  snap_s5_2:       '5b. Опиши 4–5 фаз цикла. Для каждой: что с бизнесом + что с акцией.',
+  snap_s5_3:       '5c. «Сейчас [компания] в фазе [N]: [описание]. Это означает [вывод].» Подкрепи данными.',
+  snap_s5_4:       '5d. «Через [срок] ожидается переход в фазу [N+1], потому что [причина]. Ранний сигнал: [что смотреть].»',
+  snap_s6_hdr:     '━━━ СЛОЙ 6 — РВЫ (что реально защищает бизнес) ━━━',
+  snap_s6_1:       '6a. Главный ров: в чём заключается (2–3 предложения с фактами и числами) + что должен сделать конкурент + сколько стоит/займёт. Тест качества: «У компании сильный бренд» — НЕ ров. Ров = конкретный барьер с числами.',
+  snap_s6_2:       '6b. Второй ров (если есть) — то же, короче. Если нет — явно напиши.',
+  snap_s6_3:       '6c. Синергия: усиливают ли рвы друг друга? Если нет — это риск.',
+  snap_s6_4:       '6d. Уязвимость (таблица):\n| Ров | Сценарий разрушения | Ранний сигнал | Горизонт |\n|-----|---------------------|---------------|----------|',
+  snap_s7_hdr:     '━━━ СЛОЙ 7 — СИНТЕЗ ━━━',
+  snap_s7_1:       '7a. Тезис в 3 предложениях (≤50 слов): 1) что + как + почему платят. 2) скрытая переменная + цикл. 3) главный риск.',
+  snap_s7_2:       '7b. Идеальный сценарий для покупки: «Исторически лучшие покупки [компания/сектор] происходили, когда одновременно:» — 2–4 условия с числовыми порогами.',
+  snap_s7_3:       '7c. Маршрутизация: какие скиллы запустить (✅/⚠️/❌ + почему):\n  thiel-moat | biological-moat | nsm | ksf | halo-screener | value-trap | fallen-angel | valuation',
+  snap_s7_4:       '7d. Нерешённые вопросы (3–5): «Неизвестно: [вопрос]. Где искать: [источник].»',
   // Judge UI
+  judge_bar:       'Промпт судьи',
   judge_toggle:    'Промпт Судьи · разобрать готовый отчёт',
   judge_lbl_paste: 'Вставь готовый анализ',
   judge_hint:      'Скопируй ответ ИИ после основного промпта и вставь сюда. Судья атакует допущения, ищет смещения и проверяет математику.',
   judge_ph:        'Вставь сюда готовый отчёт ИИ...',
   judge_btn:       '⚖ Собрать промпт Судьи',
   judge_badge:     'Судья',
+  // Trade plan UI (v2.6.0)
+  trade_bar:       'Сделка — торговый план',
+  trade_badge:     'Сделка',
+  trade_hint:      'Промпт для составления торгового плана v2.0 — исполнительный документ на основе завершённого анализа.',
+  // Trade prompt strings (RU) — aligned to Trade Plan v2.0 skill
+  trade_task:      'Запусти скилл Trade Plan v2.0 по {TICKER}. Не повторяй аналитику — только исполнительный документ: entry / stop / targets / size ИЛИ management / trim / exit в зависимости от plan_type.',
+  trade_data_note: 'Извлеки из прикреплённых результатов анализа (Stock Report, оценка позиции, MPS, TA) все поля входного контракта скилла Trade Plan v2.0. Если данных не хватает — используй FALLBACK-режим (см. ниже).',
+  trade_input_hdr: '── ВХОДНЫЕ ДАННЫЕ (контракт Trade Plan v2.0) ──',
+  trade_input_fields: 'Обязательные поля (извлечь из контекста или запросить):\n• reconciler.decision (BUY / HOLD / STOP)\n• reconciler.fv_ring: pess, real_lo, mid, real_hi, opt\n• reconciler.basket, overheat_factor, irr_base_pct, irr_stress_pct\n• entry.method (market_now / limit_value / limit_pullback / limit_breakout_intraday / limit_breakout_eod)\n• entry.price (или planned_fill_price + signal_level для limit_breakout_eod)\n• sizer.atr14 (обязательно для Спекулянта), sizer.max_position_shares\n• portfolio: current_weight_pct, shares_held, avg_cost, role_cap_pct, global_cap_pct\n• benchmarks.spy_annual_return_pct, sector_etf, sector_etf_annual_return_pct\n• mps.score, mps.direction, mps.d_up_pct (опционально)\n• ta: support_1, support_2, breakout_level, avg_volume_20d, rs_weekly (опционально)\n• fund_monitor: north_star_metric_name, moat_decision (опционально)',
+  trade_routing_hdr: '── МАРШРУТИЗАЦИЯ ──',
+  trade_routing:   'Резолви plan_type по матрице Decision × Goal:\n• BUY + first_buy → entry_plan · BUY + add → add_plan · BUY + hold_review → management_plan · BUY + consider_sell → trim_plan\n• HOLD + first_buy/add → WAIT · HOLD + hold_review → management_plan · HOLD + consider_sell → trim_plan\n• STOP + first_buy/add → BLOCKED · STOP + hold_review → exit_plan · STOP + consider_sell → exit_plan\nДля WAIT / BLOCKED — вернуть статус + wait_conditions[] или blocked_reason, без расчётов.',
+  trade_algo_hdr:  '── АЛГОРИТМ ──',
+  trade_algo_spec: 'СПЕКУЛЯНТ (entry_plan / add_plan):\n1. calc_price = entry.price (или planned_fill_price для eod)\n2. Stop: basket-dependent ATR mult (Rocket 1.2 / Expansion 1.3 / Steady/Dividend 1.5 / Fallen-Angel/Deep-Value 1.8). TA support_1 корректирует если между stop и entry.\n3. T1 = calc_price + 1.5×stop_distance · T2 = min(fv_ring.real_hi, calc_price + 3.0×stop_distance) · T3 = squeeze extension (MPS≥70)\n4. R:R1 и R:R2. Если R:R2 < 2.0 → WARNING_LOW_RR (advisory).\n5. Size: risk 1% AUM / stop_distance → min(size_risk, size_cap) → overheat multiplier → size_shares. Если 0 → BLOCKED_ZERO_SIZE.\n6. Time-stop: 10 дней. Trigger condition по entry.method.',
+  trade_algo_inv:  'ИНВЕСТОР / СБЕРЕГАТЕЛЬ (entry_plan / add_plan):\n1. calc_price = entry.price. Saver: method принудительно limit_value, size ×0.5.\n2. Buy zone: value = fv_ring.real_lo, confirm = ta.breakout_level (если есть).\n3. Upside check: (fv_ring.mid − calc_price) / calc_price. Если < 15% → WARNING_LOW_UPSIDE.\n4. Size: base_pct по корзине (Dividend 5%, Steady 4%, Expansion 3.5%, Fallen/Deep 3%, Rocket 2%, QualMom 2.5%) → cap → saver mult → overheat mult → shares.\n5. Benchmark: irr_base_pct vs SPY×1.5. Если хуже → WARNING_SPY_DOMINATES + таблица.\n6. Trim: T1 = fv_ring.mid (33%), T2 = fv_ring.real_hi (33%), full exit = fv_ring.opt (34%).\n7. Алерты: exit_full / trim_partial / hold_watch — только из ненулевых полей.',
+  trade_algo_mgmt: 'MANAGEMENT / TRIM / EXIT:\n• management_plan: hold_thesis + management_triggers + add_condition + stop review.\n• trim_plan: привязка к price_now vs fv_ring уровни. Shares: 33/33/34.\n• exit_plan: market_now, shares_to_exit = shares_held, reason = STOP.',
+  trade_fmt_hdr:   '── ФОРМАТ ВЫВОДА ──',
+  trade_fmt_1:     'A. TRADE CARD (таблица по schema скилла — разная для Speculator / Investor / Management / Exit)',
+  trade_fmt_2:     'B. НАРРАТИВ (3–4 предложения): источник каждого уровня, главный риск. Без «вероятно» / «может».',
+  trade_fmt_3:     'C. YAML-КОНТРАКТ (полный trade_plan блок по выходной схеме скилла v2.0 — все поля, null для неприменимых секций)',
+  trade_fmt_4:     'D. Если status ≠ READY — указать validation_flags[], warning_flags[], missing_fields[] явно.',
+  trade_rules_hdr: '── ПРАВИЛА ──',
+  trade_r1:        '• calc_price — единственный якорь для entry/add. Для exit/trim — price_now.',
+  trade_r2:        '• Нет стопа → нет Speculator entry. atr14 null → REVIEW_MISSING_ATR.',
+  trade_r3:        '• ЗАПРЕЩЕНО: «вероятно», «возможно», «может» без явного условия (if X → Y).',
+  trade_r4:        '• size_shares == 0 → BLOCKED_ZERO_SIZE. TTL 30 дней.',
+  trade_r5:        '• Null input field → omit alert. Не фабриковать TA-уровни.',
+  trade_prereq:    '⚠ Сначала запусти Stock Report — Trade Plan использует его результаты как вход.',
+  trade_fallback:  '── FALLBACK (если результатов Stock Report нет) ──\nЕсли в диалоге нет результатов Stock Report / оценки позиции / MPS:\n1. Найди текущую цену {TICKER} через web search.\n2. Найди консенсус-оценки аналитиков (target price range) → аппроксимируй fv_ring: pess = min target × 0.85, real_lo = min target, mid = median target, real_hi = max target, opt = max target × 1.15.\n3. Найди ATR(14) через доступные источники.\n4. Запроси у пользователя ТОЛЬКО: role, aum_usd, entry.method, portfolio caps (или используй defaults: role_cap=5%, global_cap=10%, current_weight=0%).\n5. Basket определи по профилю компании (Rocket / Steady-Compounder / etc).\n6. Отметь в YAML: audit.data_source = "fallback_consensus" — НЕ собственная модель оценки.\n7. Добавь warning: WARNING_FALLBACK_DATA — план построен на консенсусе аналитиков, а не на полном Stock Report.',
 },
 en: {
   eyebrow: 'Prompt Builder · v2.6.0',
@@ -1396,7 +1526,7 @@ en: {
   sd_price: 'pricing power · moat', sd_scenario: '08 · triggers / branches',
   sd_lifecycle: 'stage / fair value', sd_report: '09 · decision card',
   sd_triage: '11 · idea funnel',
-  btn_build: 'Build prompt',
+  btn_build: 'Stock Report',
   btn_template: 'Create system prompt →',
   btn_copy: 'Copy', copied: 'Copied ✓',
   out_empty: 'Fill in the form and click "Build prompt"',
@@ -1413,13 +1543,94 @@ en: {
   gl_hold: 'holding, evaluating whether to keep or exit',
   gl_res: 'researching, no specific decision',
   gl_sell: 'considering selling or trimming position',
+  // Snapshot UI
+  snapshot_bar:    'Business Snapshot',
+  snapshot_toggle: 'Business Snapshot · understand the company and its moats',
+  snapshot_lbl:    'Depth',
+  snapshot_hint:   'A standalone prompt — just to understand the business. Run before the main analysis for an unfamiliar company. No Buy/Sell recommendations.',
+  snapshot_depth_lbl: 'Depth:',
+  snapshot_btn:    '🔍 Build Snapshot prompt',
+  snapshot_badge:  'Snapshot',
+  // Localized prompt labels
+  snap_lbl_company:       '━━━ COMPANY ━━━',
+  snap_lbl_ticker:  'Ticker',
+  snap_lbl_context:       '━━━ CONTEXT ━━━',
+  snap_lbl_role:    'Investor role',
+  snap_lbl_horizon: 'Horizon',
+  snap_lbl_bmk:     'Benchmark (alpha-gate)',
+  snap_lbl_no_ctx:        '(no context provided — use data from the report)',
+  snap_lbl_paste:  '[PASTE REPORT HERE — copy the full AI response and replace this line]',
+  snap_role:       'You are a business analyst and competitive-advantage expert. Your task: help an investor understand what is ESSENTIAL about a company\'s business — through progressive deepening from the obvious to the hidden.',
+  snap_task:       'Analysis follows the "onion" principle — each layer peels away the obvious explanation and reveals a deeper one. Each layer ends with a bridge to the next. Use web search for fresh data (10-K, investor day, 2–3 analyst reports).',
+  snap_rule:       'RULES: 1) Narrative, not tables — tables only where specified. 2) Concrete numbers in every claim. 3) Every moat backed by ≥1 fact. 4) No Buy/Sell — understanding only. 5) Use the "most people think X, but actually Y" frame at least 2 times. 6) Tone: confident, specific, like an analyst explaining to a colleague over coffee. 7) Length ~2000–3000 words.',
+  snap_s1_hdr:     '━━━ LAYER 1 — BUSINESS ESSENCE (for anyone) ━━━',
+  snap_s1_1:       '1a. One sentence (≤25 words): "[Company] earns money from [mechanism] because [why customer pays]." Test: if it fits 10 other companies — it\'s bad.',
+  snap_s1_2:       '1b. Analogy: "It\'s like [everyday example], except [scale/difference]." Must reveal the earning mechanism, not just name the product.',
+  snap_s1_3:       '1c. Job-to-be-done: "The customer hires this company to [task with numbers]."',
+  snap_s1_4:       '1d. Business formula: [Input] × [Multiplier] × [Utilization] = Revenue; Revenue − [costs] = Operating Income.',
+  snap_s2_hdr:     '━━━ LAYER 2 — HOW MONEY FLOWS (P&L anatomy) ━━━',
+  snap_s2_1:       '2a. Revenue map (table): Segment | % revenue | Payment model | YoY growth | Segment margin.',
+  snap_s2_2:       '2b. Margin profile: Gross → Operating → FCF Margin (TTM). One sentence — why margin is what it is and where it\'s heading.',
+  snap_s2_3:       '2c. Business type: asset-heavy / asset-light / platform-network — one sentence why.',
+  snap_s3_hdr:     '━━━ LAYER 3 — HEALTH METRICS ━━━',
+  snap_s3_1:       '3a. North Star metric: one metric that best predicts future revenue and FCF growth. Current value + trend.',
+  snap_s3_2:       '3b. 2–3 more key metrics. For each: value + alarm threshold + why it matters.',
+  snap_s3_3:       '3c. KEY ELEMENT — "Most investors watch [obvious metric]. But actually [hidden metric] matters more because [reason with numerical example]."',
+  snap_s4_hdr:     '━━━ LAYER 4 — HIDDEN DRIVER ━━━',
+  snap_s4_1:       '4a. "[Company]\'s stock price is actually driven not by [obvious] but by [hidden variable]." Explain the mechanism: [variable] → business impact → multiple impact → price impact.',
+  snap_s4_2:       '4b. Show with numbers: "If [variable] changes by X → value changes by Y%. With zero change in the business."',
+  snap_s4_3:       '4c. Reference table:\n| Metric | Now | Cheap (buy) | Normal | Expensive (caution) |\n|--------|-----|-------------|--------|---------------------|',
+  snap_s5_hdr:     '━━━ LAYER 5 — BUSINESS CYCLE (where are we now) ━━━',
+  snap_s5_1:       '5a. Cycle type for this industry (supply / credit / inventory / capex / adoption — name the specific one).',
+  snap_s5_2:       '5b. Describe 4–5 phases. For each: what happens to business + what happens to stock.',
+  snap_s5_3:       '5c. "[Company] is currently in phase [N]: [description]. This means [investor takeaway]." Back with data.',
+  snap_s5_4:       '5d. "In [timeframe] expect transition to phase [N+1] because [reason]. Early signal: [what to watch]."',
+  snap_s6_hdr:     '━━━ LAYER 6 — MOATS (what actually protects the business) ━━━',
+  snap_s6_1:       '6a. Primary moat: what it is (2–3 sentences with facts and numbers) + what competitor must do + cost/time. Quality test: "strong brand" is NOT a moat. A moat = specific barrier with numbers.',
+  snap_s6_2:       '6b. Secondary moat (if any) — same, shorter. If none — state explicitly.',
+  snap_s6_3:       '6c. Synergy: do moats reinforce each other? If not — that\'s a risk.',
+  snap_s6_4:       '6d. Vulnerability (table):\n| Moat | Destruction scenario | Early signal | Horizon |\n|------|---------------------|--------------|---------|',
+  snap_s7_hdr:     '━━━ LAYER 7 — SYNTHESIS ━━━',
+  snap_s7_1:       '7a. Thesis in 3 sentences (≤50 words): 1) what + how + why they pay. 2) hidden variable + cycle. 3) main risk.',
+  snap_s7_2:       '7b. Ideal buy scenario: "Historically the best buys in [company/sector] occurred when simultaneously:" — 2–4 conditions with numerical thresholds.',
+  snap_s7_3:       '7c. Skill routing: which skills to run next (✅/⚠️/❌ + why):\n  thiel-moat | biological-moat | nsm | ksf | halo-screener | value-trap | fallen-angel | valuation',
+  snap_s7_4:       '7d. Unresolved questions (3–5): "Unknown: [question]. Where to look: [source]."',
   // Judge UI
+  judge_bar:       'Judge prompt',
   judge_toggle:    'Judge prompt · audit the existing report',
   judge_lbl_paste: 'Paste the completed analysis',
   judge_hint:      'Copy the AI response from your main prompt and paste it here. The Judge attacks assumptions, hunts biases, and checks the math.',
   judge_ph:        'Paste the AI report here...',
   judge_btn:       '⚖ Build Judge prompt',
   judge_badge:     'Judge',
+  // Trade plan UI (v2.6.0)
+  trade_bar:       'Trade Plan',
+  trade_badge:     'Trade',
+  trade_hint:      'A prompt for building a trade plan v2.0 — execution document based on completed analysis.',
+  // Trade prompt strings (EN) — aligned to Trade Plan v2.0 skill
+  trade_task:      'Run Trade Plan v2.0 skill for {TICKER}. Do not repeat analysis — produce an execution document only: entry / stop / targets / size OR management / trim / exit depending on plan_type.',
+  trade_data_note: 'Extract all Trade Plan v2.0 input contract fields from the attached analysis results (Stock Report, position sizing, MPS, TA). If data is missing — use FALLBACK mode (see below).',
+  trade_input_hdr: '── INPUT DATA (Trade Plan v2.0 contract) ──',
+  trade_input_fields: 'Required fields (extract from context or request):\n• reconciler.decision (BUY / HOLD / STOP)\n• reconciler.fv_ring: pess, real_lo, mid, real_hi, opt\n• reconciler.basket, overheat_factor, irr_base_pct, irr_stress_pct\n• entry.method (market_now / limit_value / limit_pullback / limit_breakout_intraday / limit_breakout_eod)\n• entry.price (or planned_fill_price + signal_level for limit_breakout_eod)\n• sizer.atr14 (required for Speculator), sizer.max_position_shares\n• portfolio: current_weight_pct, shares_held, avg_cost, role_cap_pct, global_cap_pct\n• benchmarks.spy_annual_return_pct, sector_etf, sector_etf_annual_return_pct\n• mps.score, mps.direction, mps.d_up_pct (optional)\n• ta: support_1, support_2, breakout_level, avg_volume_20d, rs_weekly (optional)\n• fund_monitor: north_star_metric_name, moat_decision (optional)',
+  trade_routing_hdr: '── ROUTING ──',
+  trade_routing:   'Resolve plan_type via Decision × Goal matrix:\n• BUY + first_buy → entry_plan · BUY + add → add_plan · BUY + hold_review → management_plan · BUY + consider_sell → trim_plan\n• HOLD + first_buy/add → WAIT · HOLD + hold_review → management_plan · HOLD + consider_sell → trim_plan\n• STOP + first_buy/add → BLOCKED · STOP + hold_review → exit_plan · STOP + consider_sell → exit_plan\nFor WAIT / BLOCKED — return status + wait_conditions[] or blocked_reason, no calculations.',
+  trade_algo_hdr:  '── ALGORITHM ──',
+  trade_algo_spec: 'SPECULATOR (entry_plan / add_plan):\n1. calc_price = entry.price (or planned_fill_price for eod)\n2. Stop: basket-dependent ATR mult (Rocket 1.2 / Expansion 1.3 / Steady/Dividend 1.5 / Fallen-Angel/Deep-Value 1.8). TA support_1 adjusts if between stop and entry.\n3. T1 = calc_price + 1.5×stop_distance · T2 = min(fv_ring.real_hi, calc_price + 3.0×stop_distance) · T3 = squeeze extension (MPS≥70)\n4. R:R1 and R:R2. If R:R2 < 2.0 → WARNING_LOW_RR (advisory).\n5. Size: risk 1% AUM / stop_distance → min(size_risk, size_cap) → overheat multiplier → size_shares. If 0 → BLOCKED_ZERO_SIZE.\n6. Time-stop: 10 days. Trigger condition per entry.method.',
+  trade_algo_inv:  'INVESTOR / SAVER (entry_plan / add_plan):\n1. calc_price = entry.price. Saver: method forced to limit_value, size ×0.5.\n2. Buy zone: value = fv_ring.real_lo, confirm = ta.breakout_level (if available).\n3. Upside check: (fv_ring.mid − calc_price) / calc_price. If < 15% → WARNING_LOW_UPSIDE.\n4. Size: base_pct by basket (Dividend 5%, Steady 4%, Expansion 3.5%, Fallen/Deep 3%, Rocket 2%, QualMom 2.5%) → cap → saver mult → overheat mult → shares.\n5. Benchmark: irr_base_pct vs SPY×1.5. If worse → WARNING_SPY_DOMINATES + table.\n6. Trim: T1 = fv_ring.mid (33%), T2 = fv_ring.real_hi (33%), full exit = fv_ring.opt (34%).\n7. Alerts: exit_full / trim_partial / hold_watch — only from non-null fields.',
+  trade_algo_mgmt: 'MANAGEMENT / TRIM / EXIT:\n• management_plan: hold_thesis + management_triggers + add_condition + stop review.\n• trim_plan: anchored to price_now vs fv_ring levels. Shares: 33/33/34.\n• exit_plan: market_now, shares_to_exit = shares_held, reason = STOP.',
+  trade_fmt_hdr:   '── OUTPUT FORMAT ──',
+  trade_fmt_1:     'A. TRADE CARD (table per skill schema — different for Speculator / Investor / Management / Exit)',
+  trade_fmt_2:     'B. NARRATIVE (3–4 sentences): source of every level, primary risk. No "probably" / "may".',
+  trade_fmt_3:     'C. YAML CONTRACT (full trade_plan block per v2.0 skill output schema — all fields, null for non-applicable sections)',
+  trade_fmt_4:     'D. If status ≠ READY — list validation_flags[], warning_flags[], missing_fields[] explicitly.',
+  trade_rules_hdr: '── RULES ──',
+  trade_r1:        '• calc_price is the sole anchor for entry/add. For exit/trim — price_now.',
+  trade_r2:        '• No stop = no Speculator entry. atr14 null → REVIEW_MISSING_ATR.',
+  trade_r3:        '• FORBIDDEN: "probably", "possibly", "may" without explicit conditional (if X → Y).',
+  trade_r4:        '• size_shares == 0 → BLOCKED_ZERO_SIZE. TTL 30 days.',
+  trade_r5:        '• Null input field → omit alert. Do not fabricate TA levels.',
+  trade_prereq:    '⚠ Run Stock Report first — Trade Plan uses its results as input.',
+  trade_fallback:  '── FALLBACK (if no Stock Report data) ──\nIf no Stock Report / position sizing / MPS results are in the conversation:\n1. Find current {TICKER} price via web search.\n2. Find analyst consensus estimates (target price range) → approximate fv_ring: pess = min target × 0.85, real_lo = min target, mid = median target, real_hi = max target, opt = max target × 1.15.\n3. Find ATR(14) from available sources.\n4. Ask user ONLY: role, aum_usd, entry.method, portfolio caps (or use defaults: role_cap=5%, global_cap=10%, current_weight=0%).\n5. Determine basket from company profile (Rocket / Steady-Compounder / etc).\n6. Mark in YAML: audit.data_source = "fallback_consensus" — NOT a proprietary valuation model.\n7. Add warning: WARNING_FALLBACK_DATA — plan built on analyst consensus, not a full Stock Report.',
 },
 uk: {
   eyebrow: 'Prompt Builder · v2.6.0',
@@ -1439,7 +1650,7 @@ uk: {
   lbl_weight: 'Поточна частка в портфелі',
   hint_weight: '0% — якщо позиції ще немає',
   lbl_role: 'Моя роль',
-  opt: "необов'язково",
+  opt: "необов\'язково",
   chip_inv: 'Інвестор', chip_spec: 'Спекулянт', chip_sav: 'Ощадник',
   lbl_horizon: 'Горизонт',
   ph_horizon: 'наприклад: 1–2 роки, до наступного звіту, 3 місяці...',
@@ -1462,7 +1673,7 @@ uk: {
   sd_price: 'цінова сила · моат', sd_scenario: '08 · тригери / гілки',
   sd_lifecycle: 'стадія / fair value', sd_report: '09 · картка рішення',
   sd_triage: '11 · воронка ідей',
-  btn_build: 'Зібрати промпт',
+  btn_build: 'Stock Report',
   btn_template: 'Створити системний промпт →',
   btn_copy: 'Скопіювати', copied: 'Скопійовано ✓',
   out_empty: "Заповни форму та натисни «Зібрати промпт»",
@@ -1479,13 +1690,94 @@ uk: {
   gl_hold: 'вже тримаю, оцінюю — тримати чи виходити',
   gl_res: 'вивчаю, без конкретного рішення',
   gl_sell: 'думаю продати або скоротити позицію',
+  // Snapshot UI
+  snapshot_bar:    'Бізнес-снепшот',
+  snapshot_toggle: 'Бізнес-снепшот · зрозуміти компанію та її рови',
+  snapshot_lbl:    'Глибина',
+  snapshot_hint:   'Окремий промпт — тільки зрозуміти бізнес. Запусти перед основним аналізом, якщо компанія незнайома. Без рекомендацій Buy/Sell.',
+  snapshot_depth_lbl: 'Глибина:',
+  snapshot_btn:    '🔍 Зібрати промпт Снепшоту',
+  snapshot_badge:  'Снепшот',
+  // Localized prompt labels
+  snap_lbl_company:       '━━━ КОМПАНІЯ ━━━',
+  snap_lbl_ticker:  'Тікер',
+  snap_lbl_context:       '━━━ КОНТЕКСТ ━━━',
+  snap_lbl_role:    'Роль інвестора',
+  snap_lbl_horizon: 'Горизонт',
+  snap_lbl_bmk:     'Бенчмарк (alpha-gate)',
+  snap_lbl_no_ctx:        '(контекст не вказано — використовуй дані зі звіту)',
+  snap_lbl_paste:  '[ВСТАВ ЗВІТ СЮДИ — скопіюй повну відповідь ІІ та встав замість цього рядка]',
+  snap_role:       'Ти — бізнес-аналітик і експерт з конкурентних переваг. Завдання: допомогти інвестору зрозуміти, що ГОЛОВНЕ в бізнесі компанії — через послідовне заглиблення від очевидного до прихованого.',
+  snap_task:       'Аналіз будується за принципом «цибулина» — кожен шар знімає очевидне пояснення і відкриває глибше. Кожен шар закінчується містком до наступного. Використовуй веб-пошук для свіжих даних (10-K, investor day, 2–3 аналітичних оглядів).',
+  snap_rule:       'ПРАВИЛА: 1) Наратив, не таблиці — таблиці тільки де вказано. 2) Конкретні числа в кожному твердженні. 3) Кожен рів підтверджений ≥1 фактом. 4) Жодних Buy/Sell. 5) Мінімум 2 рази фрейм «більшість думає X, насправді Y». 6) Тон: впевнений, конкретний. 7) Довжина ~2000–3000 слів.',
+  snap_s1_hdr:     '━━━ ШАР 1 — СУТЬ БІЗНЕСУ (для будь-кого) ━━━',
+  snap_s1_1:       '1a. Одне речення (≤25 слів): "[Компанія] заробляє на [механізм], тому що [чому клієнт платить]." Тест: якщо підходить для 10 компаній — погано.',
+  snap_s1_2:       '1b. Аналогія: "Це як [побутовий приклад], тільки [масштаб/відмінність]." Розкриває механізм заробітку.',
+  snap_s1_3:       '1c. Job-to-be-done: "Клієнт наймає цю компанію, щоб [завдання з числами]."',
+  snap_s1_4:       '1d. Економічна формула: [Input] × [Множник] × [Завантаження] = Виручка; Виручка − [витрати] = Операційний дохід.',
+  snap_s2_hdr:     '━━━ ШАР 2 — ЯК ТЕЧУТЬ ГРОШІ (анатомія P&L) ━━━',
+  snap_s2_1:       '2a. Карта виручки (таблиця): Сегмент | % виручки | Модель оплати | Зростання YoY | Маржа сегменту.',
+  snap_s2_2:       '2b. Профіль маржинальності: Gross → Operating → FCF Margin (TTM). Одне речення — чому маржа така і куди рухається.',
+  snap_s2_3:       '2c. Тип бізнесу: asset-heavy / asset-light / platform-network — одне речення чому.',
+  snap_s3_hdr:     '━━━ ШАР 3 — МЕТРИКИ ЗДОРОВ\'Я ━━━',
+  snap_s3_1:       '3a. North Star метрика: одна метрика, що найкраще передбачає зростання виручки і FCF. Поточне значення + тренд.',
+  snap_s3_2:       '3b. Ще 2–3 ключові метрики. Для кожної: значення + поріг тривоги + чому важлива.',
+  snap_s3_3:       '3c. КЛЮЧОВИЙ ЕЛЕМЕНТ — «Більшість дивиться на [очевидна метрика]. Але насправді [прихована метрика] важливіша, тому що [причина з числовим прикладом].»',
+  snap_s4_hdr:     '━━━ ШАР 4 — ПРИХОВАНА ЗМІННА (Hidden Driver) ━━━',
+  snap_s4_1:       '4a. «Ціну акції [компанія] насправді рухає не [очевидне], а [прихована змінна].» Поясни механізм: [змінна] → вплив на бізнес → вплив на мультиплікатор → вплив на ціну.',
+  snap_s4_2:       '4b. Покажи на числах: «Якщо [змінна] змінюється на X → вартість змінюється на Y%. Без зміни бізнесу.»',
+  snap_s4_3:       '4c. Таблиця орієнтирів:\n| Показник | Зараз | Дешево (купувати) | Нормально | Дорого (обережно) |\n|----------|-------|-------------------|-----------|-------------------|',
+  snap_s5_hdr:     '━━━ ШАР 5 — ЦИКЛ БІЗНЕСУ (де ми зараз) ━━━',
+  snap_s5_1:       '5a. Тип циклу цієї індустрії (supply / credit / inventory / capex / adoption — назви конкретний).',
+  snap_s5_2:       '5b. Опиши 4–5 фаз циклу. Для кожної: що з бізнесом + що з акцією.',
+  snap_s5_3:       '5c. «Зараз [компанія] у фазі [N]: [опис]. Це означає [висновок].» Підкріпи даними.',
+  snap_s5_4:       '5d. «Через [термін] очікується перехід у фазу [N+1], тому що [причина]. Ранній сигнал: [що дивитися].»',
+  snap_s6_hdr:     '━━━ ШАР 6 — РОВИ (що реально захищає бізнес) ━━━',
+  snap_s6_1:       '6a. Головний рів: у чому полягає (2–3 речення з фактами і числами) + що повинен зробити конкурент + скільки коштує/займе. Тест якості: «Сильний бренд» — НЕ рів. Рів = конкретний бар\'єр з числами.',
+  snap_s6_2:       '6b. Другий рів (якщо є) — те саме, коротше. Якщо немає — напиши явно.',
+  snap_s6_3:       '6c. Синергія: чи посилюють рови один одного? Якщо ні — це ризик.',
+  snap_s6_4:       '6d. Вразливість (таблиця):\n| Рів | Сценарій руйнування | Ранній сигнал | Горизонт |\n|-----|---------------------|---------------|----------|',
+  snap_s7_hdr:     '━━━ ШАР 7 — СИНТЕЗ ━━━',
+  snap_s7_1:       '7a. Теза в 3 реченнях (≤50 слів): 1) що + як + чому платять. 2) прихована змінна + цикл. 3) головний ризик.',
+  snap_s7_2:       '7b. Ідеальний сценарій для купівлі: «Історично найкращі купівлі [компанія/сектор] відбувалися, коли одночасно:» — 2–4 умови з числовими порогами.',
+  snap_s7_3:       '7c. Маршрутизація: які скіли запустити (✅/⚠️/❌ + чому):\n  thiel-moat | biological-moat | nsm | ksf | halo-screener | value-trap | fallen-angel | valuation',
+  snap_s7_4:       '7d. Невирішені питання (3–5): «Невідомо: [питання]. Де шукати: [джерело].»',
   // Judge UI
+  judge_bar:       'Промпт судді',
   judge_toggle:    'Промпт Судді · розібрати готовий звіт',
   judge_lbl_paste: 'Встав готовий аналіз',
   judge_hint:      'Скопіюй відповідь ШІ після основного промпту і встав сюди. Суддя атакує припущення, шукає зміщення і перевіряє математику.',
   judge_ph:        'Встав сюди готовий звіт ШІ...',
   judge_btn:       '⚖ Зібрати промпт Судді',
   judge_badge:     'Суддя',
+  // Trade plan UI (v2.6.0)
+  trade_bar:       'Угода — торговий план',
+  trade_badge:     'Угода',
+  trade_hint:      'Промпт для складання торгового плану v2.0 — виконавчий документ на основі завершеного аналізу.',
+  // Trade prompt strings (UK) — aligned to Trade Plan v2.0 skill
+  trade_task:      'Запусти скіл Trade Plan v2.0 по {TICKER}. Не повторюй аналітику — тільки виконавчий документ: entry / stop / targets / size АБО management / trim / exit залежно від plan_type.',
+  trade_data_note: 'Витягни з прикріплених результатів аналізу (Stock Report, оцінка позиції, MPS, TA) усі поля вхідного контракту скіла Trade Plan v2.0. Якщо даних бракує — використай FALLBACK-режим (див. нижче).',
+  trade_input_hdr: '── ВХІДНІ ДАНІ (контракт Trade Plan v2.0) ──',
+  trade_input_fields: 'Обов\'язкові поля (витягти з контексту або запитати):\n• reconciler.decision (BUY / HOLD / STOP)\n• reconciler.fv_ring: pess, real_lo, mid, real_hi, opt\n• reconciler.basket, overheat_factor, irr_base_pct, irr_stress_pct\n• entry.method (market_now / limit_value / limit_pullback / limit_breakout_intraday / limit_breakout_eod)\n• entry.price (або planned_fill_price + signal_level для limit_breakout_eod)\n• sizer.atr14 (обов\'язково для Спекулянта), sizer.max_position_shares\n• portfolio: current_weight_pct, shares_held, avg_cost, role_cap_pct, global_cap_pct\n• benchmarks.spy_annual_return_pct, sector_etf, sector_etf_annual_return_pct\n• mps.score, mps.direction, mps.d_up_pct (опціонально)\n• ta: support_1, support_2, breakout_level, avg_volume_20d, rs_weekly (опціонально)\n• fund_monitor: north_star_metric_name, moat_decision (опціонально)',
+  trade_routing_hdr: '── МАРШРУТИЗАЦІЯ ──',
+  trade_routing:   'Резолви plan_type за матрицею Decision × Goal:\n• BUY + first_buy → entry_plan · BUY + add → add_plan · BUY + hold_review → management_plan · BUY + consider_sell → trim_plan\n• HOLD + first_buy/add → WAIT · HOLD + hold_review → management_plan · HOLD + consider_sell → trim_plan\n• STOP + first_buy/add → BLOCKED · STOP + hold_review → exit_plan · STOP + consider_sell → exit_plan\nДля WAIT / BLOCKED — повернути статус + wait_conditions[] або blocked_reason, без розрахунків.',
+  trade_algo_hdr:  '── АЛГОРИТМ ──',
+  trade_algo_spec: 'СПЕКУЛЯНТ (entry_plan / add_plan):\n1. calc_price = entry.price (або planned_fill_price для eod)\n2. Stop: basket-dependent ATR mult (Rocket 1.2 / Expansion 1.3 / Steady/Dividend 1.5 / Fallen-Angel/Deep-Value 1.8). TA support_1 коригує якщо між стопом і входом.\n3. T1 = calc_price + 1.5×stop_distance · T2 = min(fv_ring.real_hi, calc_price + 3.0×stop_distance) · T3 = squeeze extension (MPS≥70)\n4. R:R1 і R:R2. Якщо R:R2 < 2.0 → WARNING_LOW_RR (advisory).\n5. Size: risk 1% AUM / stop_distance → min(size_risk, size_cap) → overheat multiplier → size_shares. Якщо 0 → BLOCKED_ZERO_SIZE.\n6. Time-stop: 10 днів. Trigger condition за entry.method.',
+  trade_algo_inv:  'ІНВЕСТОР / ОЩАДНИК (entry_plan / add_plan):\n1. calc_price = entry.price. Ощадник: method примусово limit_value, size ×0.5.\n2. Buy zone: value = fv_ring.real_lo, confirm = ta.breakout_level (якщо є).\n3. Upside check: (fv_ring.mid − calc_price) / calc_price. Якщо < 15% → WARNING_LOW_UPSIDE.\n4. Size: base_pct по кошику (Dividend 5%, Steady 4%, Expansion 3.5%, Fallen/Deep 3%, Rocket 2%, QualMom 2.5%) → cap → saver mult → overheat mult → shares.\n5. Benchmark: irr_base_pct vs SPY×1.5. Якщо гірше → WARNING_SPY_DOMINATES + таблиця.\n6. Trim: T1 = fv_ring.mid (33%), T2 = fv_ring.real_hi (33%), full exit = fv_ring.opt (34%).\n7. Алерти: exit_full / trim_partial / hold_watch — тільки з ненульових полів.',
+  trade_algo_mgmt: 'MANAGEMENT / TRIM / EXIT:\n• management_plan: hold_thesis + management_triggers + add_condition + stop review.\n• trim_plan: прив\'язка до price_now vs fv_ring рівні. Shares: 33/33/34.\n• exit_plan: market_now, shares_to_exit = shares_held, reason = STOP.',
+  trade_fmt_hdr:   '── ФОРМАТ ВИВОДУ ──',
+  trade_fmt_1:     'A. TRADE CARD (таблиця за schema скіла — різна для Speculator / Investor / Management / Exit)',
+  trade_fmt_2:     'B. НАРАТИВ (3–4 речення): джерело кожного рівня, головний ризик. Без «вірогідно» / «може».',
+  trade_fmt_3:     'C. YAML-КОНТРАКТ (повний trade_plan блок за вихідною схемою скіла v2.0 — усі поля, null для незастосовних секцій)',
+  trade_fmt_4:     'D. Якщо status ≠ READY — вказати validation_flags[], warning_flags[], missing_fields[] явно.',
+  trade_rules_hdr: '── ПРАВИЛА ──',
+  trade_r1:        '• calc_price — єдиний якір для entry/add. Для exit/trim — price_now.',
+  trade_r2:        '• Немає стопу → немає Speculator entry. atr14 null → REVIEW_MISSING_ATR.',
+  trade_r3:        '• ЗАБОРОНЕНО: «вірогідно», «можливо», «може» без явної умови (if X → Y).',
+  trade_r4:        '• size_shares == 0 → BLOCKED_ZERO_SIZE. TTL 30 днів.',
+  trade_r5:        '• Null input field → omit alert. Не фабрикувати TA-рівні.',
+  trade_prereq:    '⚠ Спочатку запусти Stock Report — Trade Plan використовує його результати як вхід.',
+  trade_fallback:  '── FALLBACK (якщо результатів Stock Report немає) ──\nЯкщо в діалозі немає результатів Stock Report / оцінки позиції / MPS:\n1. Знайди поточну ціну {TICKER} через web search.\n2. Знайди консенсус-оцінки аналітиків (target price range) → апроксимуй fv_ring: pess = min target × 0.85, real_lo = min target, mid = median target, real_hi = max target, opt = max target × 1.15.\n3. Знайди ATR(14) через доступні джерела.\n4. Запитай у користувача ТІЛЬКИ: role, aum_usd, entry.method, portfolio caps (або використай defaults: role_cap=5%, global_cap=10%, current_weight=0%).\n5. Basket визнач за профілем компанії (Rocket / Steady-Compounder / etc).\n6. Позначи в YAML: audit.data_source = "fallback_consensus" — НЕ власна модель оцінки.\n7. Додай warning: WARNING_FALLBACK_DATA — план побудований на консенсусі аналітиків, а не на повному Stock Report.',
 }
 };
 
@@ -1510,9 +1802,7 @@ function setLang(l) {
   // Horizon placeholder
   const hp = document.getElementById('horizon');
   if (hp) hp.placeholder = s('ph_horizon');
-  // Judge textarea placeholder
-  const jr = document.getElementById('judge-report');
-  if (jr) jr.placeholder = s('judge_ph');
+  // Judge textarea removed in v2.6.0
   onFieldChange();
 }
 
@@ -1546,9 +1836,18 @@ function applyLang() {
     'sd-lifecycle':'sd_lifecycle', 'sd-report':'sd_report', 'sd-triage':'sd_triage',
     'btn-label':'btn_build', 'template-btn-label':'btn_template', 'copy-label':'btn_copy',
     'footer-main':'footer_main', 'footer-sub':'footer_sub',
-    // Judge
-    'judge-toggle-label':'judge_toggle',
+    // Snapshot bar button + panel
+    'snap-bar-label':'snapshot_bar',
+    'snapshot-lbl':'snapshot_lbl',
+    'snapshot-hint-text':'snapshot_hint',
+    'snapshot-depth-lbl':'snapshot_depth_lbl',
+    'snapshot-btn-label':'snapshot_btn',
+    // Judge bar button + panel
+    'judge-bar-label':'judge_bar',
     'judge-lbl-paste':'judge_lbl_paste',
+    // Trade bar button (v2.6.0)
+    'trade-bar-label':'trade_bar',
+    'trade-prereq-hint':'trade_prereq',
     'judge-hint-text':'judge_hint',
     'judge-btn-label':'judge_btn',
   };
@@ -1797,6 +2096,44 @@ ru: {
   instr_etf_3: '• AUM и среднедневной объём (ликвидность, bid-ask спред)',
   instr_etf_4: '• Физическая или синтетическая репликация',
   instr_stock_title: 'ТИП: Акция',
+  // REIT strings
+  instr_reit_title: 'ТИП: REIT (Real Estate Investment Trust)',
+  instr_reit_1: '• Основной мультипликатор: P/FFO (Price / Funds From Operations) — вместо P/E',
+  instr_reit_2: '• Прогнозируй FFO per share вместо EPS; FFO Margin вместо Net Margin',
+  instr_reit_3: '• Ключевые метрики: NOI, Same-Store NOI growth, Occupancy Rate, Cap Rate, Debt/EBITDA, LTV',
+  instr_reit_4: '• Дивидендная доходность (Dividend Yield) и коэффициент выплат (FFO Payout Ratio)',
+  // REIT ROP formula / consistency
+  rop_formula_reit: 'Формула: Price = P/FFO × FFO_ps | Проверка: Cap Rate = NOI / EV (альтернативный якорь)',
+  rop_consist_reit: 'Проверь консистентность: P/FFO × FFO_ps = Target Price; Dividend Yield = DPS / Target',
+  rop_consist2_reit: 'Проверь консистентность: P/FFO × FFO_ps = Target Price; Dividend Yield = DPS / Target (покажи явно)',
+  // REIT backsolve
+  backsolve_1_reit: '• FFO_implied = Price / P/FFO_fwd',
+  backsolve_2_reit: '• Cap Rate_implied = NOI / EV (EV ≈ Mkt Cap + Net Debt)',
+  backsolve_3_reit: '• FFO_Payout_implied = DPS / FFO_implied',
+  // REIT pe_calib (P/FFO calibration)
+  pe_calib_title_reit: 'ОБОСНОВАНИЕ P/FFO (обязательно для каждого сценария):',
+  pe_calib_1_reit: '1. Определи тип REIT: Retail / Industrial / Office / Residential / Net Lease / Healthcare',
+  pe_calib_2_reit: '2. Исторические перцентили P/FFO (p25/p50/p75) за 3–5 лет (чувствителен к ставкам)',
+  pe_calib_3_reit: '3. Bear: P/FFO ≤ p25 ИЛИ уровень стрессового аналога в секторе; Cap Rate WIDE',
+  pe_calib_4_reit: '4. Base: p25–p50, скорректированный на уровень ставок и Same-Store NOI trend',
+  pe_calib_5_reit: '5. Bull: p50–p75, но НЕ выше пика периода низких ставок (2020–2021)',
+  pe_calib_6_reit: 'Покажи: какой диапазон P/FFO используешь и почему (ставки vs рост NOI).',
+  // REIT sensitivity
+  sensitivity_reit: 'SENSITIVITY CHECK: Если изменение Base P/FFO на ±2x меняет alpha-gate (PASS↔FAIL) → отметь: "Alpha чувствительна к P/FFO. Вердикт условный."',
+  // REIT rev decomp
+  rev_decomp_reit: 'Декомпозируй NOI: Same-Store growth + New acquisitions + Disposals. Укажи Occupancy Rate и Average Rent per sq ft.',
+  // REIT implied (Pro)
+  implied_1_reit: '1. Implied FFO Growth: ___ (из P/FFO_fwd vs текущий FFO ps)',
+  implied_2_reit: '2. Implied Cap Rate: ___ (NOI / EV — сравни с рыночным cap rate сектора)',
+  implied_3_reit: '3. Implied FFO Payout: ___ (DPS / FFO_implied)',
+  implied_4_reit: '4. Расхождение с моим Base: ___',
+  implied_5_reit: '5. Что должно случиться, чтобы рынок ошибался: ___',
+  // REIT judge overrides
+  judge_t1_1_reit: 'Возьми каждую ключевую цифру Base-сценария (FFO per share, P/FFO, NOI growth, Debt/EBITDA).',
+  judge_t3_1_reit: '• Проверь P/FFO × FFO_ps = Target Price для каждого сценария. Покажи: ✓ или ✗ с числами.',
+  // REIT macro context overrides
+  mctx_fmt_reit:     '📍 РЕЖИМ: Macro [___] | Market [BULL/BEAR] | VIX [__] | Sentiment [___] | → P/FFO Bear [-__% к норме, ставки +/-%] / Heat-лимит [___%]',
+  mctx_pe_note_reit: 'Для REIT P/FFO обратно коррелирует со ставками: BEAR/RISK-OFF + rising rates → P/FFO сжимается на 20–35% от исторического p25; BULL + falling rates → P/FFO Bull может достигать p75.',
   // getSourceRule
   src_title:   'ПРАВИЛА ДЛЯ ИИ (обязательно):',
   src_claude:  '• Для поиска данных используй веб-поиск (tool_use) или данные из Project-файлов.',
@@ -2134,6 +2471,44 @@ en: {
   instr_etf_3: '• AUM and average daily volume (liquidity, bid-ask spread)',
   instr_etf_4: '• Physical or synthetic replication',
   instr_stock_title: 'TYPE: Stock',
+  // REIT strings
+  instr_reit_title: 'TYPE: REIT (Real Estate Investment Trust)',
+  instr_reit_1: '• Primary multiple: P/FFO (Price / Funds From Operations) — replaces P/E',
+  instr_reit_2: '• Forecast FFO per share instead of EPS; FFO Margin instead of Net Margin',
+  instr_reit_3: '• Key metrics: NOI, Same-Store NOI growth, Occupancy Rate, Cap Rate, Debt/EBITDA, LTV',
+  instr_reit_4: '• Dividend Yield and FFO Payout Ratio',
+  // REIT ROP formula / consistency
+  rop_formula_reit: 'Formula: Price = P/FFO × FFO_ps | Cross-check: Cap Rate = NOI / EV (alternative anchor)',
+  rop_consist_reit: 'Check consistency: P/FFO × FFO_ps = Target Price; Dividend Yield = DPS / Target',
+  rop_consist2_reit: 'Check consistency: P/FFO × FFO_ps = Target Price; Dividend Yield = DPS / Target (show explicitly)',
+  // REIT backsolve
+  backsolve_1_reit: '• FFO_implied = Price / P/FFO_fwd',
+  backsolve_2_reit: '• Cap Rate_implied = NOI / EV (EV ≈ Mkt Cap + Net Debt)',
+  backsolve_3_reit: '• FFO_Payout_implied = DPS / FFO_implied',
+  // REIT pe_calib
+  pe_calib_title_reit: 'P/FFO JUSTIFICATION (mandatory for each scenario):',
+  pe_calib_1_reit: '1. Identify REIT type: Retail / Industrial / Office / Residential / Net Lease / Healthcare',
+  pe_calib_2_reit: '2. Historical P/FFO percentiles (p25/p50/p75) over 3–5 years (rate-sensitive)',
+  pe_calib_3_reit: '3. Bear: P/FFO ≤ p25 OR stressed sector peer level; Cap Rate WIDE',
+  pe_calib_4_reit: '4. Base: p25–p50, adjusted for rate environment and Same-Store NOI trend',
+  pe_calib_5_reit: '5. Bull: p50–p75, but NOT above the low-rate era peak (2020–2021)',
+  pe_calib_6_reit: 'Show: which P/FFO range you use and why (rates vs NOI growth).',
+  // REIT sensitivity
+  sensitivity_reit: 'SENSITIVITY CHECK: If changing Base P/FFO by ±2x flips the alpha-gate (PASS↔FAIL) → note: "Alpha sensitive to P/FFO. Verdict conditional."',
+  // REIT rev decomp
+  rev_decomp_reit: 'Decompose NOI: Same-Store growth + New acquisitions + Disposals. State Occupancy Rate and Average Rent per sq ft.',
+  // REIT implied (Pro)
+  implied_1_reit: '1. Implied FFO Growth: ___ (from P/FFO_fwd vs current FFO ps)',
+  implied_2_reit: '2. Implied Cap Rate: ___ (NOI / EV — compare with sector market cap rate)',
+  implied_3_reit: '3. Implied FFO Payout: ___ (DPS / FFO_implied)',
+  implied_4_reit: '4. Discrepancy with my Base: ___',
+  implied_5_reit: '5. What needs to happen for the market to be wrong: ___',
+  // REIT judge overrides
+  judge_t1_1_reit: 'Take every key figure in the Base scenario (FFO per share, P/FFO, NOI growth, Debt/EBITDA).',
+  judge_t3_1_reit: '• Check P/FFO × FFO_ps = Target Price for each scenario. Show: ✓ or ✗ with the actual numbers.',
+  // REIT macro context overrides
+  mctx_fmt_reit:     '📍 REGIME: Macro [___] | Market [BULL/BEAR] | VIX [__] | Sentiment [___] | → P/FFO Bear [-__% vs norm, rates +/-] / Heat limit [___%]',
+  mctx_pe_note_reit: 'REIT P/FFO is inversely correlated with rates: BEAR/RISK-OFF + rising rates → P/FFO compresses 20–35% below historical p25; BULL + falling rates → P/FFO Bull may reach p75.',
   src_title:   'AI RULES (mandatory):',
   src_claude:  '• For data search use web search (tool_use) or Project files.',
   src_gpt:     '• For data search use Browsing (web search). Do not rely on data before the cutoff date.',
@@ -2465,6 +2840,36 @@ uk: {
   instr_etf_3: '• AUM та середньоденний обсяг (ліквідність, bid-ask спред)',
   instr_etf_4: '• Фізична або синтетична реплікація',
   instr_stock_title: 'ТИП: Акція',
+  // REIT strings
+  instr_reit_title: 'ТИП: REIT (Real Estate Investment Trust)',
+  instr_reit_1: '• Основний мультиплікатор: P/FFO (Price / Funds From Operations) — замість P/E',
+  instr_reit_2: '• Прогнозуй FFO per share замість EPS; FFO Margin замість Net Margin',
+  instr_reit_3: '• Ключові метрики: NOI, Same-Store NOI growth, Occupancy Rate, Cap Rate, Debt/EBITDA, LTV',
+  instr_reit_4: '• Дивідендна прибутковість (Dividend Yield) і коефіцієнт виплат (FFO Payout Ratio)',
+  rop_formula_reit: 'Формула: Price = P/FFO × FFO_ps | Перевірка: Cap Rate = NOI / EV (альтернативний якір)',
+  rop_consist_reit: 'Перевір консистентність: P/FFO × FFO_ps = Target Price; Dividend Yield = DPS / Target',
+  rop_consist2_reit: 'Перевір консистентність: P/FFO × FFO_ps = Target Price; Dividend Yield = DPS / Target (покажи явно)',
+  backsolve_1_reit: '• FFO_implied = Price / P/FFO_fwd',
+  backsolve_2_reit: '• Cap Rate_implied = NOI / EV (EV ≈ Mkt Cap + Net Debt)',
+  backsolve_3_reit: '• FFO_Payout_implied = DPS / FFO_implied',
+  pe_calib_title_reit: 'ОБҐРУНТУВАННЯ P/FFO (обов\'язково для кожного сценарію):',
+  pe_calib_1_reit: '1. Визнач тип REIT: Retail / Industrial / Office / Residential / Net Lease / Healthcare',
+  pe_calib_2_reit: '2. Історичні перцентилі P/FFO (p25/p50/p75) за 3–5 років (чутливий до ставок)',
+  pe_calib_3_reit: '3. Bear: P/FFO ≤ p25 АБО рівень стресового аналога в секторі; Cap Rate WIDE',
+  pe_calib_4_reit: '4. Base: p25–p50, скоригований на рівень ставок і Same-Store NOI trend',
+  pe_calib_5_reit: '5. Bull: p50–p75, але НЕ вище піку низьких ставок (2020–2021)',
+  pe_calib_6_reit: 'Покажи: який діапазон P/FFO використовуєш і чому (ставки vs зростання NOI).',
+  sensitivity_reit: 'SENSITIVITY CHECK: Якщо зміна Base P/FFO на ±2x змінює alpha-gate (PASS↔FAIL) → відміть: "Alpha чутлива до P/FFO. Вердикт умовний."',
+  rev_decomp_reit: 'Декомпозуй NOI: Same-Store growth + Нові придбання + Продажі. Вкажи Occupancy Rate і середню оренду за кв. фут.',
+  implied_1_reit: '1. Implied FFO Growth: ___ (з P/FFO_fwd vs поточний FFO ps)',
+  implied_2_reit: '2. Implied Cap Rate: ___ (NOI / EV — порівняй з ринковим cap rate сектора)',
+  implied_3_reit: '3. Implied FFO Payout: ___ (DPS / FFO_implied)',
+  implied_4_reit: '4. Розбіжність з моїм Base: ___',
+  implied_5_reit: '5. Що має статися, щоб ринок помилявся: ___',
+  judge_t1_1_reit: 'Візьми кожну ключову цифру Base-сценарію (FFO per share, P/FFO, NOI growth, Debt/EBITDA).',
+  judge_t3_1_reit: '• Перевір P/FFO × FFO_ps = Target Price для кожного сценарію. Покажи: ✓ або ✗ з числами.',
+  mctx_fmt_reit:     '📍 РЕЖИМ: Macro [___] | Market [BULL/BEAR] | VIX [__] | Sentiment [___] | → P/FFO Bear [-__% до норми, ставки +/-] / Heat-ліміт [___%]',
+  mctx_pe_note_reit: 'REIT P/FFO обернено корелює зі ставками: BEAR/RISK-OFF + зростання ставок → P/FFO стискається на 20–35% від hist. p25; BULL + зниження ставок → P/FFO Bull може досягти p75.',
   src_title:   'ПРАВИЛА ДЛЯ ШІ (обов\'язково):',
   src_claude:  '• Для пошуку даних використовуй веб-пошук (tool_use) або дані з Project-файлів.',
   src_gpt:     '• Для пошуку даних використовуй Browsing (веб-пошук). Не спирайся на дані до дати відсічки.',
@@ -3083,7 +3488,7 @@ ${p('sbr_rop')} ${benchmark}
 ${p('sbr_tbl')}
 | ${p('sbr_col1')} | ${p('sbr_col2')} | ${p('sbr_col3')} | ${p('sbr_col4')} |
 |---|---|---:|---|
-| ${p('sbr_col1') === 'Взгляд' ? 'Рынок' : (p('sbr_col1') === 'View' ? 'Market' : 'Ринок')} | ${p('sbr_mkt_row')} | EPS_implied / P/E / P/S | ... |
+| ${p('sbr_col1') === 'Взгляд' ? 'Рынок' : (p('sbr_col1') === 'View' ? 'Market' : 'Ринок')} | ${p('sbr_mkt_row')} | ${isReit() ? 'FFO_implied / P/FFO / Cap Rate' : 'EPS_implied / P/E / P/S'} | ... |
 | ${p('sbr_col1') === 'Взгляд' ? 'Аналитики' : (p('sbr_col1') === 'View' ? 'Analysts' : 'Аналітики')} | ${p('sbr_ana_row')} | Target / EPS_fwd | ... |
 | ROP | ${p('sbr_rop_row')} | Base price / ExpRet | ... |
 
@@ -3146,6 +3551,11 @@ function roleFocusBlock(role, depth) {
   return '';
 }
 
+function isReit() {
+  return (getChip('instrument-group') || 'auto') === 'reit';
+}
+
+
 function instrumentNote(instr, ticker) {
   const bmk = getBenchmark();
   if (instr === 'auto') {
@@ -3160,7 +3570,91 @@ ${p('instr_etf_2')}
 ${p('instr_etf_3')}
 ${p('instr_etf_4')}`;
   }
+  if (instr === 'reit') {
+    return `${p('instr_reit_title')}
+${p('instr_reit_1')}
+${p('instr_reit_2')}
+${p('instr_reit_3')}
+${p('instr_reit_4')}`;
+  }
   return p('instr_stock_title');
+}
+
+// ── REIT-AWARE METRIC/ROP HELPERS ────────────────────────
+function reitMetricsRowsStd() {
+  return `| P/FFO fwd / P/FFO ttm        | ___x / ___x     |                 |
+| P/S fwd / P/S ttm            | ___x / ___x     |                 |
+| FFO/share fwd cons. / ttm    | $___\ / $___\     |                 |
+| RPS fwd cons. / fact ttm     | $___\ / $___\     |                 |
+| FFO Margin cons. / fact      | ___% / ___%     |                 |
+| Dividend Yield               | ___%            |                 |
+| FFO Payout Ratio             | ___%            |                 |`;
+}
+
+function reitMetricsRowsPro() {
+  return `| P/FFO fwd / P/FFO ttm        | ___x / ___x     |                 |
+| P/S fwd / P/S ttm            | ___x / ___x     |                 |
+| EV/EBITDA fwd | Cap Rate     | ___x | ___%     |                 |
+| FFO/share fwd cons. / ttm    | $___\ / $___\     |                 |
+| RPS fwd cons. / fact ttm     | $___\ / $___\     |                 |
+| FFO Margin cons. / fact      | ___% / ___%     |                 |
+| NOI Margin ttm               | ___%            |                 |
+| Dividend Yield               | ___%            |                 |
+| FFO Payout Ratio             | ___%            |                 |
+| Occupancy Rate               | ___%            |                 |`;
+}
+
+function yoyMetricRows() {
+  if (isReit()) return `| FFO/share growth YoY (est.)  | ___%            |                 |
+| ${p('m_rps_yoy').padEnd(26)} | ___%            |                 |`;
+  return `| ${p('m_eps_yoy').padEnd(26)} | ___%            |                 |
+| ${p('m_rps_yoy').padEnd(26)} | ___%            |                 |`;
+}
+
+function ropSectionRows() {
+  if (isReit()) {
+    return `| Scenario | FFO/sh | P/FFO | RPS   | P/S  | NOI Mgn | Div Yld | Target  | vs now  |
+|----------|--------|-------|-------|------|---------|---------|---------|---------|
+| Bear     | $___   | ___x  | $___  | ___x | ___%    | ___%    | $___    | ___%    |
+| Base     | $___   | ___x  | $___  | ___x | ___%    | ___%    | $___    | ___%    |
+| Bull     | $___   | ___x  | $___  | ___x | ___%    | ___%    | $___    | ___%    |`;
+  }
+  return `| Scenario | EPS   | P/E  | RPS   | P/S  | Net Margin | Target    | vs now    |
+|----------|-------|------|-------|------|------------|-----------|-----------|
+| Bear     | $___  | ___x | $___  | ___x | ___%       | $___      | ___%      |
+| Base     | $___  | ___x | $___  | ___x | ___%       | $___      | ___%      |
+| Bull     | $___  | ___x | $___  | ___x | ___%       | $___      | ___%      |`;
+}
+
+function backsolveBlock() {
+  const b1 = isReit() ? p('backsolve_1_reit') : p('backsolve_1');
+  const b2 = isReit() ? p('backsolve_2_reit') : p('backsolve_2');
+  const b3 = isReit() ? p('backsolve_3_reit') : p('backsolve_3');
+  return `${p('backsolve_title')}\n${b1}\n${b2}\n${b3}\n${p('backsolve_4')}\n${p('backsolve_5')}`;
+}
+
+function ropFormulaBlock()    { return isReit() ? p('rop_formula_reit') : p('rop_formula'); }
+function ropConsistBlock(v2)  { return isReit() ? p(v2 ? 'rop_consist2_reit' : 'rop_consist_reit') : p(v2 ? 'rop_consist2' : 'rop_consist'); }
+function sensitivityBlock()   { return isReit() ? p('sensitivity_reit') : p('sensitivity'); }
+function revDecompBlock()     { return isReit() ? p('rev_decomp_reit')  : p('rev_decomp'); }
+
+function _peCalib() {
+  const t = isReit() ? '_reit' : '';
+  return [p('pe_calib_title'+t), p('pe_calib_1'+t), p('pe_calib_2'+t),
+          p('pe_calib_3'+t), p('pe_calib_4'+t), p('pe_calib_5'+t), p('pe_calib_6'+t)].join('\n');
+}
+
+function impliedBlock() {
+  const t = isReit() ? '_reit' : '';
+  return [p('sec_implied'), p('implied_1'+t), p('implied_2'+t),
+          p('implied_3'+t), p('implied_4'+t), p('implied_5'+t)].join('\n');
+}
+
+function ropCheckBlock() {
+  if (isReit()) {
+    return `P/FFO x FFO_ps = Target Price check:\nBear: $___  x $___  = $___  ✓/✗\nBase: $___  x $___  = $___  ✓/✗\nBull: $___  x $___  = $___  ✓/✗`;
+  }
+  return `${p('rop_check')}\nBear: ___ = ___ / ___  ✓/✗\nBase: ___ = ___ / ___  ✓/✗\nBull: ___ = ___ / ___  ✓/✗`;
 }
 
 
@@ -3188,8 +3682,8 @@ function macroContextBlock() {
     out += `${p('mctx_q6')}\n`;
   }
   out += `${p('mctx_output')}\n`;
-  out += `${p('mctx_fmt')}\n`;
-  out += `${p('mctx_pe_note')}`;
+  out += `${isReit() ? p('mctx_fmt_reit') : p('mctx_fmt')}\n`;
+  out += isReit() ? p('mctx_pe_note_reit') : p('mctx_pe_note');
   return out;
 }
 
@@ -3291,52 +3785,36 @@ ${p('sec_find_fill2')}
 |-${'-'.repeat(26)}-|-----------------|-----------------| 
 | 52w High / Low               | $___ / $___     |                 |
 | Market Cap                   | $___B           |                 |
-| P/E fwd / P/E ttm            | ___x / ___x     |                 |
+${isReit() ? reitMetricsRowsStd() : `| P/E fwd / P/E ttm            | ___x / ___x     |                 |
 | P/S fwd / P/S ttm            | ___x / ___x     |                 |
-| ${p('m_eps_both').padEnd(26)}| $___ / $___     |                 |
-| ${p('m_rps_both').padEnd(26)}| $___ / $___     |                 |
-| ${p('m_nm_both').padEnd(26)} | ___% / ___%     |                 |
-| ${p('m_eps_yoy').padEnd(26)} | ___%            |                 |
-| ${p('m_rps_yoy').padEnd(26)} | ___%            |                 |
+| ${p('m_eps_both').padEnd(26)}| $___\ / $___     |                 |
+| ${p('m_rps_both').padEnd(26)}| $___\ / $___     |                 |
+| ${p('m_nm_both').padEnd(26)} | ___% / ___%     |                 |`}
+${yoyMetricRows()}
 | ${p('m_target').padEnd(26)}  | $___ (__ anal.) |                 |
 | ${p('m_bhs').padEnd(26)}     | __ / __ / __    |                 |
 ${macroContextBlock()}
 
 ${p('sec_mkt')}
-${p('backsolve_title')}
-${p('backsolve_1')}
-${p('backsolve_2')}
-${p('backsolve_3')}
-${p('backsolve_4')}
-${p('backsolve_5')}
+${backsolveBlock()}
 ${p('sec_ana')}
 
 ${p('sec_rop_std')}
-${p('rop_formula')}
-${p('rop_consist')}
+${ropFormulaBlock()}
+${ropConsistBlock(false)}
 
-${p('pe_calib_title')}
-${p('pe_calib_1')}
-${p('pe_calib_2')}
-${p('pe_calib_3')}
-${p('pe_calib_4')}
-${p('pe_calib_5')}
-${p('pe_calib_6')}
+${_peCalib()}
 
 ${p('rop_build2')}
-${p('rev_decomp')}
+${revDecompBlock()}
 ${p('rop_also')}
 • ${p('rop_ret')}
 • ${p('rop_pwret')}
 • Alpha-gate vs ${bmk} (if available; otherwise use 8%/yr as assumption and note it)
 ${p('alpha_norm')}
-${p('sensitivity')}
+${sensitivityBlock()}
 
-| Scenario | EPS   | P/E  | RPS   | P/S  | Net Margin | Target    | vs now    |
-|----------|-------|------|-------|------|------------|-----------|-----------|
-| Bear     | $___  | ___x | $___  | ___x | ___%       | $___      | ___%      |
-| Base     | $___  | ___x | $___  | ___x | ___%       | $___      | ___%      |
-| Bull     | $___  | ___x | $___  | ___x | ___%       | $___      | ___%      |
+${ropSectionRows()}
 
 ${p('rop_bear_j')}: [${p('rop_bear_hint')}]
 ${p('rop_base_j')}: [${p('rop_base_hint')}]
@@ -3394,35 +3872,23 @@ ${p('sec_find_fill3')}
 |-${'-'.repeat(26)}-|-----------------|-----------------| 
 | 52w High / Low               | $___ / $___     |                 |
 | Market Cap / EV              | $___B / $___B   |                 |
-| P/E fwd / P/E ttm            | ___x / ___x     |                 |
+${isReit() ? reitMetricsRowsPro() : `| P/E fwd / P/E ttm            | ___x / ___x     |                 |
 | P/S fwd / P/S ttm            | ___x / ___x     |                 |
 | EV/EBITDA fwd                | ___x            |                 |
-| ${p('m_eps_both').padEnd(26)}| $___ / $___     |                 |
-| ${p('m_rps_both').padEnd(26)}| $___ / $___     |                 |
+| ${p('m_eps_both').padEnd(26)}| $___\ / $___     |                 |
+| ${p('m_rps_both').padEnd(26)}| $___\ / $___     |                 |
 | ${p('m_nm_both').padEnd(26)} | ___% / ___%     |                 |
-| FCF Margin ttm               | ___%            |                 |
-| ${p('m_eps_yoy').padEnd(26)} | ___%            |                 |
-| ${p('m_rps_yoy').padEnd(26)} | ___%            |                 |
-| ROIC ttm                     | ___%            |                 |
-| Debt/FCF                     | ___x            |                 |
+| FCF Margin ttm               | ___%            |                 |`}
+${yoyMetricRows()}
+${isReit() ? '' : '| ROIC ttm                     | ___%            |                 |\n| Debt/FCF                     | ___x            |                 |'}
 | ${p('m_target').padEnd(26)}  | $___ (__ anal.) |                 |
 | ${p('m_bhs').padEnd(26)}     | __ / __ / __    |                 |
 ${macroContextBlock()}
 
 ${p('sec_mkt')}
-${p('backsolve_title')}
-${p('backsolve_1')}
-${p('backsolve_2')}
-${p('backsolve_3')}
-${p('backsolve_4')}
-${p('backsolve_5')}
+${backsolveBlock()}
 
-${p('sec_implied')}
-${p('implied_1')}
-${p('implied_2')}
-${p('implied_3')}
-${p('implied_4')}
-${p('implied_5')}
+${impliedBlock()}
 
 ${p('sec_ana')}
 ${p('sec_biz')}
@@ -3432,40 +3898,27 @@ If Life _cycle.md connected — state company stage and its effect on multiples
 If Price_power.md connected — give PricePowerFactor (0–5) and margin impact
 
 ${p('sec_rop_pro')}
-${p('rop_formula')}
-${p('rop_consist2')}
+${ropFormulaBlock()}
+${ropConsistBlock(true)}
 Horizon: ${horizon || p('rop_horizon')}
 
-${p('pe_calib_title')}
-${p('pe_calib_1')}
-${p('pe_calib_2')}
-${p('pe_calib_3')}
-${p('pe_calib_4')}
-${p('pe_calib_5')}
-${p('pe_calib_6')}
+${_peCalib()}
 
-${p('rev_decomp')}
+${revDecompBlock()}
 ${p('rop_also')}
 • ${p('rop_ret')}
 • ${p('rop_pwret')}
 • Alpha-gate vs ${bmk} (if available; otherwise use 8%/yr as assumption and note it)
 ${p('alpha_norm')}
-${p('sensitivity')}
+${sensitivityBlock()}
 
-| Scenario | EPS   | P/E  | RPS   | P/S  | Net Margin | Target    | vs now    |
-|----------|-------|------|-------|------|------------|-----------|-----------|
-| Bear     | $___  | ___x | $___  | ___x | ___%       | $___      | ___%      |
-| Base     | $___  | ___x | $___  | ___x | ___%       | $___      | ___%      |
-| Bull     | $___  | ___x | $___  | ___x | ___%       | $___      | ___%      |
+${ropSectionRows()}
 
 ${p('rop_bear_j')}: [${p('rop_bear_hint2')}]
 ${p('rop_base_j')}: [${p('rop_base_hint2')}]
 ${p('rop_bull_j')}: [${p('rop_bull_hint2')}]
 
-${p('rop_check')}
-Bear: ___ = ___ / ___  ✓/✗
-Base: ___ = ___ / ___  ✓/✗
-Bull: ___ = ___ / ___  ✓/✗
+${ropCheckBlock()}
 
 
 ${p('sec_result')}
@@ -3637,56 +4090,109 @@ function renderOutput(prompt) {
 function copyPrompt() {
   const body = document.getElementById('output-body');
   const text = body._raw || body.textContent;
-  navigator.clipboard.writeText(text).then(() => {
+  if (!text || text === s('out_empty')) return;
+  const confirm = () => {
     const btn = document.getElementById('copy-btn');
     const lbl = document.getElementById('copy-label');
     btn.classList.add('done');
     lbl.textContent = s('copied');
     setTimeout(() => { btn.classList.remove('done'); lbl.textContent = s('btn_copy'); }, 2000);
-  });
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(confirm).catch(() => fallbackCopy(text, confirm));
+  } else {
+    fallbackCopy(text, confirm);
+  }
+}
+function fallbackCopy(text, done) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand('copy'); done(); } catch(e) { alert('Копирование недоступно — выдели текст промпта вручную.'); }
+  document.body.removeChild(ta);
 }
 
 
 // ─── JUDGE ────────────────────────────────────────────────
 let judgeOpen = false;
-function toggleJudge() {
-  judgeOpen = !judgeOpen;
-  const section = document.getElementById('judge-section');
-  const icon    = document.getElementById('judge-toggle-icon');
-  section.classList.toggle('visible', judgeOpen);
-  icon.classList.toggle('open', judgeOpen);
+
+// ── SNAPSHOT STATE ────────────────────────────────────────
+let snapshotOpen  = false;
+// snapshotDepth removed in v2.0 — always full analysis
+
+// toggleSnapshot removed in v2.0 — button builds prompt directly
+
+// setSnapshotDepth removed in v2.0 — always full analysis
+
+function buildSnapshotPrompt() {
+  const ticker  = (document.getElementById('ticker').value || '').trim().toUpperCase();
+
+  if (!ticker) { alert('Введи тикер перед тем, как собирать Снэпшот.'); return; }
+
+  // Build all 7 layers (v2.0 onion structure) — s() reads from STRINGS
+  const l1 = [s('snap_s1_hdr'), s('snap_s1_1'), s('snap_s1_2'), s('snap_s1_3'), s('snap_s1_4')].join('\n');
+  const l2 = [s('snap_s2_hdr'), s('snap_s2_1'), s('snap_s2_2'), s('snap_s2_3')].join('\n');
+  const l3 = [s('snap_s3_hdr'), s('snap_s3_1'), s('snap_s3_2'), s('snap_s3_3')].join('\n');
+  const l4 = [s('snap_s4_hdr'), s('snap_s4_1'), s('snap_s4_2'), s('snap_s4_3')].join('\n');
+  const l5 = [s('snap_s5_hdr'), s('snap_s5_1'), s('snap_s5_2'), s('snap_s5_3'), s('snap_s5_4')].join('\n');
+  const l6 = [s('snap_s6_hdr'), s('snap_s6_1'), s('snap_s6_2'), s('snap_s6_3'), s('snap_s6_4')].join('\n');
+  const l7 = [s('snap_s7_hdr'), s('snap_s7_1'), s('snap_s7_2'), s('snap_s7_3'), s('snap_s7_4')].join('\n');
+
+  const blocks = [l1, l2, l3, l4, l5, l6, l7].join('\n\n');
+
+  const instrNote = instrumentNote(getChip('instrument-group') || 'auto', ticker);
+
+  const prompt =
+`${s('snap_role')}
+${s('snap_task')}
+${s('snap_rule')}
+
+${s('snap_lbl_company')}
+${s('snap_lbl_ticker')}: ${ticker}${instrNote ? '\n' + instrNote : ''}
+
+${blocks}`;
+
+  // Output to output card
+  const ob = document.getElementById('output-body');
+  ob._raw = prompt;
+  ob.textContent = prompt;
+  document.getElementById('out-badge').textContent = s('snapshot_badge');
+  document.getElementById('out-label').textContent = ticker + ' · Snapshot v2';
+  const card = document.getElementById('output-card');
+  card.style.display = 'block';
+  card.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+// toggleJudge removed in v2.6.0 — button builds prompt directly
 
 function buildJudgePrompt() {
-  const report = (document.getElementById('judge-report').value || '').trim();
   const ticker = (document.getElementById('ticker').value || '').trim().toUpperCase();
   const role   = getChip('role-group') || '';
   const horizon= (document.getElementById('horizon').value || '').trim();
   const bmk    = getBenchmark();
 
   const ctx = [
-    ticker   ? `Тикер: ${ticker}` : '',
-    role     ? `Роль инвестора: ${role}` : '',
-    horizon  ? `Горизонт: ${horizon}` : '',
-    bmk      ? `Бенчмарк (alpha-gate): ${bmk}` : '',
+    ticker   ? `${s('snap_lbl_ticker')}: ${ticker}` : '',
+    role     ? `${s('snap_lbl_role')}: ${role}` : '',
+    horizon  ? `${s('snap_lbl_horizon')}: ${horizon}` : '',
+    bmk      ? `${s('snap_lbl_bmk')}: ${bmk}` : '',
   ].filter(Boolean).join('\n');
 
-  const reportBlock = report
-    ? `${p('judge_report_hdr')}\n${report}`
-    : `${p('judge_report_hdr')}\n[Отчёт не вставлен. Попроси пользователя скопировать и вставить анализ — иначе аудит невозможен.]`;
+  const reportBlock = `${p('judge_report_hdr')}\n${s('snap_lbl_paste')}`;
 
   const prompt =
 `${p('judge_role')}
 
-━━━ КОНТЕКСТ ━━━
-${ctx || '(контекст не указан — используй данные из отчёта)'}
+${s('snap_lbl_context')}
+${ctx || s('snap_lbl_no_ctx')}
 
 ${reportBlock}
 
 ${p('judge_tasks_hdr')}
 
 ${p('judge_t1_hdr')}
-${p('judge_t1_1')}
+${isReit() ? p('judge_t1_1_reit') : p('judge_t1_1')}
 ${p('judge_t1_2')}
 ${p('judge_t1_3')}
 
@@ -3699,7 +4205,7 @@ ${p('judge_t2_4')}
 ${p('judge_t2_5')}
 
 ${p('judge_t3_hdr')}
-${p('judge_t3_1')}
+${isReit() ? p('judge_t3_1_reit') : p('judge_t3_1')}
 ${p('judge_t3_2')}
 ${p('judge_t3_3')}
 
@@ -3732,6 +4238,159 @@ ${p('judge_r4')}`;
   document.getElementById('out-badge').className   = 'output-badge badge-judge';
   document.getElementById('out-badge').textContent = s('judge_badge');
   document.getElementById('out-label').textContent = label;
+  renderOutput(prompt);
+}
+
+
+// ─── TRADE PLAN PROMPT v2.6.0 (aligned to Trade Plan v2.0 skill) ──────────
+function buildTradePrompt() {
+  const ticker  = (document.getElementById('ticker').value || '').trim().toUpperCase();
+  if (!ticker) { alert(s('trade_badge') + ': ' + (s('p_ticker') || 'Enter ticker')); return; }
+
+  const role    = getChip('role-group') || '';
+  const horizon = (document.getElementById('horizon').value || '').trim();
+  const goal    = getChip('goal-group') || '';
+  const instr   = getChip('instrument-group') || 'auto';
+  const lang    = uiLang || 'ru';
+
+  // Build context block
+  const ctxLines = [];
+  ctxLines.push((s('snap_lbl_ticker') || 'Тикер') + ': ' + ticker);
+  if (role)    ctxLines.push((s('snap_lbl_role') || 'Роль') + ': ' + role);
+  if (horizon) ctxLines.push((s('snap_lbl_horizon') || 'Горизонт') + ': ' + horizon);
+  if (goal && GOAL_LABELS && GOAL_LABELS[goal]) ctxLines.push((s('p_goal') || 'Цель') + ': ' + GOAL_LABELS[goal]);
+
+  // Map UI goal to skill goal enum
+  const goalEnumMap = {
+    'first_buy': 'first_buy',
+    'add_to_position': 'add_to_position',
+    'hold_review': 'hold_review',
+    'consider_sell': 'consider_sell',
+    'research': 'first_buy'  // research maps to first_buy for skill purposes
+  };
+  const skillGoal = goalEnumMap[goal] || 'first_buy';
+  ctxLines.push('goal (skill enum): ' + skillGoal);
+
+  // Entry price (if available for add/hold/sell goals)
+  const entryPriceEl = document.getElementById('entry-price');
+  const entryPrice = entryPriceEl ? parseFloat(entryPriceEl.value) : NaN;
+  if (!isNaN(entryPrice) && entryPrice > 0)
+    ctxLines.push((s('lbl_entry') || 'Цена входа') + ': ' + entryPrice);
+
+  // Position weight (if available)
+  const weightEl = document.getElementById('position-weight');
+  const weight = weightEl ? parseFloat(weightEl.value) : NaN;
+  if (!isNaN(weight) && weight > 0)
+    ctxLines.push((lang === 'en' ? 'Current position weight' : 'Текущий вес позиции') + ': ' + weight + '%');
+
+  // AUM (if available)
+  const aumEl = document.getElementById('aum');
+  const aum = aumEl ? parseFloat(aumEl.value) : NaN;
+  if (!isNaN(aum) && aum > 0)
+    ctxLines.push('aum_usd: ' + aum);
+
+  // price_now (if available)
+  const priceNowEl = document.getElementById('price-now');
+  const priceNow = priceNowEl ? parseFloat(priceNowEl.value) : NaN;
+  if (!isNaN(priceNow) && priceNow > 0)
+    ctxLines.push('price_now: ' + priceNow);
+
+  // Benchmark
+  const bmk = getBenchmark ? getBenchmark() : '';
+  if (bmk) ctxLines.push((s('snap_lbl_bmk') || 'Бенчмарк') + ': ' + bmk);
+
+  const ctxBlock = ctxLines.join('\n');
+
+  // Goal-aware focus note
+  let goalNote = '';
+  if (goal === 'add_to_position') {
+    goalNote = lang === 'en'
+      ? '⚑ Skill routing: BUY + add_to_position → add_plan. If HOLD → WAIT. If STOP → BLOCKED.'
+      : '⚑ Маршрутизация: BUY + add_to_position → add_plan. Если HOLD → WAIT. Если STOP → BLOCKED.';
+  } else if (goal === 'hold_review') {
+    goalNote = lang === 'en'
+      ? '⚑ Skill routing: BUY/HOLD + hold_review → management_plan. If STOP → exit_plan.'
+      : '⚑ Маршрутизация: BUY/HOLD + hold_review → management_plan. Если STOP → exit_plan.';
+  } else if (goal === 'consider_sell') {
+    goalNote = lang === 'en'
+      ? '⚑ Skill routing: BUY/HOLD + consider_sell → trim_plan. If STOP → exit_plan.'
+      : '⚑ Маршрутизация: BUY/HOLD + consider_sell → trim_plan. Если STOP → exit_plan.';
+  } else {
+    goalNote = lang === 'en'
+      ? '⚑ Skill routing: BUY + first_buy → entry_plan. If HOLD → WAIT. If STOP → BLOCKED.'
+      : '⚑ Маршрутизация: BUY + first_buy → entry_plan. Если HOLD → WAIT. Если STOP → BLOCKED.';
+  }
+
+  // Determine which algorithm sections to include
+  const showSpec = !role || role.toLowerCase().includes('spec') || role.toLowerCase().includes('спекул');
+  const showInv  = !role || role.toLowerCase().includes('invest') || role.toLowerCase().includes('инвест') ||
+                   role.toLowerCase().includes('інвест');
+  const showSaver = role && (role.toLowerCase().includes('saver') || role.toLowerCase().includes('сбере') || role.toLowerCase().includes('зберіг'));
+
+  // For entry/add goals: show algo sections; for mgmt/trim/exit: show mgmt section
+  const isEntryGoal = !goal || goal === 'first_buy' || goal === 'add_to_position' || goal === 'research';
+  const isMgmtGoal  = goal === 'hold_review' || goal === 'consider_sell';
+
+  let algoBlock = '';
+  if (isEntryGoal) {
+    const parts = [];
+    if (showSpec && !showSaver) parts.push(s('trade_algo_spec'));
+    if (showInv || showSaver)   parts.push(s('trade_algo_inv'));
+    if (!showSpec && !showInv && !showSaver) {
+      parts.push(s('trade_algo_spec'));
+      parts.push(s('trade_algo_inv'));
+    }
+    algoBlock = parts.join('\n\n');
+  } else if (isMgmtGoal) {
+    algoBlock = s('trade_algo_mgmt');
+  } else {
+    // fallback: show all
+    algoBlock = [s('trade_algo_spec'), s('trade_algo_inv'), s('trade_algo_mgmt')].join('\n\n');
+  }
+
+  // Options alternative hint for speculator
+  const optionsHint = (showSpec && !showSaver && (instr === 'options' || instr === 'auto'))
+    ? (lang === 'en'
+      ? '\n• If IV data available — pass speculator.options_alt context to options-constructor skill.'
+      : '\n• Если есть IV-данные — передай speculator.options_alt в скилл options-constructor.')
+    : '';
+
+  const prompt =
+`${s('trade_task').replace('{TICKER}', ticker)}
+
+${s('snap_lbl_context') || 'Контекст'}:
+${ctxBlock}
+${goalNote}
+
+${s('trade_data_note').replace('{TICKER}', ticker)}
+
+${s('trade_input_hdr')}
+${s('trade_input_fields')}
+
+${s('trade_routing_hdr')}
+${s('trade_routing')}
+
+${s('trade_algo_hdr')}
+${algoBlock}${optionsHint}
+
+${s('trade_fmt_hdr')}
+${s('trade_fmt_1')}
+${s('trade_fmt_2')}
+${s('trade_fmt_3')}
+${s('trade_fmt_4')}
+
+${s('trade_rules_hdr')}
+${s('trade_r1')}
+${s('trade_r2')}
+${s('trade_r3')}
+${s('trade_r4')}
+${s('trade_r5')}
+
+${s('trade_fallback').replace('{TICKER}', ticker)}`;
+
+  document.getElementById('out-badge').className   = 'output-badge badge-trade';
+  document.getElementById('out-badge').textContent = s('trade_badge');
+  document.getElementById('out-label').textContent = ticker + ' · Trade Plan v2.0';
   renderOutput(prompt);
 }
 
